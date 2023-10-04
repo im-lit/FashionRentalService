@@ -1,4 +1,4 @@
-package com.example.fashionrentalservice.model.dto;
+package com.example.fashionrentalservice.model.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

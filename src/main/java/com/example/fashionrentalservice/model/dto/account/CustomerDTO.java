@@ -1,4 +1,4 @@
-package com.example.fashionrentalservice.model.dto;
+package com.example.fashionrentalservice.model.dto.account;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,7 +45,7 @@ public class CustomerDTO {
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", unique = true)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private AccountDTO account;
 

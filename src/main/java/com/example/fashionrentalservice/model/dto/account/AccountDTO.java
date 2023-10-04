@@ -1,4 +1,4 @@
-package com.example.fashionrentalservice.model.dto;
+package com.example.fashionrentalservice.model.dto.account;
 
 
 
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_account")
+@Table(name = "tbl_account" )
 public class AccountDTO {
 
 	@Id
@@ -46,12 +46,12 @@ public class AccountDTO {
 	private RoleDTO roleDTO;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "customer_id")
+    @JoinColumn(name = "account_id", unique = true, referencedColumnName = "customer_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private CustomerDTO customerDTO;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "productowner_id")
+    @JoinColumn(name = "account_id", unique = true, referencedColumnName = "productowner_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductOwnerDTO productOwnerDTO;
 	
