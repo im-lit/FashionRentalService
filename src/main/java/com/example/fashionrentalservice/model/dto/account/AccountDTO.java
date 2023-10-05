@@ -20,8 +20,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import lombok.Setter;
+@Getter
+@Setter
 @Data
 @Entity
 @Builder
@@ -40,18 +43,19 @@ public class AccountDTO {
 	
 	private String email;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleID", columnDefinition = "INT")
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private RoleDTO roleDTO;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", unique = true, referencedColumnName = "customer_id")
+	
+	@OneToOne(mappedBy = "accountDTO",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private CustomerDTO customerDTO;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", unique = true, referencedColumnName = "productowner_id")
+	
+	@OneToOne(mappedBy = "accountDTO",cascade = CascadeType.ALL)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductOwnerDTO productOwnerDTO;
 	

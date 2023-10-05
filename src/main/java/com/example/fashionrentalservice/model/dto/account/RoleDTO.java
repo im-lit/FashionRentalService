@@ -21,7 +21,7 @@ public class RoleDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", columnDefinition = "INT")
-    private String roleID;
+    private int roleID;
 
     private String roleName;
 }

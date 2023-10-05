@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,9 +15,10 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
+@Getter
 @Data
 @Entity
 @Builder
@@ -24,7 +26,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "tbl_productowner")
 public class ProductOwnerDTO {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productowner_id", columnDefinition = "INT")
@@ -44,8 +45,8 @@ public class ProductOwnerDTO {
 	@Column(name = "address", columnDefinition = "nvarchar(255)", nullable = true)
 	private String address;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id", unique = true)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    private AccountDTO account;
+    private AccountDTO accountDTO;
 }
