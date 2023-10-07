@@ -1,7 +1,5 @@
 package com.example.fashionrentalservice.model.request;
 
-import com.example.fashionrentalservice.model.dto.account.RoleDTO;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRequest {
+public class CustomerUpdateRequestEntity {
+	
 
-	private String password;
-
-	private String email;
-
-	private RoleDTO roleDTO;
-
+	private String fullName;
+	
+	private String phone;
+	
+	private boolean sex;
+	
+	private String avatarUrl;
 }
