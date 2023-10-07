@@ -18,7 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomerController {
 	@Autowired
 	private CustomerService cusService;
-
+	
+//================================== Lay tat ca Customer ========================================
 	@GetMapping("/getall")
 	private ResponseEntity getAllCus() {
 		return ResponseEntity.ok().body(cusService.getAllAccount());

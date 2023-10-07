@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -49,13 +50,13 @@ public class AccountDTO {
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private RoleDTO roleDTO;
 	
-	
+	@JsonIgnore
 	@OneToOne(mappedBy = "accountDTO",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private CustomerDTO customerDTO;
 	
-	
-	@OneToOne(mappedBy = "accountDTO",cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToOne(mappedBy = "accountDTO", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductOwnerDTO productOwnerDTO;
 	

@@ -22,14 +22,20 @@ public class AccountController {
 	@Autowired
 	private AccountService accService;
 	
-	@PostMapping("/loginCus")
+	@PostMapping("/login")
 	private ResponseEntity checkLoginCus(@RequestParam String email, @RequestParam String password) {		
-		return ResponseEntity.ok().body(accService.loginCus(email, password));
+		return ResponseEntity.ok().body(accService.login(email, password));
 	}
-	@PostMapping("/loginPo")
-	private ResponseEntity checkLoginPo(@RequestParam String email, @RequestParam String password) {		
-		return ResponseEntity.ok().body(accService.loginPO(email, password));
-	}
+	
+	
+//	@PostMapping("/loginCus")
+//	private ResponseEntity checkLoginCus(@RequestParam String email, @RequestParam String password) {		
+//		return ResponseEntity.ok().body(accService.loginCus(email, password));
+//	}
+//	@PostMapping("/loginPo")
+//	private ResponseEntity checkLoginPo(@RequestParam String email, @RequestParam String password) {		
+//		return ResponseEntity.ok().body(accService.loginPO(email, password));
+//	}
 	
 	@GetMapping("/getall")
 	private ResponseEntity getAllAccount() {

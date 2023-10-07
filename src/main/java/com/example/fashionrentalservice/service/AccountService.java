@@ -7,38 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
-import com.example.fashionrentalservice.model.response.AccountCusResponseEntity;
-import com.example.fashionrentalservice.model.response.AccountPOResponseEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
-
 
 @Service
 public class AccountService {
 
-	
 	@Autowired
 	private AccountRepository accRepo;
 
-	
-	public AccountCusResponseEntity loginCus(String email, String password) {
-		AccountDTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
-		return AccountCusResponseEntity.fromAccountDto(accountDTO);
+
+//================================== CheckLogin========================================
+	public AccountResponseEntity login(String email, String password) {
+		AccountDTO accountDTO = accRepo.checkLoginAccountByEmailAndPassword(email, password);
+		return AccountResponseEntity.fromAccountDto(accountDTO);
 	}
-	
-	public AccountPOResponseEntity loginPO(String email, String password) {
-		AccountDTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
-		return AccountPOResponseEntity.fromAccountDto(accountDTO);
-	}
-	
-	
+
+//================================== Lay tat ca account========================================
 	public List<AccountResponseEntity> getAllAccount() {
-		return  accRepo.findAll().stream()
-                .map(AccountResponseEntity::fromAccountDto)
-                .collect(Collectors.toList());
-		
+		return accRepo.findAll().stream().map(AccountResponseEntity::fromAccountDto).collect(Collectors.toList());
+
 	}
-	
+
 //	-------------Role kieu dep-------------
 //	public List<AccountDTO> getAllAccount() {
 //	    List<AccountDTO> accounts = accRepo.findAll();
@@ -57,4 +47,14 @@ public class AccountService {
 //		return accountDTOs;
 //		
 //	}
+
+//	public AccountCusResponseEntity loginCus(String email, String password) {
+//	AccountDTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
+//	return AccountCusResponseEntity.fromAccountDto(accountDTO);
+//}
+//
+//public AccountPOResponseEntity loginPO(String email, String password) {
+//	Account
+//}DTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
+//	return AccountPOResponseEntity.fromAccountDto(accountDTO);
 }

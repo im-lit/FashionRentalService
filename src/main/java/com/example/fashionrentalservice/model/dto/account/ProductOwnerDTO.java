@@ -1,17 +1,17 @@
 package com.example.fashionrentalservice.model.dto.account;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,8 +45,9 @@ public class ProductOwnerDTO {
 	@Column(name = "address", columnDefinition = "nvarchar(255)", nullable = true)
 	private String address;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", unique = true)
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name = "account_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private AccountDTO accountDTO;
 }

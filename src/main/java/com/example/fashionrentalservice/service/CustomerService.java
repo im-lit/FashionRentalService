@@ -14,7 +14,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository cusRepo;
 	
-	
+	//================================== Lay tat ca account========================================
 	public List<CustomerResponseEntity> getAllAccount() {
 		return  cusRepo.findAll().stream()
                 .map(CustomerResponseEntity::fromCustomerDTO)
