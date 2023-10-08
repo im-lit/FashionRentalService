@@ -39,12 +39,12 @@ public class AccountController {
 	
 	
 	@PostMapping("/create")
-	private ResponseEntity createNewAccount(@RequestBody AccountRequestEntity entity ) {		
+	private ResponseEntity createNewAccount(@RequestBody AccountRequestEntity entity ) throws CrudException {		
 		return ResponseEntity.ok().body(accService.createNewAccount(entity));
 	}
 	
 	@PutMapping("/update")
-	private ResponseEntity updatePasswordAccount(@RequestParam int accountID,@RequestParam String password) {		
+	private ResponseEntity updatePasswordAccount(@RequestParam int accountID,@RequestParam String password) throws CrudException {		
 		return ResponseEntity.ok().body(accService.updatePasswordAccount(accountID,password));
 	}
 	

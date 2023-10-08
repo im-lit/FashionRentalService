@@ -35,6 +35,8 @@ public class AccountResponseEntity {
 	
 	@JsonProperty("productowner")
 	private ProductOwnerDTO productOwnerDTO;
+	
+	
 
 	public static AccountResponseEntity fromAccountDto(AccountDTO dto) {
         return AccountResponseEntity.builder()

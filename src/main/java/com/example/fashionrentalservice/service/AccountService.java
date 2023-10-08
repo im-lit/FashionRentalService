@@ -7,14 +7,17 @@ import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.EmailExisted;
+import com.example.fashionrentalservice.exception.LoginFail;
+import com.example.fashionrentalservice.exception.UpdateFail;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.exception.handlers.CustomExceptionHandler;
-import com.example.fashionrentalservice.exception.handlers.LoginFail;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.RoleRepository;
+import com.mysql.cj.protocol.a.TextRowFactory;
 
 @Service
 public class AccountService {
@@ -37,19 +40,25 @@ public class AccountService {
 		throw new LoginFail();
 	}
 //================================== Tạo mới Account ========================================
-    public AccountResponseEntity createNewAccount(AccountRequestEntity entity) {
+    public AccountResponseEntity createNewAccount(AccountRequestEntity entity) throws CrudException{
         AccountDTO dto = AccountDTO.builder()
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .roleDTO(roleRepo.findById(entity.getRoleID()).orElseThrow())
                 .build();
-
+       AccountDTO emailChecked = accRepo.findByEmail((entity.getEmail()));
+       if(emailChecked!=null)
+    	   throw new EmailExisted();
+       
         return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
   //================================== Update Account ========================================   
-    public AccountResponseEntity updatePasswordAccount(int accountID,String password) {
+    public AccountResponseEntity updatePasswordAccount(int accountID,String password) throws CrudException {
         AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElseThrow();
-        dto.setPassword(password);
+        dto.setPassword(password);     
+       // if(dto!=null) 
+        	//throw new UpdateFail();
+            
         return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
     
