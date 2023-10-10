@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.service.ProductOwnerService;
@@ -42,7 +43,7 @@ public class ProductOwnerController {
 	}
 	
 	@GetMapping("/getproductowner")
-	private ResponseEntity getProductOwnerByID(@RequestParam int productownerID) {
+	private ResponseEntity getProductOwnerByID(@RequestParam int productownerID) throws CrudException {
 		return ResponseEntity.ok().body(poService.getPOByID(productownerID));
 	}
 }

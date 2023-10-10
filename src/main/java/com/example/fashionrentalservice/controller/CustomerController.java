@@ -43,7 +43,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/getcustomer")
-	private ResponseEntity getCustomerByID(@RequestParam int customerID) {
+	private ResponseEntity getCustomerByID(@RequestParam int customerID) throws CrudException{
 		return ResponseEntity.ok().body(cusService.getCustomerByID(customerID));
 	}
 }

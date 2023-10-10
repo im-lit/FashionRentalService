@@ -63,7 +63,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/getaccount")
-	private ResponseEntity getAccountByID(@RequestParam int accountID) {
+	private ResponseEntity getAccountByID(@RequestParam int accountID) throws CrudException{
 		return ResponseEntity.ok().body(accService.getAccountByID(accountID));
 	}
 }

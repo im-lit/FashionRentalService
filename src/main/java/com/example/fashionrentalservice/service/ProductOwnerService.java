@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
@@ -51,7 +53,17 @@ public class ProductOwnerService {
     }
     
     //================================== Lấy ProductOwner bởi ID========================================    
-	public POResponseEntity getPOByID(int productownerID) {
-		return POResponseEntity.fromPODTO(poRepo.findById(productownerID).orElseThrow());
-	}
+	public POResponseEntity getPOByID(int productownerID) throws CrudException{
+		ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
+		if(dto==null) 
+			throw new PONotFoundByID();
+		return POResponseEntity.fromPODTO(dto);
+		}
+		
+		
+		
+		
+		
+		
+	
 }
