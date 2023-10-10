@@ -1,10 +1,10 @@
 package com.example.fashionrentalservice.model.response;
 
-import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.RoleDTO;
+import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -36,6 +36,9 @@ public class AccountResponseEntity {
 	@JsonProperty("productowner")
 	private ProductOwnerDTO productOwnerDTO;
 	
+	@JsonProperty("staff")
+	private StaffDTO staffDTO;
+	
 	
 
 	public static AccountResponseEntity fromAccountDto(AccountDTO dto) {
@@ -46,6 +49,7 @@ public class AccountResponseEntity {
                 .roleDTO(dto.getRoleDTO())
                 .customerDTO(dto.getCustomerDTO())
                 .productOwnerDTO(dto.getProductOwnerDTO())
+                .staffDTO(dto.getStaffDTO())
                 .build();   
 	}
 }

@@ -9,18 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PORequestEntity {
+public class StaffRequestEntity {
+
 	private String fullName;
-
-	private String phone;
-
-	private boolean status;
-
-	private String avatarUrl;
-
-	private double balance;
 	
-	private String address;
+	private String avatarUrl;
+	
+	private boolean status;
 	
 	private int accountID;
+	
 }

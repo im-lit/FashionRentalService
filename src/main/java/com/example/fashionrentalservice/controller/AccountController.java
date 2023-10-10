@@ -32,7 +32,7 @@ public class AccountController {
 	private AccountService accService;
 	
 	@PostMapping("/login")
-	private ResponseEntity checkLoginCus(@RequestParam String email, @RequestParam String password) throws CrudException {	
+	private ResponseEntity checkLogin(@RequestParam String email, @RequestParam String password) throws CrudException {	
 		
 		return ResponseEntity.ok().body(accService.login(email, password));
 	}

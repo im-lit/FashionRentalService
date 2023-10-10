@@ -60,6 +60,11 @@ public class AccountDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductOwnerDTO productOwnerDTO;
 	
+	@JsonIgnore
+	@OneToOne(mappedBy = "accountDTO", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private StaffDTO staffDTO;
+	
 	
 	
 }
