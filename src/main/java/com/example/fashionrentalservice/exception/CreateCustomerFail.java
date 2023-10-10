@@ -4,10 +4,8 @@ import org.springframework.http.HttpStatus;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 
-public class UpdateFail extends CrudException {
-	public  UpdateFail() {
-		// TODO Auto-generated constructor stub
-		super("Update Fail", HttpStatus.OK);
+public class CreateCustomerFail extends CrudException {
+	public CreateCustomerFail() {
+		super("Created Fail By Email Already Existed", HttpStatus.OK);
 	}
 }
-	
