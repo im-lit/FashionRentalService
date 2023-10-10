@@ -6,6 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.AccNotFoundByID;
+import com.example.fashionrentalservice.exception.CreateCustomerFail;
+import com.example.fashionrentalservice.exception.CusNotFoundByID;
+import com.example.fashionrentalservice.exception.EmailExisted;
+import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
@@ -27,7 +33,7 @@ public class CustomerService {
 	}
 	
 	//================================== Tao Customer========================================
-    public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) {
+    public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) throws CrudException{
         CustomerDTO dto = CustomerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
@@ -36,9 +42,17 @@ public class CustomerService {
                 .status(entity.isStatus())
                 .avatarUrl(entity.getAvatarUrl())
                 .build();
-
+        //
+       // if(entity.getPhone()!=null)
+     //	   throw new CreateCustomerFail();
+        
         return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));
-    }
+     }
+    
+    
+    
+    
+    
   //================================== Update Customer========================================
     public CustomerResponseEntity updateCustomer(int customerID,CustomerUpdateRequestEntity entity) {
         CustomerDTO dto = cusRepo.findById(customerID).orElseThrow();
@@ -51,8 +65,13 @@ public class CustomerService {
     }
     
     //================================== Lấy Customer bởi ID========================================    
-	public CustomerResponseEntity getCustomerByID(int customerID) {
-		return CustomerResponseEntity.fromCustomerDTO(cusRepo.findById(customerID).orElseThrow());
-	}
+	public CustomerResponseEntity getCustomerByID(int customerID) throws CrudException {
+		CustomerDTO dto = cusRepo.findById(customerID).orElse(null);
+		if(dto==null) 
+			throw new CusNotFoundByID();
+		return CustomerResponseEntity.fromCustomerDTO(dto);
+		}
+		
+	
 	
 }

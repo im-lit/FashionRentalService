@@ -7,14 +7,18 @@ import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.AccNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
-import com.example.fashionrentalservice.exception.UpdateFail;
+import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.exception.handlers.CustomExceptionHandler;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
+import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
+import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.RoleRepository;
 import com.mysql.cj.protocol.a.TextRowFactory;
@@ -52,14 +56,15 @@ public class AccountService {
        
         return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
-  //================================== Update Account ========================================   
+  //================================== Update Password Account ========================================   
     public AccountResponseEntity updatePasswordAccount(int accountID,String password) throws CrudException {
         AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElseThrow();
-        dto.setPassword(password);     
-       // if(dto!=null) 
-        	//throw new UpdateFail();
-            
-        return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
+        dto.setPassword(password);    
+        
+        if(dto.getPassword().equals(password)) {
+        	throw new UpdatePasswordFail();
+        }
+        	return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
     
 
@@ -69,9 +74,12 @@ public class AccountService {
 
 	}
 //================================== Lay account bởi ID========================================	
-	public AccountResponseEntity getAccountByID(int accountID) {
-		return AccountResponseEntity.fromAccountDto(accRepo.findById(accountID).orElseThrow());
+	public AccountResponseEntity getAccountByID(int accountID) throws CrudException{
+		AccountDTO dto = accRepo.findById(accountID).orElse(null);
+		if(dto==null) 
+			throw new AccNotFoundByID();
+		return AccountResponseEntity.fromAccountDto(dto);
+		}
 	}
 	
 	
-}
