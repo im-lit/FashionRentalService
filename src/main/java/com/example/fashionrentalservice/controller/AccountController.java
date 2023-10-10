@@ -61,4 +61,9 @@ public class AccountController {
 	private ResponseEntity getAllAccount() {
 		return ResponseEntity.ok().body(accService.getAllAccount());
 	}
+	
+	@GetMapping("/getaccount")
+	private ResponseEntity getAccountByID(@RequestParam int accountID) {
+		return ResponseEntity.ok().body(accService.getAccountByID(accountID));
+	}
 }

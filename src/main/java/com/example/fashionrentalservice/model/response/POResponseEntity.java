@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.model.response;
 
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +28,8 @@ public class POResponseEntity {
 	
 	private String address;
 	
+	private AccountDTO accountDTO;
+	
 	public static POResponseEntity fromPODTO(ProductOwnerDTO dto) {
         return POResponseEntity.builder()
                 .productownerID(dto.getProductownerID())
@@ -36,6 +39,7 @@ public class POResponseEntity {
                 .balance(dto.getBalance())
                 .status(dto.isStatus())
                 .address(dto.getAddress())
+                .accountDTO(dto.getAccountDTO())
                 .build();   
 	}
 }

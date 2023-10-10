@@ -68,4 +68,10 @@ public class AccountService {
 		return accRepo.findAll().stream().map(AccountResponseEntity::fromAccountDto).collect(Collectors.toList());
 
 	}
+//================================== Lay account bởi ID========================================	
+	public AccountResponseEntity getAccountByID(int accountID) {
+		return AccountResponseEntity.fromAccountDto(accRepo.findById(accountID).orElseThrow());
+	}
+	
+	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
+import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 
@@ -48,4 +49,9 @@ public class ProductOwnerService {
     	
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
+    
+    //================================== Lấy ProductOwner bởi ID========================================    
+	public POResponseEntity getPOByID(int productownerID) {
+		return POResponseEntity.fromPODTO(poRepo.findById(productownerID).orElseThrow());
+	}
 }

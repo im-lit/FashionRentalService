@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
+import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 @Service
@@ -48,5 +49,10 @@ public class CustomerService {
         ;
         return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));
     }
+    
+    //================================== Lấy Customer bởi ID========================================    
+	public CustomerResponseEntity getCustomerByID(int customerID) {
+		return CustomerResponseEntity.fromCustomerDTO(cusRepo.findById(customerID).orElseThrow());
+	}
 	
 }
