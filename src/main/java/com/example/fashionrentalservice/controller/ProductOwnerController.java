@@ -40,4 +40,9 @@ public class ProductOwnerController {
 	private ResponseEntity updateProductOwner(@RequestParam int productownerID,@RequestBody POUpdateRequestEntity entity) {
 		return ResponseEntity.ok().body(poService.updateProductOwner(productownerID,entity));
 	}
+	
+	@GetMapping("/getproductowner")
+	private ResponseEntity getProductOwnerByID(@RequestParam int productownerID) {
+		return ResponseEntity.ok().body(poService.getPOByID(productownerID));
+	}
 }

@@ -41,4 +41,9 @@ public class CustomerController {
 	private ResponseEntity updateCustomer(@RequestParam int customerID,@RequestBody CustomerUpdateRequestEntity entity) {
 		return ResponseEntity.ok().body(cusService.updateCustomer(customerID,entity));
 	}
+	
+	@GetMapping("/getcustomer")
+	private ResponseEntity getCustomerByID(@RequestParam int customerID) {
+		return ResponseEntity.ok().body(cusService.getCustomerByID(customerID));
+	}
 }

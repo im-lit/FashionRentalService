@@ -60,5 +60,10 @@ public class CustomerService {
         ;
         return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));
     }
+    
+    //================================== Lấy Customer bởi ID========================================    
+	public CustomerResponseEntity getCustomerByID(int customerID) {
+		return CustomerResponseEntity.fromCustomerDTO(cusRepo.findById(customerID).orElseThrow());
+	}
 	
 }
