@@ -11,6 +11,7 @@ import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 
 
@@ -25,6 +26,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		PONotFoundByID.class,
 		CusNotFoundByID.class,
 		AccNotFoundByID.class,
+		StaffNotFoundByID.class
 		
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
