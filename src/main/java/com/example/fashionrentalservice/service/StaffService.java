@@ -7,13 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
-import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.model.response.StaffResponseEntity;
 import com.example.fashionrentalservice.repositories.StaffRepository;
 @Service
@@ -55,4 +52,12 @@ public class StaffService {
 		
 		return StaffResponseEntity.fromStaffDTO(dto);
 	}
+	
+    //================================== Xóa Staff bởi ID========================================  
+    public StaffResponseEntity deleteExistedStaff(int id) {
+        StaffDTO dto = staffRepo.findById(id).orElseThrow();
+        staffRepo.deleteById(id);
+
+        return StaffResponseEntity.fromStaffDTO(dto);
+    }
 }

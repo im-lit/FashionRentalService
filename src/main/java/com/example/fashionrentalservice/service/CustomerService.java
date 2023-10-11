@@ -13,10 +13,12 @@ import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
+import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
+import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 @Service
 public class CustomerService {
@@ -71,7 +73,14 @@ public class CustomerService {
 			throw new CusNotFoundByID();
 		return CustomerResponseEntity.fromCustomerDTO(dto);
 		}
-		
+	
+	//================================== Xóa ========================================	
+    public CustomerResponseEntity deleteExistedCustomer(int id) {
+        CustomerDTO dto = cusRepo.findById(id).orElseThrow();
+        cusRepo.deleteById(id);
+
+        return CustomerResponseEntity.fromCustomerDTO(dto);
+    }	
 	
 	
 }

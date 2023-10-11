@@ -80,6 +80,14 @@ public class AccountService {
 			throw new AccNotFoundByID();
 		return AccountResponseEntity.fromAccountDto(dto);
 		}
-	}
+//================================== Xóa Account========================================
+    public AccountResponseEntity deleteExistedAccount(int id) {
+        AccountDTO dto = accRepo.findById(id).orElseThrow();
+        accRepo.deleteById(id);
+
+        return AccountResponseEntity.fromAccountDto(dto);
+    }
+	
+}
 	
 	

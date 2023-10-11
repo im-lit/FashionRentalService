@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
+import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
+import com.example.fashionrentalservice.model.response.StaffResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 
 @Service
@@ -28,7 +30,7 @@ public class ProductOwnerService {
                 .collect(Collectors.toList());
 		
 	}
-	
+	 //================================== Tạo PO========================================
     public POResponseEntity createProductOwner(PORequestEntity entity) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
@@ -41,7 +43,7 @@ public class ProductOwnerService {
         
         return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
-    
+    //================================== Update PO bởi ID========================================
     public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) {
     	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
     	dto.setAvatarUrl(entity.getAvatarUrl());
@@ -59,6 +61,15 @@ public class ProductOwnerService {
 			throw new PONotFoundByID();
 		return POResponseEntity.fromPODTO(dto);
 		}
+	
+	 //================================== Xóa ProductOwner ========================================
+    public POResponseEntity deleteExistedProductOwner(int id) {
+        ProductOwnerDTO dto = poRepo.findById(id).orElseThrow();
+        poRepo.deleteById(id);
+
+        return POResponseEntity.fromPODTO(dto);
+    }
+	
 		
 		
 		

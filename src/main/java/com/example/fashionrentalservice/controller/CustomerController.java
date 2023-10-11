@@ -3,6 +3,7 @@ package com.example.fashionrentalservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,18 +33,27 @@ public class CustomerController {
 		return ResponseEntity.ok().body(cusService.getAllCustomer());
 	}
 	
+ //================================== Đăng kí========================================
 	@PostMapping("/sign-up")
 	private ResponseEntity createCustomer(@RequestBody CustomerRequestEntity entity) throws CrudException{
 		return ResponseEntity.ok().body(cusService.createCustomer(entity));
 	}
 	
+//================================== Update Customer========================================	
 	@PutMapping
 	private ResponseEntity updateCustomer(@RequestParam int customerID,@RequestBody CustomerUpdateRequestEntity entity) {
 		return ResponseEntity.ok().body(cusService.updateCustomer(customerID,entity));
 	}
-	
+
+//================================== Lấy Customer bởi ID========================================
 	@GetMapping("/getcustomer")
 	private ResponseEntity getCustomerByID(@RequestParam int customerID) throws CrudException{
 		return ResponseEntity.ok().body(cusService.getCustomerByID(customerID));
 	}
+	
+//================================== Xóa ProductOwner ========================================	
+    @DeleteMapping()
+    private ResponseEntity deleteExistedCustomer(@RequestParam int id) {
+        return ResponseEntity.ok().body(cusService.deleteExistedCustomer(id));
+    }
 }
