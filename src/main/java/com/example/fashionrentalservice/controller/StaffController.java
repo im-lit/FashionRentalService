@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
@@ -43,7 +44,7 @@ public class StaffController {
 	}
 	
 	@GetMapping("/getstaff")
-	private ResponseEntity getStaffByID(@RequestParam int staffID) {
+	private ResponseEntity getStaffByID(@RequestParam int staffID) throws CrudException{
 		return ResponseEntity.ok().body(staffService.getStaffByID(staffID));
 	}
 }

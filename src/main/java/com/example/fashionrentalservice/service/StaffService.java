@@ -7,8 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.StaffNotFoundByID;
+import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
+import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.model.response.StaffResponseEntity;
 import com.example.fashionrentalservice.repositories.StaffRepository;
 @Service
@@ -38,12 +43,16 @@ public class StaffService {
     public StaffResponseEntity updateStatusStaff(int staffID, boolean status) {
         StaffDTO dto = staffRepo.findById(staffID).orElseThrow();
         dto.setStatus(status);
-        ;
         return StaffResponseEntity.fromStaffDTO(staffRepo.save(dto));
     }
     
     //================================== Lấy Staff bởi ID========================================    
-	public StaffResponseEntity getStaffByID(int staffID) {
-		return StaffResponseEntity.fromStaffDTO(staffRepo.findById(staffID).orElseThrow());
+	public StaffResponseEntity getStaffByID(int staffID) throws CrudException{
+
+		StaffDTO dto = staffRepo.findById(staffID).orElse(null);
+		if(dto==null) 
+			throw new StaffNotFoundByID();
+		
+		return StaffResponseEntity.fromStaffDTO(dto);
 	}
 }
