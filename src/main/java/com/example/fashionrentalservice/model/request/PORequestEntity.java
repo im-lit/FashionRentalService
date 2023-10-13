@@ -14,7 +14,6 @@ public class PORequestEntity {
 
 	private String phone;
 
-	private boolean status;
 
 	private String avatarUrl;
 

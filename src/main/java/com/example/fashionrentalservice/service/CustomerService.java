@@ -19,12 +19,16 @@ import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntit
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
+import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 @Service
 public class CustomerService {
 
 	@Autowired
 	private CustomerRepository cusRepo;
+	
+	@Autowired
+	private AccountRepository accRepo;
 	
 	//================================== Lay tat ca Customer ========================================
 	public List<CustomerResponseEntity> getAllCustomer() {
@@ -36,13 +40,15 @@ public class CustomerService {
 	
 	//================================== Tao Customer========================================
     public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) throws CrudException{
+    	
         CustomerDTO dto = CustomerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
                 .balance(entity.getBalance())
                 .sex(entity.isSex())
-                .status(entity.isStatus())
+                .status(true)
                 .avatarUrl(entity.getAvatarUrl())
+                .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
         //
        // if(entity.getPhone()!=null)

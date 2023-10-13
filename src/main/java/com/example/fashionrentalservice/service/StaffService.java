@@ -12,11 +12,15 @@ import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
 import com.example.fashionrentalservice.model.response.StaffResponseEntity;
+import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.StaffRepository;
 @Service
 public class StaffService {
 	@Autowired
 	private StaffRepository staffRepo;
+	
+	@Autowired
+	private AccountRepository accRepo;
 	
 	//================================== Lay tat ca Staff ========================================
 	public List<StaffResponseEntity> getAllStaff() {
@@ -32,6 +36,7 @@ public class StaffService {
                 .fullName(entity.getFullName())
                 .status(entity.isStatus())
                 .avatarUrl(entity.getAvatarUrl())
+                .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
 
         return StaffResponseEntity.fromStaffDTO(staffRepo.save(dto));

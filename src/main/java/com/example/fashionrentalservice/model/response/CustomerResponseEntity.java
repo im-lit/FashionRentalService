@@ -37,6 +37,8 @@ public class CustomerResponseEntity {
 	                .customerID(dto.getCustomerID())
 	                .fullName(dto.getFullName())
 	                .phone(dto.getPhone())
+	                .sex(dto.isSex())
+	                .status(dto.isStatus())
 	                .avatarUrl(dto.getAvatarUrl())
 	                .balance(dto.getBalance())
 	                .accountDTO(dto.getAccountDTO())

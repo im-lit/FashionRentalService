@@ -15,6 +15,7 @@ import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.model.response.StaffResponseEntity;
+import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 
 @Service
@@ -22,6 +23,9 @@ public class ProductOwnerService {
 
 	@Autowired
 	private ProductOwnerRepository poRepo;
+	
+	@Autowired
+	private AccountRepository accRepo;
 	
 //	------------------ Lay tat ca ProductOwner-----------
 	public List<POResponseEntity> getAllProductOwner() {
@@ -36,9 +40,10 @@ public class ProductOwnerService {
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
                 .balance(entity.getBalance())
-                .status(entity.isStatus())
+                .status(true)
                 .avatarUrl(entity.getAvatarUrl())
                 .address(entity.getAddress())
+                .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
         
         return POResponseEntity.fromPODTO(poRepo.save(dto));

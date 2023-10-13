@@ -17,8 +17,6 @@ public class CustomerRequestEntity {
 	
 	private boolean sex;
 	
-	private boolean status;
-	
 	private String avatarUrl;
 	
 	private double balance;
