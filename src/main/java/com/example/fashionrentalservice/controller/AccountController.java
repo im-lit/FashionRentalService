@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,8 +57,8 @@ public class AccountController {
 	}
 	
 	//================================== Lấy 1 account ========================================	
-	@GetMapping("/getaccount")
-	private ResponseEntity getAccountByID(@RequestParam int accountID) throws CrudException{
+	@GetMapping("/{accountID}")
+	private ResponseEntity getAccountByID(@PathVariable int accountID) throws CrudException{
 		return ResponseEntity.ok().body(accService.getAccountByID(accountID));
 	}
 	

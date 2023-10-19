@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,8 +47,8 @@ public class CustomerController {
 	}
 
 //================================== Lấy Customer bởi ID========================================
-	@GetMapping("/getcustomer")
-	private ResponseEntity getCustomerByID(@RequestParam int customerID) throws CrudException{
+	@GetMapping("/{customerID}")
+	private ResponseEntity getCustomerByID(@PathVariable int customerID) throws CrudException{
 		return ResponseEntity.ok().body(cusService.getCustomerByID(customerID));
 	}
 	

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +44,8 @@ public class ProductOwnerController {
 		return ResponseEntity.ok().body(poService.updateProductOwner(productownerID,entity));
 	}
 	
-	@GetMapping("/getproductowner")
-	private ResponseEntity getProductOwnerByID(@RequestParam int productownerID) throws CrudException {
+	@GetMapping("/{productownerID}")
+	private ResponseEntity getProductOwnerByID(@PathVariable int productownerID) throws CrudException {
 		return ResponseEntity.ok().body(poService.getPOByID(productownerID));
 	}
 	

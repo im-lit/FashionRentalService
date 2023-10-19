@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.request.ProductRentalPricesRequestEntity;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
+import com.example.fashionrentalservice.service.ProductRentalPricesService;
 import com.example.fashionrentalservice.service.StaffService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,34 +24,20 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
-@RequestMapping("/staff")
-public class StaffController {
+@RequestMapping("/rentprice")
+public class ProductRentalPricesController {
 	@Autowired
-	private StaffService staffService;
+	private ProductRentalPricesService rentalPriceService;
 	
-//================================== Lay tat ca Customer ========================================
-	@GetMapping("/getstaffs")
-	private ResponseEntity getAllStaff() {
-		return ResponseEntity.ok().body(staffService.getAllStaff());
+	
+	@PostMapping("/create")
+	private ResponseEntity createProductRentalPrices(@RequestBody ProductRentalPricesRequestEntity entity) {
+		return ResponseEntity.ok().body(rentalPriceService.createRentalPrices(entity));
 	}
 	
-	@PostMapping("/createstaff")
-	private ResponseEntity createStaff(@RequestBody StaffRequestEntity entity) {
-		return ResponseEntity.ok().body(staffService.createStaff(entity));
-	}
-	
-	@PutMapping
-	private ResponseEntity updateStatusStaff(@RequestParam int staffID,@RequestParam boolean status) {
-		return ResponseEntity.ok().body(staffService.updateStatusStaff(staffID,status));
-	}
-	
-	@GetMapping("/{staffID}")
-	private ResponseEntity getStaffByID(@PathVariable int staffID) throws CrudException{
-		return ResponseEntity.ok().body(staffService.getStaffByID(staffID));
-	}
 	
     @DeleteMapping()
-    private ResponseEntity deleteExistedStaff(@RequestParam int id) {
-        return ResponseEntity.ok().body(staffService.deleteExistedStaff(id));
+    private ResponseEntity deleteExistedRentalPrices(@RequestParam int id) {
+        return ResponseEntity.ok().body(rentalPriceService.deleteRentalPrices(id));
     }
 }
