@@ -36,11 +36,10 @@ public class ProductOwnerDTO {
 	
 	private String phone;
 	
-	private boolean status;
+	
 	
 	private String avatarUrl;
 	
-	private double balance;
 	
 	@Column(name = "address", columnDefinition = "nvarchar(255)", nullable = true)
 	private String address;

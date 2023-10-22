@@ -26,7 +26,10 @@ public class AccountResponseEntity {
 
 	@JsonProperty("email")
 	private String email;
-
+	
+	@JsonProperty("status")
+	private String status;
+	
 	@JsonProperty("role")
 	private RoleDTO roleDTO;
 	
@@ -46,6 +49,7 @@ public class AccountResponseEntity {
                 .accountID(dto.getAccountID())
                 .password(dto.getPassword())
                 .email(dto.getEmail())
+                .status(dto.getStatus().toString())
                 .roleDTO(dto.getRoleDTO())
                 .customerDTO(dto.getCustomerDTO())
                 .productOwnerDTO(dto.getProductOwnerDTO())

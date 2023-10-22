@@ -20,8 +20,6 @@ public class StaffResponseEntity {
 	
 	private String avatarUrl;
 
-	private boolean status;
-
 	private AccountDTO accountDTO;
 
 	public static StaffResponseEntity fromStaffDTO(StaffDTO dto) {
@@ -29,7 +27,6 @@ public class StaffResponseEntity {
 				.staffID(dto.getStaffID())
 				.fullName(dto.getFullName())
 				.avatarUrl(dto.getAvatarUrl())
-				.status(dto.isStatus())
 				.accountDTO(dto.getAccountDTO())
 				.build();
 	}

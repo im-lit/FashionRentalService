@@ -14,11 +14,8 @@ public class PORequestEntity {
 
 	private String phone;
 
-
 	private String avatarUrl;
 
-	private double balance;
-	
 	private String address;
 	
 	private int accountID;

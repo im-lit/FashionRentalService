@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
-import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
-import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
-import com.example.fashionrentalservice.model.response.StaffResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 
@@ -39,8 +36,6 @@ public class ProductOwnerService {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
-                .balance(entity.getBalance())
-                .status(true)
                 .avatarUrl(entity.getAvatarUrl())
                 .address(entity.getAddress())
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())

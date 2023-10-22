@@ -19,7 +19,6 @@ public class CustomerRequestEntity {
 	
 	private String avatarUrl;
 	
-	private double balance;
 	
 	private int accountID;
 }

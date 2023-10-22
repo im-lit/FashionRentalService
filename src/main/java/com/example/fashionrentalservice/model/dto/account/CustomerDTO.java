@@ -38,11 +38,10 @@ public class CustomerDTO {
 	
 	private boolean sex;
 	
-	private boolean status;
 	
 	private String avatarUrl;
 	
-	private double balance;
+
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -37,7 +37,6 @@ public class StaffDTO {
 	
 	private String avatarUrl;
 	
-	private boolean status;
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

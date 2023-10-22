@@ -15,13 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.account.AccountDTO;
-import com.example.fashionrentalservice.model.response.AccountResponseEntity;
-
+import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
-
 import com.example.fashionrentalservice.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -48,6 +44,11 @@ public class AccountController {
 	@PutMapping("/update")
 	private ResponseEntity updatePasswordAccount(@RequestParam int accountID,@RequestParam String password) throws CrudException {		
 		return ResponseEntity.ok().body(accService.updatePasswordAccount(accountID,password));
+	}
+	
+	@PutMapping("/updatestatus")
+	private ResponseEntity updateStatusAccount(@RequestParam int accountID,@RequestParam AccountStatus status) throws CrudException {		
+		return ResponseEntity.ok().body(accService.updateStatusAccount(accountID,status));
 	}
 	
 	//================================== Lấy tất cả Account ========================================	

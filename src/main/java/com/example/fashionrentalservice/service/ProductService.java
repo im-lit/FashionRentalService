@@ -1,17 +1,12 @@
 package com.example.fashionrentalservice.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
-import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.model.request.ProductRequestEntity;
-import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.model.response.ProductResponseEntity;
 import com.example.fashionrentalservice.repositories.CategoryRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;

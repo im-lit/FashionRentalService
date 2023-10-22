@@ -34,7 +34,6 @@ public class StaffService {
     public StaffResponseEntity createStaff(StaffRequestEntity entity) {
     	StaffDTO dto = StaffDTO.builder()
                 .fullName(entity.getFullName())
-                .status(entity.isStatus())
                 .avatarUrl(entity.getAvatarUrl())
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
@@ -44,7 +43,6 @@ public class StaffService {
   //================================== Update status Staff========================================
     public StaffResponseEntity updateStatusStaff(int staffID, boolean status) {
         StaffDTO dto = staffRepo.findById(staffID).orElseThrow();
-        dto.setStatus(status);
         return StaffResponseEntity.fromStaffDTO(staffRepo.save(dto));
     }
     

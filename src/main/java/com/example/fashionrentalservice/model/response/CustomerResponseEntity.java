@@ -1,6 +1,5 @@
 package com.example.fashionrentalservice.model.response;
 
-import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 
 import lombok.AllArgsConstructor;
@@ -22,15 +21,11 @@ public class CustomerResponseEntity {
 		
 		private String phone;
 		
-		private boolean sex;
-		
-		private boolean status;
+		private boolean sex;		
 		
 		private String avatarUrl;
-		
-		private double balance;
-		
-	    private AccountDTO accountDTO;
+			
+	    private int accountID;
 	    
 		public static CustomerResponseEntity fromCustomerDTO(CustomerDTO dto) {
 	        return CustomerResponseEntity.builder()
@@ -38,10 +33,8 @@ public class CustomerResponseEntity {
 	                .fullName(dto.getFullName())
 	                .phone(dto.getPhone())
 	                .sex(dto.isSex())
-	                .status(dto.isStatus())
 	                .avatarUrl(dto.getAvatarUrl())
-	                .balance(dto.getBalance())
-	                .accountDTO(dto.getAccountDTO())
+	                .accountID(dto.getAccountDTO().getAccountID())
 	                .build();   
 		}
 }

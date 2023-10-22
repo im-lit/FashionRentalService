@@ -6,19 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.fashionrentalservice.exception.AccNotFoundByID;
-import com.example.fashionrentalservice.exception.CreateCustomerFail;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
-import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
-import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
-import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
-import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 @Service
@@ -44,9 +37,7 @@ public class CustomerService {
         CustomerDTO dto = CustomerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
-                .balance(entity.getBalance())
                 .sex(entity.isSex())
-                .status(true)
                 .avatarUrl(entity.getAvatarUrl())
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();

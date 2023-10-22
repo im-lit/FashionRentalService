@@ -6,6 +6,8 @@ package com.example.fashionrentalservice.model.dto.account;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,6 +46,11 @@ public class AccountDTO {
 	
 	private String email;
 	
+	@Enumerated(EnumType.STRING)
+	private AccountStatus status;
+	
+	private int reportedCount;
+	
 	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleID", columnDefinition = "INT")
@@ -65,6 +72,8 @@ public class AccountDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private StaffDTO staffDTO;
 	
-	
+	public enum AccountStatus {
+		BLOCKED, VERIFIED, NOT_VERIFIED
+	}
 	
 }

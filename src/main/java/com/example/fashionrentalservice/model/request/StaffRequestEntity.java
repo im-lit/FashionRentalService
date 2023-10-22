@@ -15,8 +15,6 @@ public class StaffRequestEntity {
 	
 	private String avatarUrl;
 	
-	private boolean status;
-	
 	private int accountID;
 	
 }
