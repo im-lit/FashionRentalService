@@ -6,11 +6,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.request.ProductRequestEntity;
 import com.example.fashionrentalservice.service.ProductService;
 
@@ -34,6 +37,21 @@ public class ProductController {
 	@GetMapping("/{productID}")
 	private ResponseEntity getProductByID(@PathVariable int productID) throws CrudException {
 		return ResponseEntity.ok().body(productService.getProductbyID(productID));
+	}
+	
+	@GetMapping("/getall")
+	private ResponseEntity getAllProduct() throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProduct());
+	}
+	
+	@GetMapping("/getproducts/{productownerID}")
+	private ResponseEntity getProductByProductOwnerID(@PathVariable int productownerID) throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductByProductOwnerID(productownerID));
+	}
+	
+	@PutMapping("/update/}")
+	private ResponseEntity updateProduct(@RequestParam int productID, ProductStatus status) throws CrudException {
+		return ResponseEntity.ok().body(productService.updateStatusProductByID(productID, status));
 	}
 	
 	

@@ -14,8 +14,6 @@ public class POUpdateRequestEntity {
 	
 	private String phone;
 	
-	private boolean sex;
-	
 	private String avatarUrl;
 	
 	private String address;

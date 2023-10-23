@@ -1,11 +1,15 @@
 package com.example.fashionrentalservice.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.request.ProductRequestEntity;
 import com.example.fashionrentalservice.model.response.ProductResponseEntity;
 import com.example.fashionrentalservice.repositories.CategoryRepository;
@@ -52,23 +56,23 @@ public class ProductService {
 		return ProductResponseEntity.fromProductDTO(dto);
 	}
 	//================================== Update Product========================================
-//    public ProductResponseEntity updateProductByID(int productID,ProductRequestEntity entity) {
-//    	ProductDTO dto = productRepo.findById(productID).orElseThrow();
-//    	dto.setProductName(entity.getProductName());
-//    	dto.setDescription(entity.getDescription());
-//    	dto.setPrice(entity.getPrice());
-//    	dto.setAddress(entity.getAddress());
-//    	
-//    	return POResponseEntity.fromPODTO(poRepo.save(dto));
-//    }
-	//================================== Get All Product========================================
-//	public ProductResponseEntity getAllProduct(int productID) throws CrudException{
-//
-//		List<ProductDTO> dto = productRepo.findAll();
-//		if(dto==null) 
-//			throw new StaffNotFoundByID();
-//		
-//		return ProductResponseEntity.fromProductDTO(dto);
-//	}
+    public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) {
+    	ProductDTO dto = productRepo.findById(productID).orElseThrow();
+    	dto.setStatus(status);    	
+    	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
+    }
+	
+//	================================== Get All Product========================================
+	public List<ProductResponseEntity> getAllProduct() throws CrudException{
+		return  productRepo.findAll().stream()
+                .map(ProductResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	
+	public List<ProductResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
+		return  productRepo.findAllByProductOwnerID(productownerID).stream()
+                .map(ProductResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
 	//================================== Delete Product========================================
 }

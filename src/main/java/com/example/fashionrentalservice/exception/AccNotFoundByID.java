@@ -7,7 +7,7 @@ import com.example.fashionrentalservice.exception.handlers.CrudException;
 public class AccNotFoundByID extends CrudException{
 
 	public AccNotFoundByID() {
-		super("Cannot Found Account By ID",HttpStatus.OK );
+		super("Cannot Found Account By ID",HttpStatus.BAD_REQUEST );
 		// TODO Auto-generated constructor stub
 	}
 

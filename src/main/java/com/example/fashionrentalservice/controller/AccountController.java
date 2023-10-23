@@ -1,4 +1,4 @@
-
+	
 package com.example.fashionrentalservice.controller;
 
 
@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.Response;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
+import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -60,7 +62,8 @@ public class AccountController {
 	//================================== Lấy 1 account ========================================	
 	@GetMapping("/{accountID}")
 	private ResponseEntity getAccountByID(@PathVariable int accountID) throws CrudException{
-		return ResponseEntity.ok().body(accService.getAccountByID(accountID));
+		 Response<AccountResponseEntity> response  = new Response<AccountResponseEntity>(200, "Success", accService.getAccountByID(accountID));
+		return ResponseEntity.ok().body(response);
 	}
 	
 	//================================== Xóa ========================================	

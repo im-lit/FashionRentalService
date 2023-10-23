@@ -6,7 +6,7 @@ import com.example.fashionrentalservice.exception.handlers.CrudException;
 
 public class LoginFail extends CrudException {
 	public LoginFail() {
-		super("Login Fail", HttpStatus.OK);
+		super("Login Fail", HttpStatus.BAD_REQUEST);
 	}
 	
 }
