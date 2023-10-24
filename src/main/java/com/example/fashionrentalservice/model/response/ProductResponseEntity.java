@@ -3,6 +3,7 @@ package com.example.fashionrentalservice.model.response;
 import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
+import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +37,11 @@ public class ProductResponseEntity {
 	
 	private ProductRentalPricesDTO productRentalPricesDTO;
 	
+	private RequestAddingProductDTO requestAddingProductDTO; 
+	
 	private String productSpecificationData;
+	
+	
 	
 	
 
@@ -54,6 +59,7 @@ public class ProductResponseEntity {
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
+				.requestAddingProductDTO(dto.getRequestAddingProductDTO())
 				.build();
 	}
 }

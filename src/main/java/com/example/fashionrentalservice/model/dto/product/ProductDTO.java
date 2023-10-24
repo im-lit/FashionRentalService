@@ -67,11 +67,16 @@ public class ProductDTO {
 	@OneToOne(mappedBy = "productDTO", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductRentalPricesDTO productRentalPricesDTO;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "productDTO", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private RequestAddingProductDTO requestAddingProductDTO;
 
 	@Column(columnDefinition = "json")
 	private String productSpecificationData;
 
 	public enum ProductStatus {
-		BLOCKED, CAN_SALE, CAN_RENT, CAN_SALE_RENT,RENTING, SOLD_OUT
+		BLOCKED, WAITING, CAN_SALE, CAN_RENT, CAN_SALE_RENT,RENTING, SOLD_OUT
 	}
 }
