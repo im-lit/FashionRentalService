@@ -15,7 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.fashionrentalservice.model.dto.account.StaffDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -45,7 +44,7 @@ public class StaffRequestedDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private RequestAddingProductDTO requestAddingProductDTO;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
 	@JoinColumn(name = "staff_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private StaffDTO staffDTO;

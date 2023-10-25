@@ -7,8 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.AccountIsRegisted;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.StaffDTO;
 import com.example.fashionrentalservice.model.request.StaffRequestEntity;
 import com.example.fashionrentalservice.model.response.StaffResponseEntity;
@@ -31,14 +33,18 @@ public class StaffService {
 	}
 	
 	//================================== Tao Staff========================================
-    public StaffResponseEntity createStaff(StaffRequestEntity entity) {
-    	StaffDTO dto = StaffDTO.builder()
-                .fullName(entity.getFullName())
-                .avatarUrl(entity.getAvatarUrl())
-                .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
-                .build();
+    public StaffResponseEntity createStaff(StaffRequestEntity entity) throws CrudException{
+    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	if(check.getCustomerDTO() == null && check.getProductOwnerDTO() == null) {
+        	StaffDTO dto = StaffDTO.builder()
+                    .fullName(entity.getFullName())
+                    .avatarUrl(entity.getAvatarUrl())
+                    .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
+                    .build();
 
-        return StaffResponseEntity.fromStaffDTO(staffRepo.save(dto));
+            return StaffResponseEntity.fromStaffDTO(staffRepo.save(dto));
+    	}
+    	throw new AccountIsRegisted();
     }
   //================================== Update status Staff========================================
     public StaffResponseEntity updateStatusStaff(int staffID, boolean status) {

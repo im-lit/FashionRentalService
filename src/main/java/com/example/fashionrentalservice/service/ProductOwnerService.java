@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.AccountIsRegisted;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
@@ -32,7 +34,9 @@ public class ProductOwnerService {
 		
 	}
 	 //================================== Tạo PO========================================
-    public POResponseEntity createProductOwner(PORequestEntity entity) {
+    public POResponseEntity createProductOwner(PORequestEntity entity) throws CrudException{
+    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	if(check.getCustomerDTO() == null && check.getStaffDTO() == null) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
@@ -40,8 +44,9 @@ public class ProductOwnerService {
                 .address(entity.getAddress())
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
-        
         return POResponseEntity.fromPODTO(poRepo.save(dto));
+    	} 
+    	throw new AccountIsRegisted();
     }
     //================================== Update PO bởi ID========================================
     public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) {

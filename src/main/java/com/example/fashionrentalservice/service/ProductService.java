@@ -12,6 +12,7 @@ import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.request.ProductRequestEntity;
 import com.example.fashionrentalservice.model.response.ProductResponseEntity;
+import com.example.fashionrentalservice.model.response.ProductSlimResponseEntity;
 import com.example.fashionrentalservice.repositories.CategoryRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
@@ -33,6 +34,7 @@ public class ProductService {
     	ProductDTO dto = ProductDTO.builder()
                 .productName(entity.getProductName())
                 .productReceiptUrl(entity.getProductReceiptUrl())
+                .productAvt(entity.getProductAvt())
                 .description(entity.getDescription())
                 .price(entity.getPrice())
                 .status(ProductDTO.ProductStatus.valueOf(entity.getStatus()))
@@ -63,15 +65,15 @@ public class ProductService {
     }
 	
 //	================================== Get All Product========================================
-	public List<ProductResponseEntity> getAllProduct() throws CrudException{
+	public List<ProductSlimResponseEntity> getAllProduct() throws CrudException{
 		return  productRepo.findAll().stream()
-                .map(ProductResponseEntity::fromProductDTO)
+                .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
 	
-	public List<ProductResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
+	public List<ProductSlimResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
 		return  productRepo.findAllByProductOwnerID(productownerID).stream()
-                .map(ProductResponseEntity::fromProductDTO)
+                .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
 	//================================== Delete Product========================================

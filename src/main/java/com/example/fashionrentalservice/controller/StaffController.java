@@ -34,7 +34,7 @@ public class StaffController {
 	}
 	
 	@PostMapping("/createstaff")
-	private ResponseEntity createStaff(@RequestBody StaffRequestEntity entity) {
+	private ResponseEntity createStaff(@RequestBody StaffRequestEntity entity) throws CrudException {
 		return ResponseEntity.ok().body(staffService.createStaff(entity));
 	}
 	

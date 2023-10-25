@@ -29,7 +29,6 @@ public class ProductRentalPricesDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productrentalprices_id", columnDefinition = "INT")
-    @JsonIgnore
 	private int productRentalPricesID;
 	
 	private double rentPrice1;

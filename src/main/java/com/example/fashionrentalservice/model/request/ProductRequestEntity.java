@@ -18,6 +18,8 @@ public class ProductRequestEntity {
 	private String description;
 
 	private double price;
+	
+	private String productAvt;
 
 	private String status;
 

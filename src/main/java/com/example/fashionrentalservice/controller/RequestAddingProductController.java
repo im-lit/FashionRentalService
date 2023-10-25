@@ -45,9 +45,9 @@ public class RequestAddingProductController {
 	
 	
 	//================================== Lấy tất cả Account ========================================	
-	@GetMapping("/getall")
-	private ResponseEntity getAllRequest() {
-		return ResponseEntity.ok().body(requestAddService.getAllRequest());
+	@GetMapping("/getapproving")
+	private ResponseEntity getApprovingRequest() {
+		return ResponseEntity.ok().body(requestAddService.getApprovingRequest());
 	}
 	
 	//================================== Lấy 1 account ========================================	
@@ -58,7 +58,7 @@ public class RequestAddingProductController {
 	
 	//================================== Xóa ========================================	
     @DeleteMapping()
-    private ResponseEntity deleteExistedAccount(@RequestParam int requestID) {
+    private ResponseEntity deleteExistedRequest(@RequestParam int requestID) {
         return ResponseEntity.ok().body(requestAddService.deleteExistedRequest(requestID));
     }
 }

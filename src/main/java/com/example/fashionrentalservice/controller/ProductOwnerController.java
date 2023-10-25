@@ -35,7 +35,7 @@ public class ProductOwnerController {
 	}
 	
 	@PostMapping("/sign-up")
-	private ResponseEntity createProductOwner(@RequestBody PORequestEntity entity) {
+	private ResponseEntity createProductOwner(@RequestBody PORequestEntity entity) throws CrudException {
 		return ResponseEntity.ok().body(poService.createProductOwner(entity));
 	}
 	

@@ -36,9 +36,14 @@ public class StaffRequestedController {
 		return ResponseEntity.ok().body(staffRequestedService.getAllStaffRequested());
 	}
 	
-	@GetMapping("/{staffID}")
-	private ResponseEntity getAllStaffRequestedByStaffID(@PathVariable int staffID) {
+	@GetMapping("/approved/{staffID}")
+	private ResponseEntity getAllApprovedStaffRequestedByStaffID(@PathVariable int staffID) {
 		return ResponseEntity.ok().body(staffRequestedService.getAllApprovedStaffRequestedByStaffID(staffID));
+	}
+	
+	@GetMapping("/notapproved/{staffID}")
+	private ResponseEntity getAllNotApprovedStaffRequestedByStaffID(@PathVariable int staffID) {
+		return ResponseEntity.ok().body(staffRequestedService.getAllNotApprovedStaffRequestedByStaffID(staffID));
 	}
 }
 	

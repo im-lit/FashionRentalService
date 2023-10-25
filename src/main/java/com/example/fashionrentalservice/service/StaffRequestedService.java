@@ -45,4 +45,9 @@ public class StaffRequestedService {
 		List<StaffRequestedDTO> list = staffRequestedRepo.findAllApprovedRequestedByStaffID(staffID);
 		return  list;
 	}
+	public List<StaffRequestedDTO> getAllNotApprovedStaffRequestedByStaffID(int staffID) {
+		List<StaffRequestedDTO> list = staffRequestedRepo.findAllNotApprovedRequestedByStaffID(staffID);
+		return  list;
+	}
+	
 }

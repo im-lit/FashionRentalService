@@ -41,6 +41,8 @@ public class ProductDTO {
 	private String productName;
 
 	private String productReceiptUrl;
+	
+	private String productAvt;
 
 	private String description;
 
@@ -58,7 +60,7 @@ public class ProductDTO {
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private CategoryDTO category;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "productowner_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductOwnerDTO productownerDTO;

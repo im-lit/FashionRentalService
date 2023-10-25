@@ -55,8 +55,8 @@ public class RequestAddingProductService {
         
 
 //================================== Lay tat ca Request========================================
-	public List<AddingProductResponseEntity> getAllRequest() {
-		return requestAddRepo.findAll().stream().map(AddingProductResponseEntity::fromRequestAddingProductDTO).collect(Collectors.toList());
+	public List<AddingProductResponseEntity> getApprovingRequest() {
+		return requestAddRepo.findApprovingRequest().stream().map(AddingProductResponseEntity::fromRequestAddingProductDTO).collect(Collectors.toList());
 
 	}
 //================================== Lay account bởi ID========================================	

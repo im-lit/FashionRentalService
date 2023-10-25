@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.AccountIsRegisted;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.request.CustomerRequestEntity;
 import com.example.fashionrentalservice.model.request.CustomerUpdateRequestEntity;
@@ -33,19 +35,21 @@ public class CustomerService {
 	
 	//================================== Tao Customer========================================
     public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) throws CrudException{
-    	
-        CustomerDTO dto = CustomerDTO.builder()
-                .fullName(entity.getFullName())
-                .phone(entity.getPhone())
-                .sex(entity.isSex())
-                .avatarUrl(entity.getAvatarUrl())
-                .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
-                .build();
+    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	if(check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
+            CustomerDTO dto = CustomerDTO.builder()
+                    .fullName(entity.getFullName())
+                    .phone(entity.getPhone())
+                    .sex(entity.isSex())
+                    .avatarUrl(entity.getAvatarUrl())
+                    .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
+                    .build();
+            return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));
+    	}
+    	throw new AccountIsRegisted();
         //
        // if(entity.getPhone()!=null)
-     //	   throw new CreateCustomerFail();
-        
-        return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));
+     //	   throw new CreateCustomerFail();           
      }
     
     
