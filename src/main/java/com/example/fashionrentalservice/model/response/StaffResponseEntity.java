@@ -19,7 +19,7 @@ public class StaffResponseEntity {
 	private String fullName;
 	
 	private String avatarUrl;
-
+	
 	private AccountDTO accountDTO;
 
 	public static StaffResponseEntity fromStaffDTO(StaffDTO dto) {

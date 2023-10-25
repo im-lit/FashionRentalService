@@ -39,4 +39,10 @@ public class StaffRequestedService {
         return staffRequestedRepo.save(dto);
 
 }
+    
+
+	public List<StaffRequestedDTO> getAllApprovedStaffRequestedByStaffID(int staffID) {
+		List<StaffRequestedDTO> list = staffRequestedRepo.findAllApprovedRequestedByStaffID(staffID);
+		return  list;
+	}
 }

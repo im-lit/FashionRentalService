@@ -58,7 +58,7 @@ public class ProductDTO {
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private CategoryDTO category;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productowner_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductOwnerDTO productownerDTO;
