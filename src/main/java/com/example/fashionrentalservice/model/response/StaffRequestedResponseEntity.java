@@ -20,7 +20,9 @@ public class StaffRequestedResponseEntity {
 
 	private int staffRequestedID;
 	
-	private LocalDate createdDate;
+	private LocalDate updateDate;
+	
+	private LocalDate createDate;
 	
 	private String requestStatus;
 	
@@ -34,7 +36,8 @@ public class StaffRequestedResponseEntity {
 		return dtos.stream()
 	            .map(dto -> StaffRequestedResponseEntity.builder()
 	                    .staffRequestedID(dto.getStaffRequestedID())
-	                    .createdDate(dto.getCreatedDate())
+	                    .createDate(dto.getRequestAddingProductDTO().getCreatedtDate())
+	                    .updateDate(dto.getCreatedDate())
 	                    .requestStatus(dto.getRequestAddingProductDTO().getStatus().toString())
 	                    .productID(dto.getRequestAddingProductDTO().getProductDTO().getProductID())
 	                    .staffDTO(dto.getStaffDTO())
