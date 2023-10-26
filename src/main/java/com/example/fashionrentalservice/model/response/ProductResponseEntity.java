@@ -4,6 +4,7 @@ import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,8 @@ public class ProductResponseEntity {
 	private String productName;
 	
 	private String productReceiptUrl;
+	
+	private String productAvt;
 
 	private String description;
 
@@ -35,7 +38,8 @@ public class ProductResponseEntity {
 	
 	private ProductRentalPricesDTO productRentalPricesDTO;
 	
-	private RequestAddingProductDTO requestAddingProductDTO; 
+	@JsonIgnore
+	private int requestAddingProductID; 
 	
 	private String productSpecificationData;
 	
@@ -47,6 +51,7 @@ public class ProductResponseEntity {
 		return ProductResponseEntity.builder()
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
+				.productAvt(dto.getProductAvt())
 				.productReceiptUrl(dto.getProductReceiptUrl())
 				.description(dto.getDescription())
 				.price(dto.getPrice())
@@ -56,7 +61,7 @@ public class ProductResponseEntity {
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
-				.requestAddingProductDTO(dto.getRequestAddingProductDTO())
+				.requestAddingProductID(dto.getRequestAddingProductDTO().getRequestAddingProductID())
 				.build();
 	}
 }

@@ -25,6 +25,7 @@ public class CategoryDTO {
     @Column(name = "categoryID", columnDefinition = "INT")
 	private int categoryID;
 	
+	@Column(name = "category_name", columnDefinition = "nvarchar(255)", nullable = true)
 	private String categoryName;
 	
 	

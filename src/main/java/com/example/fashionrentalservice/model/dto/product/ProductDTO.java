@@ -43,7 +43,8 @@ public class ProductDTO {
 	private String productReceiptUrl;
 	
 	private String productAvt;
-
+	
+	@Column(columnDefinition = "nvarchar(255)")
 	private String description;
 
 	private double price;

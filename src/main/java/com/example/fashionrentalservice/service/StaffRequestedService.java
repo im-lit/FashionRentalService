@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
+import com.example.fashionrentalservice.model.response.StaffRequestedResponseEntity;
 import com.example.fashionrentalservice.repositories.RequestAddingProductRepository;
 import com.example.fashionrentalservice.repositories.StaffRepository;
 import com.example.fashionrentalservice.repositories.StaffRequestedRepository;
@@ -41,9 +42,9 @@ public class StaffRequestedService {
 }
     
 
-	public List<StaffRequestedDTO> getAllApprovedStaffRequestedByStaffID(int staffID) {
+	public List<StaffRequestedResponseEntity> getAllApprovedStaffRequestedByStaffID(int staffID) {
 		List<StaffRequestedDTO> list = staffRequestedRepo.findAllApprovedRequestedByStaffID(staffID);
-		return  list;
+		return  StaffRequestedResponseEntity.fromStaffRequestedDTO(list);
 	}
 	public List<StaffRequestedDTO> getAllNotApprovedStaffRequestedByStaffID(int staffID) {
 		List<StaffRequestedDTO> list = staffRequestedRepo.findAllNotApprovedRequestedByStaffID(staffID);
