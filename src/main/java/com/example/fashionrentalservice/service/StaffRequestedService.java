@@ -46,9 +46,9 @@ public class StaffRequestedService {
 		List<StaffRequestedDTO> list = staffRequestedRepo.findAllApprovedRequestedByStaffID(staffID);
 		return  StaffRequestedResponseEntity.fromStaffRequestedDTO(list);
 	}
-	public List<StaffRequestedDTO> getAllNotApprovedStaffRequestedByStaffID(int staffID) {
+	public List<StaffRequestedResponseEntity> getAllNotApprovedStaffRequestedByStaffID(int staffID) {
 		List<StaffRequestedDTO> list = staffRequestedRepo.findAllNotApprovedRequestedByStaffID(staffID);
-		return  list;
+	    return  StaffRequestedResponseEntity.fromStaffRequestedDTO(list);
 	}
 	
 }
