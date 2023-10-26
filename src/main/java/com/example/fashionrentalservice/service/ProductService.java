@@ -38,8 +38,7 @@ public class ProductService {
                 .description(entity.getDescription())
                 .price(entity.getPrice())
                 .status(ProductDTO.ProductStatus.valueOf(entity.getStatus()))
-                .forRent(entity.isForRent())
-                .forSale(entity.isForSale())
+                .checkType(ProductDTO.checkTypeSaleorRentorSaleRent.valueOf(entity.getCheckType()))
                 .category(cateRepo.findById(entity.getCategoryID()).orElseThrow())
                 .productownerDTO(poRepo.findById(entity.getProductownerID()).orElseThrow())
                 .productSpecificationData(entity.getProductSpecificationData())
@@ -71,9 +70,9 @@ public class ProductService {
                 .collect(Collectors.toList());
 	}
 	
-	public List<ProductSlimResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
+	public List<ProductResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
 		return  productRepo.findAllByProductOwnerID(productownerID).stream()
-                .map(ProductSlimResponseEntity::fromProductDTO)
+                .map(ProductResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
 	//================================== Delete Product========================================

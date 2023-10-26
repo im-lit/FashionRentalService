@@ -25,7 +25,7 @@ public class ProductlmgService {
 	
 	
 	public List<ProductImgResponseEntity> getAllProductImgbyProductID(int productID) throws CrudException{
-		return  productRepo.findAllByProductID(productID).stream()
+		return  imgRepo.findAllImgByProductID(productID).stream()
                 .map(ProductImgResponseEntity::fromProductImgDTO)
                 .collect(Collectors.toList());
 	}

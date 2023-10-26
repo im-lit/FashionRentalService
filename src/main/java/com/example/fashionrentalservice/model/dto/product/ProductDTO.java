@@ -51,9 +51,8 @@ public class ProductDTO {
 	@Enumerated(EnumType.STRING)
 	private ProductStatus status;
 
-	private boolean forSale;
-
-	private boolean forRent;
+	@Enumerated(EnumType.STRING)
+	private checkTypeSaleorRentorSaleRent checkType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoryID")
@@ -81,4 +80,7 @@ public class ProductDTO {
 	public enum ProductStatus {
 		BLOCKED, WAITING, CAN_SALE, CAN_RENT, CAN_SALE_RENT,RENTING, SOLD_OUT
 	}
+	public enum checkTypeSaleorRentorSaleRent {
+		SALE, RENT, SALE_RENT
+   }
 }

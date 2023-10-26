@@ -21,9 +21,7 @@ public class ProductSlimResponseEntity {
 	
 	private double price;
 
-	private boolean forSale;
-
-	private boolean forRent;
+	private String checkType;
 	
 	private String productOwnerName;
 	
@@ -35,8 +33,7 @@ public class ProductSlimResponseEntity {
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
 				.price(dto.getPrice())
-				.forRent(dto.isForRent())
-				.forSale(dto.isForSale())
+				.checkType(dto.getCheckType().toString())
 				.productOwnerName(dto.getProductownerDTO().getFullName())
 				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
 				.build();

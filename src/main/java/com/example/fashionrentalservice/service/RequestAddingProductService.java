@@ -8,22 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
-import com.example.fashionrentalservice.exception.EmailExisted;
-import com.example.fashionrentalservice.exception.LoginFail;
-import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.account.AccountDTO;
-import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO.AddProductStatus;
-import com.example.fashionrentalservice.model.request.AccountRequestEntity;
 import com.example.fashionrentalservice.model.request.AddingProductRequestEntity;
-import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.AddingProductResponseEntity;
-import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.RequestAddingProductRepository;
-import com.example.fashionrentalservice.repositories.RoleRepository;
 
 @Service
 public class RequestAddingProductService {

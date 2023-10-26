@@ -26,10 +26,8 @@ public class ProductResponseEntity {
 	private double price;
 
 	private String status;
-
-	private boolean forSale;
-
-	private boolean forRent;
+	
+	private String checkType;
 
 	private CategoryDTO category;
 	
@@ -53,8 +51,7 @@ public class ProductResponseEntity {
 				.description(dto.getDescription())
 				.price(dto.getPrice())
 				.status(dto.getStatus().toString())
-				.forRent(dto.isForRent())
-				.forSale(dto.isForSale())
+				.checkType(dto.getCheckType().toString())
 				.category(dto.getCategory())
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.productSpecificationData(dto.getProductSpecificationData())

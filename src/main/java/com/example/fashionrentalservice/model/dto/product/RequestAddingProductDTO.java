@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -44,7 +43,6 @@ public class RequestAddingProductDTO {
 	
 	private String description;
 
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "productid", unique = true)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})

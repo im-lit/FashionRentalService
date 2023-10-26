@@ -16,16 +16,14 @@ public class ProductRequestEntity {
 	private String productReceiptUrl;
 
 	private String description;
+	
+	private String checkType;
 
 	private double price;
 	
 	private String productAvt;
 
 	private String status;
-
-	private boolean forSale;
-
-	private boolean forRent;
 
 	private int categoryID;
 	
