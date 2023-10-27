@@ -79,7 +79,7 @@ public class ProductDTO {
 	private String productSpecificationData;
 
 	public enum ProductStatus {
-		BLOCKED, WAITING, CAN_SALE, CAN_RENT, CAN_SALE_RENT,RENTING, SOLD_OUT
+		BLOCKED, WAITING, AVAILABLE, RENTING, SOLD_OUT
 	}
 	public enum checkTypeSaleorRentorSaleRent {
 		SALE, RENT, SALE_RENT
