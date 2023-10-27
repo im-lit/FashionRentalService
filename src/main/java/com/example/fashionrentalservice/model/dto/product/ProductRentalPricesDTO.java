@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class ProductRentalPricesDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productrentalprices_id", columnDefinition = "INT")
+    @Column(name = "productrentalprices_id",unique = true, columnDefinition = "INT")
 	private int productRentalPricesID;
 	
 	private double rentPrice1;

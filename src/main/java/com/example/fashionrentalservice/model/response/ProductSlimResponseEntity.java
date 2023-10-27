@@ -25,6 +25,8 @@ public class ProductSlimResponseEntity {
 	
 	private String productOwnerName;
 	
+	private String productSpecifications;
+	
 	private ProductRentalPricesDTO productRentalPricesDTO;
 	
 	
@@ -32,9 +34,11 @@ public class ProductSlimResponseEntity {
 		return ProductSlimResponseEntity.builder()
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
+				.productAvt(dto.getProductAvt())
 				.price(dto.getPrice())
 				.checkType(dto.getCheckType().toString())
 				.productOwnerName(dto.getProductownerDTO().getFullName())
+				.productSpecifications(dto.getProductSpecificationData())
 				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
 				.build();
 	}

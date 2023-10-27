@@ -38,7 +38,7 @@ public class AccountDTO {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
+    @Column(name = "account_id", unique = true)
 	private int accountID;
 	
 	

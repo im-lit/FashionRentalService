@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class ProductOwnerDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productowner_id", columnDefinition = "INT")
+    @Column(name = "productowner_id",unique = true, columnDefinition = "INT")
 	private int productownerID;
 	
     @Column(name = "full_name", columnDefinition = "nvarchar(255)", nullable = true)

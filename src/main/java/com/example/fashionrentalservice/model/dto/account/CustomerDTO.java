@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 public class CustomerDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id", columnDefinition = "INT")
+    @Column(name = "customer_id", unique = true,columnDefinition = "INT")
 	private int customerID;
 	
     @Column(name = "full_name", columnDefinition = "nvarchar(255)", nullable = true)

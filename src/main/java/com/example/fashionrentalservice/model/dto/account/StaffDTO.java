@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class StaffDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id", columnDefinition = "INT")
+    @Column(name = "staff_id", unique = true,columnDefinition = "INT")
 	private int staffID;
     
     private String fullName;

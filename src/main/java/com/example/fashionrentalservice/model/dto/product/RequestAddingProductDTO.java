@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class RequestAddingProductDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "addproduct_id", columnDefinition = "INT")
+	@Column(name = "addproduct_id", unique = true,columnDefinition = "INT")
 	private int requestAddingProductID;
 	
 	private LocalDate createdtDate;
