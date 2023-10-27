@@ -65,7 +65,7 @@ public class ProductService {
 	
 //	================================== Get All Product========================================
 	public List<ProductSlimResponseEntity> getAllProduct() throws CrudException{
-		return  productRepo.findAll().stream()
+		return  productRepo.findAllActiveProducts().stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
