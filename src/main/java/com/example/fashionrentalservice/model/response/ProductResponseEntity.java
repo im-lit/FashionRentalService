@@ -38,12 +38,9 @@ public class ProductResponseEntity {
 	
 	private ProductRentalPricesDTO productRentalPricesDTO;
 	
-	@JsonIgnore
-	private int requestAddingProductID; 
+
 	
 	private String productSpecificationData;
-	
-	
 	
 	
 
@@ -61,7 +58,6 @@ public class ProductResponseEntity {
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
-				.requestAddingProductID(dto.getRequestAddingProductDTO().getRequestAddingProductID())
 				.build();
 	}
 }

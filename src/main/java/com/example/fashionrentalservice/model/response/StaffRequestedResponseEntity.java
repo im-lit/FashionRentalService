@@ -26,6 +26,8 @@ public class StaffRequestedResponseEntity {
 	
 	private String requestStatus;
 	
+	private String description;
+	
 	private int productID;
 	
 	private StaffDTO staffDTO;
@@ -39,6 +41,7 @@ public class StaffRequestedResponseEntity {
 	                    .createDate(dto.getRequestAddingProductDTO().getCreatedtDate())
 	                    .updateDate(dto.getCreatedDate())
 	                    .requestStatus(dto.getRequestAddingProductDTO().getStatus().toString())
+	                    .description(dto.getRequestAddingProductDTO().getDescription())
 	                    .productID(dto.getRequestAddingProductDTO().getProductDTO().getProductID())
 	                    .staffDTO(dto.getStaffDTO())
 	                    .build())
