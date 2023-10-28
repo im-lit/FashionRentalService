@@ -14,6 +14,8 @@ public class ProductRequestEntity {
 	private String productName;
 	
 	private String productReceiptUrl;
+	
+	private String productCondition;
 
 	private String description;
 	

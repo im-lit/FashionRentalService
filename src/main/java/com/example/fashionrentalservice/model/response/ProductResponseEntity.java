@@ -23,6 +23,8 @@ public class ProductResponseEntity {
 	private String productReceiptUrl;
 	
 	private String productAvt;
+	
+	private String productCondition;
 
 	private String description;
 
@@ -48,6 +50,7 @@ public class ProductResponseEntity {
 		return ProductResponseEntity.builder()
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
+				.productCondition(dto.getProductCondition())
 				.productAvt(dto.getProductAvt())
 				.productReceiptUrl(dto.getProductReceiptUrl())
 				.description(dto.getDescription())

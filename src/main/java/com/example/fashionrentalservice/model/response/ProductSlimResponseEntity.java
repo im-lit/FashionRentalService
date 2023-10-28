@@ -17,6 +17,8 @@ public class ProductSlimResponseEntity {
 
 	private String productName;
 	
+	private String productCondition;
+	
 	private String productAvt;
 	
 	private double price;
@@ -34,6 +36,7 @@ public class ProductSlimResponseEntity {
 		return ProductSlimResponseEntity.builder()
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
+				.productCondition(dto.getProductCondition())
 				.productAvt(dto.getProductAvt())
 				.price(dto.getPrice())
 				.checkType(dto.getCheckType().toString())

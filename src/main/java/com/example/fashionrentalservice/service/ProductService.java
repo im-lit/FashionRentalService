@@ -35,6 +35,7 @@ public class ProductService {
                 .productName(entity.getProductName())
                 .productReceiptUrl(entity.getProductReceiptUrl())
                 .productAvt(entity.getProductAvt())
+                .productCondition(entity.getProductCondition())
                 .description(entity.getDescription())
                 .price(entity.getPrice())
                 .status(ProductDTO.ProductStatus.valueOf(entity.getStatus()))

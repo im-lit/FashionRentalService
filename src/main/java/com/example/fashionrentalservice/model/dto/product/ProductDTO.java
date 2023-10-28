@@ -46,8 +46,11 @@ public class ProductDTO {
 	
 	@Column(columnDefinition = "nvarchar(255)")
 	private String description;
-
+	
 	private double price;
+	
+	@Column(name = "product_condition",columnDefinition = "nvarchar(255)")
+	private String productCondition;
 
 	@Enumerated(EnumType.STRING)
 	private ProductStatus status;
