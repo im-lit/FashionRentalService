@@ -68,10 +68,6 @@ public class ProductDTO {
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductOwnerDTO productownerDTO;
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "productDTO", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-	private ProductRentalPricesDTO productRentalPricesDTO;
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "productDTO", cascade = CascadeType.ALL)

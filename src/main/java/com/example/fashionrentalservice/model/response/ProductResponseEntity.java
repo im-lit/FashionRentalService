@@ -37,11 +37,7 @@ public class ProductResponseEntity {
 	private CategoryDTO category;
 	
 	private int productOwnerID;
-	
-	private ProductRentalPricesDTO productRentalPricesDTO;
-	
-
-	
+		
 	private String productSpecificationData;
 	
 	
@@ -60,7 +56,6 @@ public class ProductResponseEntity {
 				.category(dto.getCategory())
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.productSpecificationData(dto.getProductSpecificationData())
-				.productRentalPricesDTO(dto.getProductRentalPricesDTO())
 				.build();
 	}
 }
