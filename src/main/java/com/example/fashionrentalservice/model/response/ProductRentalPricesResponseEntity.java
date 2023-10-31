@@ -1,5 +1,8 @@
 package com.example.fashionrentalservice.model.response;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 
 import lombok.AllArgsConstructor;
@@ -15,15 +18,10 @@ public class ProductRentalPricesResponseEntity {
 	
 	private int productrentalpricesID;
 
-	private double rentPrice1;
+	private double rentPrice;
 	
-	private double rentPrice4;
+	private String mockDay;
 	
-	private double rentPrice7;
-	
-	private double rentPrice10;
-	
-	private double rentPrice14;
 	
 	private int productID;
 	
@@ -31,13 +29,21 @@ public class ProductRentalPricesResponseEntity {
 
 	public static ProductRentalPricesResponseEntity fromProductRentalPricesDTO(ProductRentalPricesDTO dto) {
 		return ProductRentalPricesResponseEntity.builder()
-				.productrentalpricesID(dto.getProductRentalPricesID())
-				.rentPrice1(dto.getRentPrice1())
-				.rentPrice4(dto.getRentPrice4())
-				.rentPrice7(dto.getRentPrice7())
-				.rentPrice10(dto.getRentPrice10())
-				.rentPrice14(dto.getRentPrice14())
+				.productrentalpricesID(dto.getProductRentalPricesID())				
+				.rentPrice(dto.getRentPrice())
+				.mockDay(dto.getMockDay())
 				.productID(dto.getProductDTO().getProductID())
 				.build();
+	}
+	
+	public static List<ProductRentalPricesResponseEntity> fromListProductRentalPricesDTO(List<ProductRentalPricesDTO> dtos) {
+		return dtos.stream()
+	            .map(dto -> ProductRentalPricesResponseEntity.builder()
+	                    .productrentalpricesID(dto.getProductRentalPricesID())
+	                    .rentPrice(dto.getRentPrice())
+	                    .mockDay(dto.getMockDay())
+	                    .productID(dto.getProductDTO().getProductID())
+	                    .build())
+	            .collect(Collectors.toList());
 	}
 }

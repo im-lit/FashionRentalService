@@ -30,7 +30,7 @@ public class ProductRentalPricesController {
 	private ProductRentalPricesService rentalPriceService;
 	
 	
-	@PostMapping("/create")
+	@PostMapping
 	private ResponseEntity createProductRentalPrices(@RequestBody ProductRentalPricesRequestEntity entity) {
 		return ResponseEntity.ok().body(rentalPriceService.createRentalPrices(entity));
 	}

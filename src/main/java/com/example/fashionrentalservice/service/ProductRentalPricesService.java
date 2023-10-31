@@ -1,5 +1,8 @@
 package com.example.fashionrentalservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +21,17 @@ public class ProductRentalPricesService {
 	private ProductRentalPricesRepository rentalPriceRepo;
 	
 	
-    public ProductRentalPricesResponseEntity createRentalPrices(ProductRentalPricesRequestEntity entity) {
-    	ProductRentalPricesDTO dto = ProductRentalPricesDTO.builder()
-                .rentPrice1(entity.getRentPrice1())
-                .rentPrice4(entity.getRentPrice4())
-                .rentPrice7(entity.getRentPrice7())
-                .rentPrice10(entity.getRentPrice10())
-                .rentPrice14(entity.getRentPrice14())
-                .productDTO(productRepo.findById(entity.getProductID()).orElseThrow())
-                .build();
-    	
-
-        return ProductRentalPricesResponseEntity.fromProductRentalPricesDTO(rentalPriceRepo.save(dto));
+    public List<ProductRentalPricesResponseEntity> createRentalPrices(ProductRentalPricesRequestEntity entity) {
+    	List<ProductRentalPricesDTO> list = new ArrayList<>();
+    		  	 for (int i = 0; i < entity.getMockDay().size(); i++) {
+    	        ProductRentalPricesDTO rentPrice = new ProductRentalPricesDTO();
+    	        rentPrice.setMockDay(entity.getMockDay().get(i));
+    	        rentPrice.setProductDTO(productRepo.findById(entity.getProductID()).orElseThrow());
+    	        rentPrice.setRentPrice(entity.getRentPrice().get(i));
+    	        list.add(rentPrice);
+    		  	 }
+    		  	 
+        return ProductRentalPricesResponseEntity.fromListProductRentalPricesDTO(rentalPriceRepo.saveAll(list));
     }
     
     

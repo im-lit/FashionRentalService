@@ -8,10 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -30,20 +29,13 @@ public class ProductRentalPricesDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productrentalprices_id",unique = true, columnDefinition = "INT")
 	private int productRentalPricesID;
+    
+    private String mockDay;
 	
-	private double rentPrice1;
+	private double rentPrice;
 	
-	private double rentPrice4;
-	
-	private double rentPrice7;
-	
-	private double rentPrice10;
-	
-	private double rentPrice14;
-	
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productid", unique = true)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductDTO productDTO;
 	

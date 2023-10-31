@@ -1,5 +1,9 @@
 package com.example.fashionrentalservice.model.request;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRentalPricesRequestEntity {
-
-	private double rentPrice1;
 	
-	private double rentPrice4;
+	private List<Double> rentPrice;
 	
-	private double rentPrice7;
 	
-	private double rentPrice10;
+	private List<String> mockDay;
 	
-	private double rentPrice14;
-	
+	@JsonProperty("productID")
 	private int productID;
 }
