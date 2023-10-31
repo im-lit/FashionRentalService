@@ -72,6 +72,11 @@ public class AccountDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private StaffDTO staffDTO;
 	
+	@JsonIgnore
+	@OneToOne(mappedBy = "accountDTO", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private WalletDTO walletDTO;
+	
 	public enum AccountStatus {
 		BLOCKED, VERIFIED, NOT_VERIFIED
 	}
