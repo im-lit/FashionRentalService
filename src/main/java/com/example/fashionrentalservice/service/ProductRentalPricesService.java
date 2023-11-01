@@ -2,12 +2,14 @@ package com.example.fashionrentalservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 import com.example.fashionrentalservice.model.request.ProductRentalPricesRequestEntity;
+import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.ProductRentalPricesResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductRentalPricesRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
@@ -33,6 +35,12 @@ public class ProductRentalPricesService {
     		  	 
         return ProductRentalPricesResponseEntity.fromListProductRentalPricesDTO(rentalPriceRepo.saveAll(list));
     }
+    
+    public List<ProductRentalPricesResponseEntity> getAllRentPricesByProductID(int productID) { 	
+    	return  rentalPriceRepo.findAllByProductID(productID).stream()
+                .map(ProductRentalPricesResponseEntity::fromProductRentalPricesDTO)
+                .collect(Collectors.toList());  
+    	}
     
     
     public ProductRentalPricesResponseEntity deleteRentalPrices(int id) {
