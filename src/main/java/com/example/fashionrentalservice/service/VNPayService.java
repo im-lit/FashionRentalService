@@ -108,12 +108,12 @@ public class VNPayService {
         String signValue = VNPayConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                return 1;
+                return 1; //GD thành công
             } else {
-                return 0;
+                return 0; // GD không thành công
             }
         } else {
-            return -1;
+            return -1;// Sai chữ ký
         }
     }
 
