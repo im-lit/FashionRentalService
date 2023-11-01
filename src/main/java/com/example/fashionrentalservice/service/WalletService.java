@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
@@ -60,10 +59,17 @@ public class WalletService {
 	
     //================================== Xóa Staff bởi ID========================================  
     public WalletResponseEntity deleteWallet(int walletID) throws CrudException {
-    	WalletDTO dto = walletRepo.findById(walletID).orElse(null);
-    	if(dto == null)
+    	WalletDTO dto = walletRepo.findById(walletID).orElse(null);   	
+    	if(dto == null) {
         	throw new StaffNotFoundByID();
+    	}
+    	AccountDTO acc = dto.getAccountDTO();
+    	if (dto != null) {
+    		dto.setAccountDTO(null); 
+    	    walletRepo.save(dto);
+    	}
     	walletRepo.deleteById(walletID);
+    	dto.setAccountDTO(acc);
         return WalletResponseEntity.fromWalletDTO(dto);
     }
 }

@@ -40,7 +40,7 @@ public class WalletDTO {
 	
 	
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", unique = true)
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private AccountDTO accountDTO;
