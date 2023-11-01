@@ -2,7 +2,11 @@
 //
 //import java.time.LocalDate;
 //
+//import javax.persistence.Column;
 //import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
+//import javax.persistence.Id;
 //import javax.persistence.Table;
 //
 //import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
@@ -20,7 +24,9 @@
 //@AllArgsConstructor
 //@Table(name = "tbl_orderbuy")
 //public class OrderBuy {
-//
+//	@Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "orderbuy_id", columnDefinition = "INT")
 //	private int orderBuyID;
 //
 //	private double total;

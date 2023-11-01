@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -34,8 +35,9 @@ public class ProductRentalPricesDTO {
 	
 	private double rentPrice;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "productid")
+	@JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductDTO productDTO;
 	
