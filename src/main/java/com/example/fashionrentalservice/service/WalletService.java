@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.BalanceNegative;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
@@ -48,11 +49,16 @@ public class WalletService {
     }
     
   //================================== Update Balance ========================================
-    public WalletResponseEntity updateBalance(int walletID, double balance) throws StaffNotFoundByID {
+    public WalletResponseEntity updateBalance(int walletID, double balance) throws StaffNotFoundByID, CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
         	throw new StaffNotFoundByID();
-        dto.setBalance(balance);
+        double oldBalance = dto.getBalance();
+        double newBalance = oldBalance + balance;
+        if (newBalance < 0) {
+            throw new BalanceNegative();
+        }
+        dto.setBalance(newBalance);
         return WalletResponseEntity.fromWalletDTO(walletRepo.save(dto));
     }
     

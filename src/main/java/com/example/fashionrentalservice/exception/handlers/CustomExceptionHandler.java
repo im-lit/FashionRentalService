@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
+import com.example.fashionrentalservice.exception.BalanceNegative;
 import com.example.fashionrentalservice.exception.CreateCustomerFail;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
@@ -26,8 +27,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		PONotFoundByID.class,
 		CusNotFoundByID.class,
 		AccNotFoundByID.class,
-		StaffNotFoundByID.class
-		
+		StaffNotFoundByID.class,
+		BalanceNegative.class
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity
