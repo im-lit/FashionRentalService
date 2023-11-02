@@ -1,5 +1,11 @@
 package com.example.fashionrentalservice.controller;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
@@ -52,13 +59,17 @@ public class VNPayController {
 	}
 
 	@GetMapping("/vnpay-payment")
-    public String GetMapping(HttpServletRequest request, Model model) throws CrudException{
+    public ModelAndView GetMapping(HttpServletRequest request, Model model) throws CrudException{
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
+       
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime dateTime = LocalDateTime.parse(paymentTime, formatter);
         
+        String formattedPaymentTime = dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         int paymentStatus =vnPayService.orderReturn(request);
         if(paymentStatus == 1) {
         	WalletDTO dto = accService.getWalletByAccountID(accountIDLocal);
@@ -74,9 +85,11 @@ public class VNPayController {
 
         model.addAttribute("orderId", orderInfo);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("paymentTime", paymentTime);
+        model.addAttribute("paymentTime", formattedPaymentTime);
         model.addAttribute("transactionId", transactionId);
 
-        return paymentStatus == 1 ? "ordersuccess" : "orderfail";
+        String viewName = paymentStatus == 1 ? "ordersuccess.html" : "orderfail.html";
+
+        return new ModelAndView(viewName);
     }
 }
