@@ -1,5 +1,7 @@
 package com.example.fashionrentalservice.model.response;
 
+import java.util.List;
+
 import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
@@ -40,6 +42,8 @@ public class ProductResponseEntity {
 		
 	private String productSpecificationData;
 	
+	private List<ProductRentalPricesDTO> rentprices;
+	
 //	private String reason;
 	
 	
@@ -58,6 +62,7 @@ public class ProductResponseEntity {
 				.category(dto.getCategory())
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 //				.reason(dto.getRequestAddingProductDTO().getDescription())
+				.rentprices(dto.getRentprices())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.build();
 	}
