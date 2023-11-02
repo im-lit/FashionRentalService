@@ -40,7 +40,7 @@ public class ProductResponseEntity {
 		
 	private String productSpecificationData;
 	
-	private String reason;
+//	private String reason;
 	
 	
 
@@ -57,7 +57,7 @@ public class ProductResponseEntity {
 				.checkType(dto.getCheckType().toString())
 				.category(dto.getCategory())
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
-				.reason(dto.getRequestAddingProductDTO().getDescription())
+//				.reason(dto.getRequestAddingProductDTO().getDescription())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.build();
 	}
