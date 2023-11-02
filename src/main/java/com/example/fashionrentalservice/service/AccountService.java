@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
+import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
+import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
@@ -90,7 +92,12 @@ public class AccountService {
 
         return AccountResponseEntity.fromAccountDto(dto);
     }
-	
+	public WalletDTO getWalletByAccountID(int accountID) throws CrudException{
+		WalletDTO dto = accRepo.findWalletByAccountId(accountID);
+		if(dto==null) 
+			throw new StaffNotFoundByID();
+		return dto;
+		}
 }
 	
 	

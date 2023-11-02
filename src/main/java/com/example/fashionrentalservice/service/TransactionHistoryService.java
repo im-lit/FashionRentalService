@@ -39,6 +39,7 @@ public class TransactionHistoryService {
         	TransactionHistoryDTO dto = TransactionHistoryDTO.builder()
                     .transactionType(entity.getTransactionType())
                     .amount(entity.getAmount())
+                    .transactionDate(LocalDate.now())
                     .description(entity.getDescription())
                     .transactionDate(LocalDate.now())
                     .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
