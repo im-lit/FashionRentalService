@@ -106,6 +106,10 @@ public class OrderBuyService {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll());
 	}
 	
+//	public Double getTotalRevenue1MonthByProductOwnerID(int productOwnerID) {
+//		return buyRepo.getTotalRevenue1MonthByProductOwnerID(productOwnerID);
+//	}
+	
 }
 	
 	

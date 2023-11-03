@@ -56,6 +56,6 @@ public class OrderBuyDTO {
 	private ProductOwnerDTO productownerDTO;
 
 	public enum OrderBuyStatus {
-		PENDING, PREPARE, READY_PICKUP, CONFIRMING, REJECTING, CANCELED,
+		PENDING, PREPARE, READY_PICKUP, CONFIRMING, REJECTING, CANCELED, COMPLETED
 	}
 }

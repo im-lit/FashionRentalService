@@ -52,4 +52,9 @@ public class OrderBuyController {
 		return ResponseEntity.ok().body(buyService.getAllOrderByProductOwnerID(productownerID));
 	}
 	
+//	@GetMapping("/revenue/{productownerID}")
+//	private ResponseEntity getRevenue1Month(@PathVariable int productownerID) throws CrudException{
+//		return ResponseEntity.ok().body(buyService.getTotalRevenue1MonthByProductOwnerID(productownerID));
+//	}
+	
 }

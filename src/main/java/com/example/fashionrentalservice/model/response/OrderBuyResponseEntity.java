@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,8 @@ public class OrderBuyResponseEntity {
 	
 	private double total;
 	
+	private OrderBuyStatus status;
+	
 	private LocalDate dateOrder;
 	
 	private int customerID;
@@ -31,6 +34,7 @@ public class OrderBuyResponseEntity {
 	                    .orderBuyID(dto.getOrderBuyID())
 	                    .total(dto.getTotal())
 	                    .dateOrder(dto.getDateOrder())
+	                    .status(dto.getStatus())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .build())
@@ -41,6 +45,7 @@ public class OrderBuyResponseEntity {
 		return OrderBuyResponseEntity.builder()
                 .orderBuyID(dto.getOrderBuyID())
                 .total(dto.getTotal())
+                .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
