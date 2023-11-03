@@ -20,7 +20,7 @@ public class ProductRentalPricesResponseEntity {
 
 	private double rentPrice;
 	
-	private String mockDay;
+	private int mockDay;
 	
 	
 	private int productID;

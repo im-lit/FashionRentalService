@@ -8,10 +8,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
 import com.example.fashionrentalservice.exception.BalanceNegative;
 import com.example.fashionrentalservice.exception.CreateCustomerFail;
+import com.example.fashionrentalservice.exception.CreateOrderBuyDetailFailed;
+import com.example.fashionrentalservice.exception.CreateOrderFailed;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
+import com.example.fashionrentalservice.exception.OrderBuyIDNotFound;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.ProductNotFoundByID;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 
@@ -28,7 +32,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		CusNotFoundByID.class,
 		AccNotFoundByID.class,
 		StaffNotFoundByID.class,
-		BalanceNegative.class
+		BalanceNegative.class,
+		CreateOrderFailed.class,
+		ProductNotFoundByID.class,
+		OrderBuyIDNotFound.class,
+		CreateOrderBuyDetailFailed.class
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity

@@ -2,6 +2,8 @@
 package com.example.fashionrentalservice.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,6 +21,7 @@ import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.Response;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.request.AccountRequestEntity;
+import com.example.fashionrentalservice.model.request.ProductRequestEntity;
 import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.service.AccountService;
 
@@ -38,8 +41,8 @@ public class AccountController {
 	
 	//================================== Tạo mới Account ========================================	
 	@PostMapping("/create")
-	private ResponseEntity createNewAccount(@RequestBody AccountRequestEntity entity ) throws CrudException {		
-		return ResponseEntity.ok().body(accService.createNewAccount(entity));
+	private ResponseEntity createNewAccount(@RequestBody List<AccountRequestEntity> entity,@RequestBody List<ProductRequestEntity> entity2 ) throws CrudException {		
+		return ResponseEntity.ok().body("hehe");
 	}
 	
 	//================================== Update ========================================	

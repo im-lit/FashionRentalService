@@ -1,6 +1,5 @@
-package com.example.fashionrentalservice.model.dto.product;
+package com.example.fashionrentalservice.model.dto.order;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,34 +10,35 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_productrentalprices")
-public class ProductRentalPricesDTO {
-    @Id
+@Table(name = "tbl_orderbuydetail")
+public class OrderBuyDetailDTO {
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productrentalprices_id",unique = true, columnDefinition = "INT")
-	private int productRentalPricesID;
-    
-    private int mockDay;
+    @Column(name = "orderbuydetail_id", columnDefinition = "INT")
+	private int orderBuyDetailID;
 	
-	private double rentPrice;
+	private double price;
 	
-	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productid")
-	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductDTO productDTO;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "orderbuy_id")
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
+	private OrderBuyDTO orderBuyDTO;
 	
 }
