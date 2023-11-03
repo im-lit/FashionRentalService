@@ -43,6 +43,10 @@ public class WalletController {
 	private ResponseEntity updateBalance(@RequestParam int walletID,@RequestParam double balance) throws CrudException {
 		return ResponseEntity.ok().body(walletService.updateBalance(walletID,balance));
 	}
+	@PutMapping("/updateAfterStuff}")
+	private ResponseEntity updateBalanceAfterStuff(@RequestParam int walletID,@RequestParam double balance) throws CrudException {
+		return ResponseEntity.ok().body(walletService.updateBalanceAfterStuff(walletID,balance));
+	}
 	
     @DeleteMapping()
     private ResponseEntity deleteWallet(@RequestParam int walletID) throws CrudException {
