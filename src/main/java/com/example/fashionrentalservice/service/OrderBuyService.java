@@ -93,22 +93,33 @@ public class OrderBuyService {
     }
 
 
-//================================== Lay tat ca account========================================
+//================================== Lay tat ca Order by CustomerID========================================
 	public List<OrderBuyResponseEntity> getAllOrderByCustomerID(int customerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllOrderBuyByCustomerID(customerID));
 	}
 	
+	//================================== Lay tat ca Order by ProductOwnerID========================================
 	public List<OrderBuyResponseEntity> getAllOrderByProductOwnerID(int productownerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllOrderBuyByProductOwnerID(productownerID));
 	}
 	
+	//================================== Lay tat ca Order ========================================
 	public List<OrderBuyResponseEntity> getAllOrder() {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll());
 	}
 	
-//	public Double getTotalRevenue1MonthByProductOwnerID(int productOwnerID) {
-//		return buyRepo.getTotalRevenue1MonthByProductOwnerID(productOwnerID);
-//	}
+	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID ========================================
+	public List<OrderBuyResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
+		LocalDate startDate = LocalDate.now().minusMonths(1);
+		List<OrderBuyDTO> list = buyRepo.getTotal1MonthByProductOwnerID(productOwnerID, startDate);
+		return  OrderBuyResponseEntity.fromListOrderBuyDTO(list);
+	}
+	
+	public List<OrderBuyResponseEntity> getTotal1WeekOrderByProductOwnerID(int productOwnerID) {
+		LocalDate startDate = LocalDate.now().minusWeeks(7);
+		List<OrderBuyDTO> list = buyRepo.getTotal1WeekByProductOwnerID(productOwnerID, startDate);
+		return  OrderBuyResponseEntity.fromListOrderBuyDTO(list);
+	}
 	
 }
 	
