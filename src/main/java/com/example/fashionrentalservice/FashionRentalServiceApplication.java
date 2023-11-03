@@ -11,8 +11,8 @@ public class FashionRentalServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FashionRentalServiceApplication.class, args);
-		LocalDate currentDate = LocalDate.now();
-        System.out.println("Time: " + currentDate);
+		LocalDate lastWeek = LocalDate.now().minusWeeks(1);
+        System.out.println("Time: " + lastWeek);
         
         LocalDateTime currentDateTime = LocalDateTime.now();
         System.out.println("Date and Time: " + currentDateTime);

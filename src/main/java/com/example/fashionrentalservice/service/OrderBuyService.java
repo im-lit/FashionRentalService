@@ -116,7 +116,7 @@ public class OrderBuyService {
 	}
 	
 	public List<OrderBuyResponseEntity> getTotal1WeekOrderByProductOwnerID(int productOwnerID) {
-		LocalDate startDate = LocalDate.now().minusWeeks(7);
+		LocalDate startDate = LocalDate.now().minusWeeks(1);
 		List<OrderBuyDTO> list = buyRepo.getTotal1WeekByProductOwnerID(productOwnerID, startDate);
 		return  OrderBuyResponseEntity.fromListOrderBuyDTO(list);
 	}
