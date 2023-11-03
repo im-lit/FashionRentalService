@@ -38,6 +38,8 @@ public class OrderBuyDTO {
 
 	private double total;
 	
+	private String customerAddress;
+	
 	private LocalDate dateOrder;
 	
 	@Enumerated(EnumType.STRING)

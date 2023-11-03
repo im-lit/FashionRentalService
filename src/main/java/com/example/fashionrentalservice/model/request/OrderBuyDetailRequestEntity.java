@@ -14,5 +14,4 @@ public class OrderBuyDetailRequestEntity {
 	
 	private int productID;
 	
-	private int orderBuyID;
 }

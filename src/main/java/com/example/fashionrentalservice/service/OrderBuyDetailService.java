@@ -39,31 +39,27 @@ public class OrderBuyDetailService {
 
 
 //================================== Tạo mới OrderBuyDetail ========================================
-    public List<OrderBuyDetailResponseEntity> createOrderBuyDetail(List<OrderBuyDetailRequestEntity> entity) throws CrudException{
-        List<OrderBuyDetailDTO> list = new ArrayList<>();
-        
-        for (OrderBuyDetailRequestEntity x : entity) {
-        	ProductDTO product = productRepo.findById(x.getProductID()).orElse(null);
-        	OrderBuyDTO order = buyRepo.findById(x.getOrderBuyID()).orElse(null);
-        	
-        	if( product == null)
-        	    throw new ProductNotFoundByID(); 	
-        	if( order == null)
-        	    throw new OrderBuyIDNotFound();
-        	OrderBuyDetailDTO orderBuyDetail = OrderBuyDetailDTO.builder()
-        							.price(x.getPrice())
-        							.productDTO(product)
-        							.orderBuyDTO(order)
-        							.build();        	
-        	list.add(orderBuyDetail);
-        }	                  
-        try {
-            return OrderBuyDetailResponseEntity.fromListOrderBuyDetailDTO(buyDetailRepo.saveAll(list));
-        } catch (Exception e) {
-        	e.printStackTrace();
-            throw new CreateOrderBuyDetailFailed();
-        } 
-    }
+//    public List<OrderBuyDetailResponseEntity> createOrderBuyDetail(List<OrderBuyDetailRequestEntity> entity) throws CrudException{
+//        List<OrderBuyDetailDTO> list = new ArrayList<>();
+//        
+//        for (OrderBuyDetailRequestEntity x : entity) {
+//        	ProductDTO product = productRepo.findById(x.getProductID()).orElse(null);
+//        	
+//        	if( product == null)
+//        	    throw new ProductNotFoundByID(); 	
+//        	OrderBuyDetailDTO orderBuyDetail = OrderBuyDetailDTO.builder()
+//        							.price(x.getPrice())
+//        							.productDTO(product)
+//        							.build();        	
+//        	list.add(orderBuyDetail);
+//        }	                  
+//        try {
+//            return OrderBuyDetailResponseEntity.fromListOrderBuyDetailDTO(buyDetailRepo.saveAll(list));
+//        } catch (Exception e) {
+//        	e.printStackTrace();
+//            throw new CreateOrderBuyDetailFailed();
+//        } 
+//    }
 
 
 //================================== Lay tat ca OrderDetail By OrderBuyID========================================
