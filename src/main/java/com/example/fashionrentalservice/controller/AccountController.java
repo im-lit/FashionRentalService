@@ -41,8 +41,8 @@ public class AccountController {
 	
 	//================================== Tạo mới Account ========================================	
 	@PostMapping("/create")
-	private ResponseEntity createNewAccount(@RequestBody List<AccountRequestEntity> entity,@RequestBody List<ProductRequestEntity> entity2 ) throws CrudException {		
-		return ResponseEntity.ok().body("hehe");
+	private ResponseEntity createNewAccount(@RequestBody AccountRequestEntity entity ) throws CrudException {		
+		return ResponseEntity.ok().body(accService.createNewAccount(entity));
 	}
 	
 	//================================== Update ========================================	
