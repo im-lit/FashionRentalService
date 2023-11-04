@@ -22,12 +22,15 @@ public class WalletResponseEntity {
 	
 	private LocalDate createdDate;
 	
+	private double pendingMoney;
+	
     private int accountID;
     
 	public static WalletResponseEntity fromWalletDTO(WalletDTO dto) {
 		return WalletResponseEntity.builder()
 				.walletID(dto.getWalletID())
 				.balance(dto.getBalance())
+				.pendingMoney(dto.getPendingMoney())
 				.createdDate(dto.getCreatedDate())
 				.accountID(dto.getAccountDTO().getAccountID())
 				.build();

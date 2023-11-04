@@ -48,7 +48,7 @@ public class WalletService {
             return WalletResponseEntity.fromWalletDTO(walletRepo.save(dto));
     }
     
-  //================================== Update Balance ========================================
+  //================================== Cong(+) tien Balance ========================================
     public WalletResponseEntity updateBalance(int walletID, double balance) throws StaffNotFoundByID, CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
@@ -61,7 +61,7 @@ public class WalletService {
         dto.setBalance(newBalance);
         return WalletResponseEntity.fromWalletDTO(walletRepo.save(dto));
     }
-    //================================== Update Balance ========================================
+    //================================== Tru`(-) tien Balance ========================================
     public WalletResponseEntity updateBalanceAfterStuff(int walletID, double balance) throws StaffNotFoundByID, CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
@@ -75,6 +75,7 @@ public class WalletService {
         return WalletResponseEntity.fromWalletDTO(walletRepo.save(dto));
     }
     
+  //================================== Tru`(-) tien Balance returnDTO cho createOrder ========================================
     public WalletDTO updateBalanceReturnDTO(int walletID, double balance) throws StaffNotFoundByID, CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
@@ -87,7 +88,7 @@ public class WalletService {
         dto.setBalance(newBalance);
         return dto;
     }
-    
+  //================================== Tru`(+) tien PendingMoney returnDTO cho createOrder ========================================
     public WalletDTO updatePendingMoneyReturnDTO(int walletID, double pendingMoney) throws StaffNotFoundByID, CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
