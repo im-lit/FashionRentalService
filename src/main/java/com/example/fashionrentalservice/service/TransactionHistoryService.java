@@ -51,6 +51,7 @@ public class TransactionHistoryService {
             return TransactionHistoryResponseEntity.fromTransactionHistoryDTO(transactionRepo.save(dto));
     }
     
+  //================================== Create Trans ========================================   
     public TransactionHistoryResponseEntity createBuyTransactionHistory(BuyTransactionHistoryRequestEntity entity) throws CrudException{   	    		
     	TransactionHistoryDTO dto = TransactionHistoryDTO.builder()
                 .transactionType(entity.getTransactionType())
@@ -61,6 +62,19 @@ public class TransactionHistoryService {
                 .accountDTO(entity.getAccountDTO())
                 .build();
         return TransactionHistoryResponseEntity.fromTransactionHistoryDTO(transactionRepo.save(dto));
+}
+    
+  //================================== Create Trans ReturnDTO cho OrderService ========================================  
+    public TransactionHistoryDTO createBuyTransactionHistoryReturnDTO(TransactionHistoryDTO entity) throws CrudException{   	    		
+    	TransactionHistoryDTO dto = TransactionHistoryDTO.builder()
+                .transactionType(entity.getTransactionType())
+                .amount(entity.getAmount())
+                .description(entity.getDescription())
+                .transactionDate(LocalDate.now())
+                .orderBuyDTO(entity.getOrderBuyDTO())
+                .accountDTO(entity.getAccountDTO())
+                .build();
+        return dto;
 }
     	
     //================================== Xóa Wallet ========================================  

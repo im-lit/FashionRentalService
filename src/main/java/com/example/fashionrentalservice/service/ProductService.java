@@ -1,5 +1,7 @@
 package com.example.fashionrentalservice.service;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +64,15 @@ public class ProductService {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
     	dto.setStatus(status);    	
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
+    }
+    
+    public List<ProductDTO> updateListProductStatus(List <ProductDTO>product) {
+    	List<ProductDTO> soldOutProduct = new ArrayList<>();
+    	for (ProductDTO x : product) {
+			x.setStatus(ProductStatus.SOLD_OUT);
+			soldOutProduct.add(x);
+		}  	
+    	return productRepo.saveAll(soldOutProduct);
     }
 	
 //	================================== Get All Product========================================
