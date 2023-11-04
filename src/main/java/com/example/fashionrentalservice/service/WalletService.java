@@ -87,6 +87,19 @@ public class WalletService {
         dto.setBalance(newBalance);
         return dto;
     }
+    
+    public WalletDTO updatePendingMoneyReturnDTO(int walletID, double pendingMoney) throws StaffNotFoundByID, CrudException {
+        WalletDTO dto = walletRepo.findById(walletID).orElse(null);
+        if(dto == null)
+        	throw new StaffNotFoundByID();
+        double oldPendingMoney = dto.getPendingMoney();
+        double newPendingMoney = oldPendingMoney + pendingMoney;
+        if (newPendingMoney < 0) {
+            throw new BalanceNegative();
+        }
+        dto.setPendingMoney(newPendingMoney);
+        return dto;
+    }
 	
     //================================== Xóa Staff bởi ID========================================  
     public WalletResponseEntity deleteWallet(int walletID) throws CrudException {

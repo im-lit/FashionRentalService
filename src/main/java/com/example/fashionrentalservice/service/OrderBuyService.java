@@ -77,7 +77,7 @@ public class OrderBuyService {
         List<ProductDTO> listProduct = new ArrayList<>();
         List<WalletDTO> listWallet = new ArrayList<>();
         List<TransactionHistoryDTO> listTrans = new ArrayList<>();
-        WalletDTO walletCus = null;
+
 
         
         for (OrderBuyRequestEntity x : entity) {
@@ -89,7 +89,6 @@ public class OrderBuyService {
         	if( po == null)
         	    throw new PONotFoundByID();
         	
-        	walletCus = cus.getAccountDTO().getWalletDTO();
         	
         	OrderBuyDTO orderBuy = OrderBuyDTO.builder()
         							.total(x.getTotal())
@@ -126,24 +125,42 @@ public class OrderBuyService {
         
         
         for (OrderBuyDTO x : listOrder) {
-        	WalletDTO check = walletService.updateBalanceReturnDTO(walletCus.getWalletID(), x.getTotal());
-        	if(check == null) 
+        	WalletDTO checkCus = walletService.updateBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
+        	if(checkCus == null) 
         		throw new WalletInOrderServiceFailed();
         	
-        	listWallet.add(check);
+        	listWallet.add(checkCus);
         	
-        	TransactionHistoryDTO buyTrans = TransactionHistoryDTO.builder()
+        	WalletDTO checkPo = walletService.updatePendingMoneyReturnDTO(x.getProductownerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
+        	if(checkPo == null) 
+        		throw new WalletInOrderServiceFailed();
+        	
+        	listWallet.add(checkPo);
+        	
+        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(x.getTotal())
         													.transactionType("Mua")
-        													.description("thanh toan hóa đơn: " + x.getOrderBuyID())
+        													.description("thanh toan hóa đơn: " + x.getOrderBuyID() + ". -" +x.getTotal() + " VND")
         													.orderBuyDTO(x)
         													.accountDTO(x.getCustomerDTO().getAccountDTO())
         													.build();      												
-        	TransactionHistoryDTO checkTrans = transService.createBuyTransactionHistoryReturnDTO(buyTrans);
-        	if(checkTrans == null) 
+        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+        	if(checkCusTrans == null) 
         		throw new TransactionHistoryCreatedFailed();
         	
-        	listTrans.add(checkTrans);
+        	listTrans.add(checkCusTrans);
+        	
+        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+															.amount(x.getTotal())
+															.transactionType("Mua")
+															.description("Nhận tiền từ hóa đơn: " + x.getOrderBuyID() + ". +" +x.getTotal() + " VND ")
+															.orderBuyDTO(x)
+															.accountDTO(x.getProductownerDTO().getAccountDTO())
+															.build();
+        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+        	if(checkPOTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkPOTrans);
 		}
         
         walletRepo.saveAll(listWallet);
