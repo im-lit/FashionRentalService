@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -27,23 +29,32 @@ import lombok.NoArgsConstructor;
 @Table(name = "tbl_transactionhistory")
 public class TransactionHistoryDTO {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transactionhistory_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "transactionhistory_id")
 	private int transactionHistoryID;
-	
+
 	@Column(columnDefinition = "nvarchar(100)", nullable = true)
 	private String transactionType;
-	
+
 	private double amount;
-	
+
 	private String description;
-	
+
 	private LocalDate transactionDate;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "orderbuy_id")
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
+	private OrderBuyDTO orderBuyDTO;
 	
-	
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "orderrent_id")
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
+	private OrderRentDTO orderRentDTO;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id")
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private AccountDTO accountDTO;
-	
+
 }

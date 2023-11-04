@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class AddressDTO {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "addressid")
+    @Column(name = "address_id")
 	private int addressID;
 	
 	

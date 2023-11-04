@@ -12,9 +12,11 @@ import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
+import com.example.fashionrentalservice.model.request.BuyTransactionHistoryRequestEntity;
 import com.example.fashionrentalservice.model.request.TransactionHistoryRequestEntity;
 import com.example.fashionrentalservice.model.response.TransactionHistoryResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
+import com.example.fashionrentalservice.repositories.OrderBuyRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
 @Service
 public class TransactionHistoryService {
@@ -23,6 +25,9 @@ public class TransactionHistoryService {
 	
 	@Autowired
 	private AccountRepository accRepo;
+	
+	@Autowired
+	private OrderBuyRepository orderBuyRepo;
 	
 	
 	public List<TransactionHistoryResponseEntity> getAllTransactionByAccountID(int accountID) throws CrudException{
@@ -41,11 +46,22 @@ public class TransactionHistoryService {
                     .amount(entity.getAmount())
                     .transactionDate(LocalDate.now())
                     .description(entity.getDescription())
-                    .transactionDate(LocalDate.now())
                     .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                     .build();
             return TransactionHistoryResponseEntity.fromTransactionHistoryDTO(transactionRepo.save(dto));
     }
+    
+    public TransactionHistoryResponseEntity createBuyTransactionHistory(BuyTransactionHistoryRequestEntity entity) throws CrudException{   	    		
+    	TransactionHistoryDTO dto = TransactionHistoryDTO.builder()
+                .transactionType(entity.getTransactionType())
+                .amount(entity.getAmount())
+                .description(entity.getDescription())
+                .transactionDate(LocalDate.now())
+                .orderBuyDTO(entity.getOrderBuyDTO())
+                .accountDTO(entity.getAccountDTO())
+                .build();
+        return TransactionHistoryResponseEntity.fromTransactionHistoryDTO(transactionRepo.save(dto));
+}
     	
     //================================== Xóa Wallet ========================================  
     public TransactionHistoryResponseEntity deleteTransactionHistory(int transactionHistoryID) throws CrudException {

@@ -10,17 +10,25 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.CreateOrderFailed;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
+import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
+import com.example.fashionrentalservice.exception.WalletInOrderServiceFailed;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
+import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
+import com.example.fashionrentalservice.model.request.BuyTransactionHistoryRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
+import com.example.fashionrentalservice.model.response.TransactionHistoryResponseEntity;
+import com.example.fashionrentalservice.model.response.WalletResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyRepository;
@@ -44,6 +52,15 @@ public class OrderBuyService {
 	
 	@Autowired
 	private ProductRepository productRepo;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private TransactionHistoryService transService;
+	
+	@Autowired
+	private WalletService walletService;
 
 
 
@@ -52,6 +69,9 @@ public class OrderBuyService {
     public List<OrderBuyResponseEntity> createOrderBuy(List<OrderBuyRequestEntity> entity) throws CrudException{
         List<OrderBuyDTO> listOrder = new ArrayList<>();
         List<OrderBuyDetailDTO> listOrderDetail = new ArrayList<>();
+        List<ProductDTO> listProduct = new ArrayList<>();
+        WalletDTO walletCus = null;
+
         
         for (OrderBuyRequestEntity x : entity) {
         	CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
@@ -61,6 +81,9 @@ public class OrderBuyService {
         	    throw new CusNotFoundByID(); 	
         	if( po == null)
         	    throw new PONotFoundByID();
+        	
+        	walletCus = cus.getAccountDTO().getWalletDTO();
+        	
         	OrderBuyDTO orderBuy = OrderBuyDTO.builder()
         							.total(x.getTotal())
         							.dateOrder(LocalDate.now())
@@ -71,19 +94,48 @@ public class OrderBuyService {
         							.build();        	
         	for (OrderBuyDetailRequestEntity detail : x.getOrderDetail()) {
         		ProductDTO product = productRepo.findById(detail.getProductID()).orElse(null);
+        		
         		if(product == null)
         			throw new ProductNotFoundByID();
+        		else if (product.getStatus() == ProductDTO.ProductStatus.SOLD_OUT || product.getStatus() == ProductDTO.ProductStatus.RENTING) {
+        			throw new ProductNotAvailable();
+				}   		
         		OrderBuyDetailDTO detailBuy = OrderBuyDetailDTO.builder()
         										.productDTO(product)
         										.orderBuyDTO(orderBuy)
         										.price(detail.getPrice())
         										.build();
         		listOrderDetail.add(detailBuy);
+        		listProduct.add(detailBuy.getProductDTO());
 			}
         	listOrder.add(orderBuy);
         }
+        
         buyRepo.saveAll(listOrder);
         buyDetailRepo.saveAll(listOrderDetail);
+        
+        for (ProductDTO c : listProduct) {
+			productService.updateStatusProductByID(c.getProductID(), ProductStatus.SOLD_OUT);
+		}
+        
+        
+        for (OrderBuyDTO x : listOrder) {
+        	WalletResponseEntity check = walletService.updateBalanceAfterStuff(walletCus.getWalletID(), x.getTotal());
+        	if(check == null) 
+        		throw new WalletInOrderServiceFailed();
+        	
+        	BuyTransactionHistoryRequestEntity buyTrans = BuyTransactionHistoryRequestEntity.builder()
+        													.amount(x.getTotal())
+        													.transactionType("Mua")
+        													.description("thanh toan hóa đơn: " + x.getOrderBuyID())
+        													.orderBuyDTO(x)
+        													.accountDTO(x.getCustomerDTO().getAccountDTO())
+        													.build();      												
+        	TransactionHistoryResponseEntity checkTrans = transService.createBuyTransactionHistory(buyTrans);
+        	if(checkTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+		}
+        
         try {
             return OrderBuyResponseEntity.fromListOrderBuyDTO(listOrder);
         } catch (Exception e) {
