@@ -25,6 +25,6 @@ public class VoucherTypeDTO {
     @Column(name = "vouchertype_id", columnDefinition = "INT")
 	private int voucherTypeID;
 	
-	@Column(name = "voucher_name", columnDefinition = "nvarchar(255)", nullable = true)
+	@Column(name = "vouchertype_name", columnDefinition = "nvarchar(255)", nullable = true)
 	private String voucherTypeName;
 }
