@@ -36,6 +36,8 @@ public class WalletDTO {
 	
 	private double balance;
 	
+	private double pendingMoney;
+	
 	private LocalDate createdDate;
 	
 	

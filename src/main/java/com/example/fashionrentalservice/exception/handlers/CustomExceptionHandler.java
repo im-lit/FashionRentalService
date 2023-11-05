@@ -16,13 +16,17 @@ import com.example.fashionrentalservice.exception.DaysBetweenTwoDays;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
 import com.example.fashionrentalservice.exception.OrderBuyIDNotFound;
+import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
+import com.example.fashionrentalservice.exception.WalletCusNotFound;
 import com.example.fashionrentalservice.exception.WalletInOrderServiceFailed;
+import com.example.fashionrentalservice.exception.WalletPoNotFound;
 
 
 
@@ -46,8 +50,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		TransactionHistoryCreatedFailed.class,
 		ProductNotAvailable.class,
 		AccountIsRegisted.class,
-		DaysBetweenTwoDays.class
-		
+		DaysBetweenTwoDays.class,	
+		OrderBuyNotFoundFailed.class,
+		PendingMoneyNegative.class,
+		WalletCusNotFound.class,
+		WalletPoNotFound.class
+
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity
