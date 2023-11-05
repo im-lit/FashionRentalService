@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
 import com.example.fashionrentalservice.service.OrderBuyDetailService;
 import com.example.fashionrentalservice.service.OrderBuyService;
@@ -39,6 +42,11 @@ public class OrderBuyController {
 	@PostMapping
 	private ResponseEntity createOrderBuyAndOrderBuyDetail(@RequestBody List<OrderBuyRequestEntity> entity) throws CrudException {			
 		return ResponseEntity.ok().body( buyService.createOrderBuy(entity));
+	}
+	
+	@PutMapping
+	private ResponseEntity updateStatusOrder(@RequestParam int orderBuyID, @RequestParam OrderBuyStatus status) throws CrudException{
+		return ResponseEntity.ok().body(buyService.updateOrderBuyByOrderBuyID(orderBuyID, status));
 	}
 	
 	

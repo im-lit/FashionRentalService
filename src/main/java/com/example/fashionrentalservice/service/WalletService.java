@@ -2,11 +2,14 @@ package com.example.fashionrentalservice.service;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.BalanceNegative;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
@@ -76,7 +79,7 @@ public class WalletService {
     }
     
   //================================== Tru`(-) tien Balance returnDTO cho createOrder ========================================
-    public WalletDTO updateBalanceReturnDTO(int walletID, double balance) throws StaffNotFoundByID, CrudException {
+    public WalletDTO updateBalanceReturnDTO(int walletID, double balance) throws  CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
         	throw new StaffNotFoundByID();
@@ -88,8 +91,10 @@ public class WalletService {
         dto.setBalance(newBalance);
         return dto;
     }
-  //================================== Tru`(+) tien PendingMoney returnDTO cho createOrder ========================================
-    public WalletDTO updatePendingMoneyReturnDTO(int walletID, double pendingMoney) throws StaffNotFoundByID, CrudException {
+    
+    
+  //================================== Cong(+) tien PendingMoney returnDTO cho createOrder ========================================
+    public WalletDTO updatePendingMoneyReturnDTO(int walletID, double pendingMoney) throws  CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
         	throw new StaffNotFoundByID();
@@ -101,8 +106,60 @@ public class WalletService {
         dto.setPendingMoney(newPendingMoney);
         return dto;
     }
+    
+    //================================== Tru(-) tien PendingMoney  (+) vao balance returnDTO cho updateStatusOrder ========================================
+	public WalletDTO updatePendingMoneyToBalanceReturnDTO(int walletID, double orderTotal) throws CrudException {
+		WalletDTO dto = walletRepo.findById(walletID).orElse(null);
+		double oldPendingMoney;
+		double newPendingMoney;
+		double newBalance;
+		
+		if (dto == null)
+			throw new StaffNotFoundByID();
+
+		oldPendingMoney = dto.getPendingMoney();
+		newPendingMoney = oldPendingMoney - orderTotal;
+		if (newPendingMoney < 0) {
+			throw new PendingMoneyNegative();
+		}
+
+		dto.setPendingMoney(newPendingMoney);
+
+		newBalance = dto.getBalance() + orderTotal;
+		if (newBalance < 0) {
+			throw new BalanceNegative();
+		}
+
+		dto.setBalance(newBalance);
+
+		return walletRepo.save(dto);
+	}
 	
-    //================================== Xóa Staff bởi ID========================================  
+    //================================== Tru(-) tien PendingMoney  (+) vao balance Customer returnDTO cho updateStatusOrder ========================================
+	public WalletDTO updatePendingMoneyToCustomerBalanceReturnDTO(WalletDTO cusWallet, WalletDTO poWallet,double orderTotal) throws CrudException {
+		double newPendingMoney;
+		double newBalance;
+		List<WalletDTO> list = new ArrayList<>();
+		
+		newPendingMoney = poWallet.getPendingMoney() - orderTotal;
+		if (newPendingMoney < 0) {
+			throw new PendingMoneyNegative();
+		}
+		poWallet.setPendingMoney(newPendingMoney);
+		list.add(poWallet);
+		
+		newBalance = cusWallet.getBalance() + orderTotal;
+		if (newBalance < 0) {
+			throw new BalanceNegative();
+		}
+		cusWallet.setBalance(newBalance);
+		list.add(cusWallet);
+		
+		walletRepo.saveAll(list);
+		return cusWallet;
+	}
+	
+    //================================== Xóa Wallet bởi ID========================================  
     public WalletResponseEntity deleteWallet(int walletID) throws CrudException {
     	WalletDTO dto = walletRepo.findById(walletID).orElse(null);   	
     	if(dto == null) {
