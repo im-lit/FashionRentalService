@@ -84,7 +84,7 @@ public class VoucherService {
 		VoucherDTO dto = VoucherDTO.builder()
 				.voucherCode(entity.getVoucherCode())
 				.voucherName(entity.getVoucherName())
-				.createdtDate(LocalDate.now())
+				.createdDate(LocalDate.now())
 				.startDate(entity.getStartDate())
 				.endDate(entity.getEndDate())
 				.description(entity.getDescription())
