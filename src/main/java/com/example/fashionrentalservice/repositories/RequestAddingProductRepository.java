@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 
 public interface RequestAddingProductRepository extends JpaRepository<RequestAddingProductDTO, Integer>{
-	@Query("SELECT dto FROM RequestAddingProductDTO dto WHERE dto.status = 'APPROVING' ORDER BY dto.requestAddingProductID DESC")
+	@Query("SELECT dto FROM RequestAddingProductDTO dto WHERE dto.status = 'APPROVING' ")
 	List<RequestAddingProductDTO>findApprovingRequest();
 
 }
