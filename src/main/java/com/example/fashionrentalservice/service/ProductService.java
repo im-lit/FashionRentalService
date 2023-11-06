@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.ProductStatusOnSale;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
@@ -60,14 +61,20 @@ public class ProductService {
 		return ProductResponseEntity.fromProductDTO(dto);
 	}
 	//================================== Update Product========================================
-    public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) {
+    public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) throws CrudException {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
-    	dto.setStatus(status);    	
+    	//dto.setStatus(status); 
+    	//neu avalablie thi cho no update thanh blocked, neu renting thi khong co no update
+    	if(dto.getStatus().equals(ProductStatus.RENTING)) {
+			throw new ProductStatusOnSale();
+		}else if(dto.getStatus().equals(ProductStatus.AVAILABLE)) {
+    		dto.setStatus(ProductStatus.BLOCKED);
+    	}    	
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
     }
     
     public List<ProductDTO> updateListProductStatus(List <ProductDTO>product) {
-    	List<ProductDTO> soldOutProduct = new ArrayList<>();
+    	List<ProductDTO> soldOutProduct = new ArrayList<>();	
     	for (ProductDTO x : product) {
 			x.setStatus(ProductStatus.SOLD_OUT);
 			soldOutProduct.add(x);

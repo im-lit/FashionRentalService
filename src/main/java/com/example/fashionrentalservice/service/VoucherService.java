@@ -54,7 +54,7 @@ public class VoucherService {
 	}
 	
 	//================================== List All Voucher cua 1 PO ========================================
-	public List<VoucherResponseEntity> getVoucherByProductOwnerID(int productownerID) throws StaffNotFoundByID {
+	public List<VoucherResponseEntity> getVoucherByProductOwnerID(int productownerID) throws CrudException {
 		List<VoucherDTO> dto = voucherRepo.findByProductOwnerID(productownerID);
 		if(dto==null) 
 			throw new StaffNotFoundByID();
@@ -63,7 +63,7 @@ public class VoucherService {
 	
 	}
 	//================================== List All Voucher ========================================
-		public List<VoucherResponseEntity> getVoucherByProductOwnerIDNotExpired(int productowner) throws StaffNotFoundByID, DaysBetweenTwoDays {
+		public List<VoucherResponseEntity> getVoucherByProductOwnerIDNotExpired(int productowner) throws  CrudException {
 			List<VoucherDTO> dto = voucherRepo.findByProductOwnerID(productowner);
 			if(dto==null) {
 				throw new StaffNotFoundByID();
@@ -79,7 +79,7 @@ public class VoucherService {
 		}
 
 	//================================== Create Voucher ========================================
-	public VoucherResponseEntity createVoucher(VoucherRequestEntity entity) throws  DaysBetweenTwoDays {
+	public VoucherResponseEntity createVoucher(VoucherRequestEntity entity) throws  CrudException {
 			
 		VoucherDTO dto = VoucherDTO.builder()
 				.voucherCode(entity.getVoucherCode())
