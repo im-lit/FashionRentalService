@@ -9,6 +9,8 @@ import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AddressDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
+import com.example.fashionrentalservice.model.request.AddressRequestEntity;
+import com.example.fashionrentalservice.model.response.AddressResponseEntity;
 import com.example.fashionrentalservice.repositories.AddressRepository;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 
@@ -26,17 +28,17 @@ public class AdressService {
 
 
 //================================== Tạo mới Account ========================================
-    public AddressDTO createNewAddress(String address, int customerID) throws CrudException{
+    public AddressResponseEntity createNewAddress(AddressRequestEntity entity) throws CrudException{
     	
-    	CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+    	CustomerDTO check = cusRepo.findById(entity.getCustomerID()).orElse(null);
     	if(check == null)
     		throw new CusNotFoundByID();
     	AddressDTO dto = AddressDTO.builder()
-                .addressDescription(address)
+                .addressDescription(entity.getAddressDescription())
                 .customerDTO(check)
                 .build();
        
-        return addressRepo.save(dto);
+        return AddressResponseEntity.fromAddressDTO(addressRepo.save(dto));
     }
 
 

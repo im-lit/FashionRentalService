@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.request.AddressRequestEntity;
 import com.example.fashionrentalservice.service.AdressService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,8 +31,8 @@ public class AddressController {
 	
 	//================================== Tạo mới Account ========================================	
 	@PostMapping
-	private ResponseEntity createNewAddress(@RequestParam String address, @RequestParam int customerID ) throws CrudException {		
-		return ResponseEntity.ok().body(adressService.createNewAddress(address, customerID));
+	private ResponseEntity createNewAddress(@RequestBody AddressRequestEntity entity ) throws CrudException {		
+		return ResponseEntity.ok().body(adressService.createNewAddress(entity));
 	}
 	
 	
