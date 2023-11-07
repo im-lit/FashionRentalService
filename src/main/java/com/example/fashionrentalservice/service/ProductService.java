@@ -60,6 +60,7 @@ public class ProductService {
 		
 		return ProductResponseEntity.fromProductDTO(dto);
 	}
+	
 	//================================== Update Product========================================
     public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) throws CrudException {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
@@ -94,5 +95,29 @@ public class ProductService {
                 .map(ProductResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
+	public List<ProductSlimResponseEntity> getAllProductsOnSale() throws CrudException{
+		return  productRepo.findAllSaleProduct().stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	public List<ProductSlimResponseEntity> getAllProductsOnRent() throws CrudException{
+		return  productRepo.findAllRentProduct().stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	public List<ProductSlimResponseEntity> getProductbyCategory(String categoryName) throws CrudException{
+
+//		ProductDTO dto = productRepo.findById(productID).orElse(null);
+//		if(dto==null) 
+//			throw new StaffNotFoundByID();
+//		
+//		return ProductResponseEntity.fromProductDTO(dto);
+		return  productRepo.findAllByCategory(categoryName).stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+		
+	}
+	
+	
 	//================================== Delete Product========================================
 }
