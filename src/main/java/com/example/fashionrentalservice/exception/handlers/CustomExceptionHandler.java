@@ -24,6 +24,7 @@ import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotForRent;
 import com.example.fashionrentalservice.exception.ProductNotForSale;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
+import com.example.fashionrentalservice.exception.ProductStatusOnSale;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
@@ -60,8 +61,8 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		WalletPoNotFound.class,
 		ProductNotForRent.class,
 		ProductNotForSale.class,
-		ProductIsRented.class
-
+		ProductIsRented.class,
+		ProductStatusOnSale.class
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity

@@ -42,7 +42,7 @@ public class VoucherDTO {
 	 	@Column(columnDefinition = "nvarchar(255)")
 		private String voucherName;
 	 	
-	 	private LocalDate createdtDate;
+	 	private LocalDate createdDate;
 	 	private LocalDate startDate;
 		
 	 	private LocalDate endDate;

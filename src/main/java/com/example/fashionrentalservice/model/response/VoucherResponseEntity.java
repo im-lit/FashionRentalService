@@ -35,7 +35,7 @@ public class VoucherResponseEntity {
  
 	private String voucherName;
  	
- 	private LocalDate createdtDate;
+ 	private LocalDate createdDate;
  	private LocalDate startDate;
 	
  	private LocalDate endDate;
@@ -59,7 +59,7 @@ public class VoucherResponseEntity {
 					.voucherID(dto.getVoucherID())
 					.voucherCode(dto.getVoucherCode())
 					.voucherName(dto.getVoucherName())
-					.createdtDate(dto.getCreatedtDate())
+					.createdDate(dto.getCreatedDate())
 					.startDate(dto.getStartDate())
 					.endDate(dto.getEndDate())
 					.description(dto.getDescription())
@@ -76,7 +76,7 @@ public class VoucherResponseEntity {
 		            		.voucherID(dto.getVoucherID())
 							.voucherCode(dto.getVoucherCode())
 							.voucherName(dto.getVoucherName())
-							.createdtDate(dto.getCreatedtDate())
+							.createdDate(dto.getCreatedDate())
 							.startDate(dto.getStartDate())
 							.endDate(dto.getEndDate())
 							.description(dto.getDescription())
