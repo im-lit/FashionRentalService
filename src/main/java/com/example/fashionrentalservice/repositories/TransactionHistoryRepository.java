@@ -13,7 +13,7 @@ import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 @Repository
 public interface TransactionHistoryRepository extends JpaRepository<TransactionHistoryDTO, Integer>{
 	
-	@Query("select dto from TransactionHistoryDTO dto  where dto.accountDTO.accountID = ?1")
+	@Query("select dto from TransactionHistoryDTO dto  where dto.accountDTO.accountID = ?1 ORDER BY dto.transactionHistoryID DESC")
 	List<TransactionHistoryDTO> findAllByAccountID(int accountID);
 	
 }
