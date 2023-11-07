@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
+import com.example.fashionrentalservice.exception.ProductNotForRent;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
 import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
 import com.example.fashionrentalservice.exception.WalletCusNotFound;
@@ -26,6 +28,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
@@ -80,6 +83,7 @@ public class OrderBuyService {
         List<ProductDTO> listProduct = new ArrayList<>();
         List<WalletDTO> listWallet = new ArrayList<>();
         List<TransactionHistoryDTO> listTrans = new ArrayList<>();
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 
 
         
@@ -112,7 +116,9 @@ public class OrderBuyService {
         			throw new ProductNotFoundByID();
         		if (product.getStatus() == ProductDTO.ProductStatus.SOLD_OUT || product.getStatus() == ProductDTO.ProductStatus.RENTING) {
         			throw new ProductNotAvailable();
-				}   		
+				}else if(product.getCheckType() == checkTypeSaleorRentorSaleRent.RENT)
+					throw new ProductNotForRent();
+        		
         		OrderBuyDetailDTO detailBuy = OrderBuyDetailDTO.builder()
         										.productDTO(product)
         										.orderBuyDTO(orderBuy)
@@ -124,10 +130,7 @@ public class OrderBuyService {
         	listOrder.add(orderBuy);
         }
         
-        buyRepo.saveAll(listOrder);
-        buyDetailRepo.saveAll(listOrderDetail);
-        
-		productService.updateListProductStatus(listProduct);
+
 
         
         
@@ -144,10 +147,12 @@ public class OrderBuyService {
         	
         	listWallet.add(checkPo);
         	
+        	String formatted = decimalFormat.format(x.getTotal());
+        	
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(x.getTotal())
         													.transactionType("Mua")
-        													.description("thanh toan hóa đơn: " + x.getOrderBuyID() + ". -" +x.getTotal() + " VND")
+        													.description("thanh toan hóa đơn: " + x.getOrderBuyID() + ". -" + formatted + " VND")
         													.orderBuyDTO(x)
         													.accountDTO(x.getCustomerDTO().getAccountDTO())
         													.build();      												
@@ -160,7 +165,7 @@ public class OrderBuyService {
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
 															.amount(x.getTotal())
 															.transactionType("Mua")
-															.description("Nhận tiền từ hóa đơn: " + x.getOrderBuyID() + ". +" +x.getTotal() + " VND ")
+															.description("Nhận tiền từ hóa đơn: " + x.getOrderBuyID() + ". +" + formatted + " VND ")
 															.orderBuyDTO(x)
 															.accountDTO(x.getProductownerDTO().getAccountDTO())
 															.build();
@@ -169,7 +174,9 @@ public class OrderBuyService {
         		throw new TransactionHistoryCreatedFailed();
         	listTrans.add(checkPOTrans);
 		}
-        
+        buyRepo.saveAll(listOrder);
+        buyDetailRepo.saveAll(listOrderDetail);
+		productService.updateListProductStatus(listProduct);
         walletRepo.saveAll(listWallet);
         transRepo.saveAll(listTrans);
    
