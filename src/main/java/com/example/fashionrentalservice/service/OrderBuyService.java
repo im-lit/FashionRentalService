@@ -84,8 +84,6 @@ public class OrderBuyService {
         List<WalletDTO> listWallet = new ArrayList<>();
         List<TransactionHistoryDTO> listTrans = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
-
-
         
         for (OrderBuyRequestEntity x : entity) {
         	CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
@@ -98,8 +96,7 @@ public class OrderBuyService {
         	if (cus.getAccountDTO().getWalletDTO() == null)
         		throw new WalletCusNotFound();
         	if (po.getAccountDTO().getWalletDTO() == null)
-        		throw new WalletCusNotFound();
-        	
+        		throw new WalletCusNotFound();      	
         	
         	OrderBuyDTO orderBuy = OrderBuyDTO.builder()
         							.total(x.getTotal())
@@ -128,11 +125,7 @@ public class OrderBuyService {
         		listProduct.add(detailBuy.getProductDTO());
 			}
         	listOrder.add(orderBuy);
-        }
-        
-
-
-        
+        }      
         
         for (OrderBuyDTO x : listOrder) {
         	WalletDTO checkCus = walletService.updateBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
@@ -152,7 +145,7 @@ public class OrderBuyService {
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(x.getTotal())
         													.transactionType("Mua")
-        													.description("thanh toan hóa đơn: " + x.getOrderBuyID() + ". -" + formatted + " VND")
+        													.description("thanh toan hóa đơn " + x.getOrderBuyID() + ": -" + formatted + " VND")
         													.orderBuyDTO(x)
         													.accountDTO(x.getCustomerDTO().getAccountDTO())
         													.build();      												
@@ -165,7 +158,7 @@ public class OrderBuyService {
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
 															.amount(x.getTotal())
 															.transactionType("Mua")
-															.description("Nhận tiền từ hóa đơn: " + x.getOrderBuyID() + ". +" + formatted + " VND ")
+															.description("Nhận tiền từ hóa đơn " + x.getOrderBuyID() + ": +" + formatted + " VND ")
 															.orderBuyDTO(x)
 															.accountDTO(x.getProductownerDTO().getAccountDTO())
 															.build();
@@ -187,7 +180,6 @@ public class OrderBuyService {
             throw new CreateOrderFailed();
         } 
     }
-
 
 //================================== Lay tat ca Order by CustomerID========================================
 	public List<OrderBuyResponseEntity> getAllOrderByCustomerID(int customerID) {
@@ -232,15 +224,12 @@ public class OrderBuyService {
 		if(checkWalletCus == null) {
 			throw new WalletCusNotFound();
 		}		
-
 		
 		if(status == OrderBuyStatus.COMPLETED) 
-			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotal());
-		
+			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotal());		
 		
 		if(status == OrderBuyStatus.CANCELED) 
-			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotal());	
-		
+			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotal());		
 		
 		check.setStatus(status);
 		return  OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));

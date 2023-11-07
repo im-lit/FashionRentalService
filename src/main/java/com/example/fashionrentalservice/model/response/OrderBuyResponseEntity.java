@@ -28,6 +28,10 @@ public class OrderBuyResponseEntity {
 	
 	private int productownerID;
 	
+	private String customerName;
+	
+	private String productOwnerName;
+	
 	public static List<OrderBuyResponseEntity> fromListOrderBuyDTO(List<OrderBuyDTO> dtos) {
 		return dtos.stream()
 	            .map(dto -> OrderBuyResponseEntity.builder()
@@ -36,7 +40,9 @@ public class OrderBuyResponseEntity {
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
+	                    .customerName(dto.getCustomerDTO().getFullName())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
+	                    .productOwnerName(dto.getProductownerDTO().getFullName())
 	                    .build())
 	            .collect(Collectors.toList());
 	}
