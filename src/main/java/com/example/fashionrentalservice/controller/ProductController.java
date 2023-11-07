@@ -62,8 +62,13 @@ public class ProductController {
 	}
 	
 	@PutMapping
-	private ResponseEntity updateProduct(@RequestParam int productID, ProductStatus status) throws CrudException {
-		return ResponseEntity.ok().body(productService.updateStatusProductByID(productID, status));
+	private ResponseEntity updateProduct(@RequestParam int productID) throws CrudException {
+		return ResponseEntity.ok().body(productService.updateStatusProductByID(productID));
+	}
+	
+	@PutMapping("/updatebystaff")
+	private ResponseEntity updateProductByStaff(@RequestParam int productID, ProductStatus status) throws CrudException {
+		return ResponseEntity.ok().body(productService.updateStatusProductByIDStaff(productID, status));
 	}
 	
 	

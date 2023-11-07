@@ -13,6 +13,7 @@ import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
+import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO.AddProductStatus;
 import com.example.fashionrentalservice.model.request.ProductRequestEntity;
 import com.example.fashionrentalservice.model.response.ProductResponseEntity;
 import com.example.fashionrentalservice.model.response.ProductSlimResponseEntity;
@@ -62,17 +63,41 @@ public class ProductService {
 	}
 	
 	//================================== Update Product========================================
-    public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) throws CrudException {
+    public ProductResponseEntity updateStatusProductByID(int productID) throws CrudException {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
-    	//dto.setStatus(status); 
-    	//neu avalablie thi cho no update thanh blocked, neu renting thi khong co no update
-    	if(dto.getStatus().equals(ProductStatus.RENTING)) {
-			throw new ProductStatusOnSale();
-		}else if(dto.getStatus().equals(ProductStatus.AVAILABLE)) {
-    		dto.setStatus(ProductStatus.BLOCKED);
-    	}    	
+
+
+    	 if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.APPROVED)){
+     		if(dto.getStatus().equals(ProductStatus.AVAILABLE)) {
+     			dto.setStatus(ProductStatus.BLOCKED);
+     		}else if(dto.getStatus().equals(ProductStatus.BLOCKED)) {
+     			dto.setStatus(ProductStatus.AVAILABLE);
+     		}
+    	 }
+ 	 
+    	 else if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.APPROVING)){
+    		 if(dto.getStatus().equals(ProductStatus.WAITING)) {
+      			dto.setStatus(ProductStatus.BLOCKED);
+      		}else if(dto.getStatus().equals(ProductStatus.BLOCKED)) {
+      			dto.setStatus(ProductStatus.WAITING);
+      		}
+    	 }	
+    
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
     }
+    
+    public ProductResponseEntity updateStatusProductByIDStaff(int productID,ProductStatus status) throws CrudException {
+    	ProductDTO dto = productRepo.findById(productID).orElseThrow();
+    		dto.setStatus(status);
+	
+    	
+    	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
+    }
+    
+   
+    
+    
+    
     
 //	================================== Update ProductStatus to SOLD_OUT========================================
     public List<ProductDTO> updateListProductStatus(List <ProductDTO>product) {
@@ -119,11 +144,7 @@ public class ProductService {
 	}
 	public List<ProductSlimResponseEntity> getProductbyCategory(String categoryName) throws CrudException{
 
-//		ProductDTO dto = productRepo.findById(productID).orElse(null);
-//		if(dto==null) 
-//			throw new StaffNotFoundByID();
-//		
-//		return ProductResponseEntity.fromProductDTO(dto);
+
 		return  productRepo.findAllByCategory(categoryName).stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
