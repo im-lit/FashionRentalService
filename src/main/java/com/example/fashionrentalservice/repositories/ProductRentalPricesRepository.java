@@ -9,6 +9,6 @@ import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO
 
 public interface ProductRentalPricesRepository extends JpaRepository<ProductRentalPricesDTO, Integer>{
 	
-	@Query("select dto from ProductRentalPricesDTO dto where dto.productDTO.productID = ?1 ")
+	@Query("select dto from ProductRentalPricesDTO dto where dto.productDTO.productID = ?1 ORDER BY dto.rentPrice ASC")
 	List<ProductRentalPricesDTO> findAllByProductID(int productID);
 }
