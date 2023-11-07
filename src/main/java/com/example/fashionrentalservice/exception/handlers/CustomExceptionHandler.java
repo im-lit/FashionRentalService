@@ -19,7 +19,10 @@ import com.example.fashionrentalservice.exception.OrderBuyIDNotFound;
 import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
+import com.example.fashionrentalservice.exception.ProductIsRented;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
+import com.example.fashionrentalservice.exception.ProductNotForRent;
+import com.example.fashionrentalservice.exception.ProductNotForSale;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
@@ -54,7 +57,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		OrderBuyNotFoundFailed.class,
 		PendingMoneyNegative.class,
 		WalletCusNotFound.class,
-		WalletPoNotFound.class
+		WalletPoNotFound.class,
+		ProductNotForRent.class,
+		ProductNotForSale.class,
+		ProductIsRented.class
 
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {

@@ -59,6 +59,7 @@ public class ProductService {
 		
 		return ProductResponseEntity.fromProductDTO(dto);
 	}
+	
 	//================================== Update Product========================================
     public ProductResponseEntity updateStatusProductByID(int productID,ProductStatus status) {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
@@ -66,6 +67,7 @@ public class ProductService {
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
     }
     
+//	================================== Update ProductStatus to SOLD_OUT========================================
     public List<ProductDTO> updateListProductStatus(List <ProductDTO>product) {
     	List<ProductDTO> soldOutProduct = new ArrayList<>();
     	for (ProductDTO x : product) {
@@ -74,6 +76,17 @@ public class ProductService {
 		}  	
     	return productRepo.saveAll(soldOutProduct);
     }
+    
+//	================================== Update ProductStatus to RENTING ngoại trừ Product đã có status là RENTING========================================
+    public List<ProductDTO> updateListProductStatusExceptRentingStatus(List <ProductDTO>product) {
+    	List<ProductDTO> listProduct = new ArrayList<>();
+    	for (ProductDTO x : product) {
+    		if(x.getStatus() != ProductDTO.ProductStatus.RENTING)
+			x.setStatus(ProductStatus.RENTING);
+			listProduct.add(x);
+		}  	
+    	return productRepo.saveAll(listProduct);
+    }   
 	
 //	================================== Get All Product========================================
 	public List<ProductSlimResponseEntity> getAllProduct() throws CrudException{
