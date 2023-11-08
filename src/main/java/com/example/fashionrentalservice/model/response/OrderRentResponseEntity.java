@@ -18,7 +18,15 @@ import lombok.NoArgsConstructor;
 public class OrderRentResponseEntity {
 	private int orderRentID;
 	
+	private double totalRentPriceProduct;
+	
+	private double shippingFee;
+	
 	private double total;
+	
+	private String customerAddress;
+	
+	private double cocMoneyTotal;
 	
 	private OrderRentStatus status;
 	
@@ -33,6 +41,10 @@ public class OrderRentResponseEntity {
 	            .map(dto -> OrderRentResponseEntity.builder()
 	                    .orderRentID(dto.getOrderRentID())
 	                    .total(dto.getTotal())
+	                    .totalRentPriceProduct(dto.getTotalRentPriceProduct())
+	                    .shippingFee(dto.getShippingFee())
+	                    .customerAddress(dto.getCustomerAddress())
+	                    .cocMoneyTotal(dto.getCocMoneyTotal())
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
@@ -45,6 +57,10 @@ public class OrderRentResponseEntity {
 		return OrderRentResponseEntity.builder()
                 .orderRentID(dto.getOrderRentID())
                 .total(dto.getTotal())
+                .totalRentPriceProduct(dto.getTotalRentPriceProduct())
+                .shippingFee(dto.getShippingFee())
+                .customerAddress(dto.getCustomerAddress())
+                .cocMoneyTotal(dto.getCocMoneyTotal())
                 .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
                 .customerID(dto.getCustomerDTO().getCustomerID())

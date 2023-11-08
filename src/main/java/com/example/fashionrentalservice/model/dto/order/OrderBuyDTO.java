@@ -35,6 +35,10 @@ public class OrderBuyDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderbuy_id", columnDefinition = "INT")
 	private int orderBuyID;
+	
+	private double totalBuyPriceProduct;
+	
+	private double shippingfee;
 
 	private double total;
 	

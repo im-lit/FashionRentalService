@@ -21,6 +21,5 @@ public class OrderRentDetailRequestEntity {
 	
 	private int productID;
 	
-	private int orderRentID;
 	
 }

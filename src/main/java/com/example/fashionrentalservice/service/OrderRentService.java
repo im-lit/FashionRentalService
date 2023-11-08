@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ import com.example.fashionrentalservice.exception.ProductIsRented;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotForSale;
 import com.example.fashionrentalservice.exception.ProductNotFoundByID;
+import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
 import com.example.fashionrentalservice.exception.WalletCusNotFound;
+import com.example.fashionrentalservice.exception.WalletInOrderServiceFailed;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
@@ -81,11 +84,11 @@ public class OrderRentService {
 		List<WalletDTO> listWallet = new ArrayList<>();
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 
 		for (OrderRentRequestEntity x : entity) {
 			CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
 			ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);
-
 			if (cus == null)
 				throw new CusNotFoundByID();
 			if (po == null)
@@ -97,12 +100,14 @@ public class OrderRentService {
 
 			OrderRentDTO orderRent = OrderRentDTO.builder()
 									.total(x.getTotal())
+									.totalRentPriceProduct(x.getTotalRentPriceProduct())
+									.shippingFee(x.getShippingFee())
+									.cocMoneyTotal(x.getCocMoneyTotal())
 									.dateOrder(LocalDate.now())
 									.status(OrderRentStatus.PENDING).customerAddress(x.getCustomerAddress()).customerDTO(cus)
 									.productownerDTO(po).build();
-			for (OrderRentDetailRequestEntity detail : x.getOrderRentDetail()) {
+			for (OrderRentDetailRequestEntity detail : x.getOrderRentDetail()) {				
 				ProductDTO product = productRepo.findById(detail.getProductID()).orElse(null);
-
 				if (product == null)
 					throw new ProductNotFoundByID();
 				if (product.getStatus() == ProductDTO.ProductStatus.SOLD_OUT) {
@@ -113,7 +118,9 @@ public class OrderRentService {
 					LocalDate newDate = LocalDate.parse(detail.getStartDate(), formatter);
 					List<OrderRentDetailDTO> list = renDetailService.getOrderRentDetailByProductIDAndCheckDate(product.getProductID(), newDate);
 					if (list.size() != 0) {
-						throw new ProductIsRented(product.getProductName());
+						int lastIndex = list.size() - 1;
+						OrderRentDetailDTO checkDate = list.get(lastIndex);
+						throw new ProductIsRented(product.getProductName(), checkDate.getEndDate());
 					}
 				}
 
@@ -129,54 +136,52 @@ public class OrderRentService {
 			}
 			listRent.add(orderRent);
 		}
-
+		
+        for (OrderRentDTO x : listRent) {
+        	WalletDTO checkCus = walletService.updateCusBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal(), x.getCocMoneyTotal());
+        	if(checkCus == null) 
+        		throw new WalletInOrderServiceFailed();
+        	listWallet.add(checkCus);
+        	
+        	WalletDTO checkPo = walletService.updatePOPendingMoneyAndCocMoneyReturnDTO(x.getProductownerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotalRentPriceProduct(), x.getCocMoneyTotal());
+        	if(checkPo == null) 
+        		throw new WalletInOrderServiceFailed();
+        	listWallet.add(checkPo);
+        	
+        	String totalFormarted = decimalFormat.format(x.getTotal());
+        	String cocMoneyFormarted = decimalFormat.format(x.getCocMoneyTotal());
+        	String totalRentPriceFormarted = decimalFormat.format(x.getTotalRentPriceProduct());
+        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
+        													.amount(x.getTotal())
+        													.transactionType("Thuê")
+        													.description("thanh toán hóa đơn thuê: -" + totalFormarted + " VND. "
+        															+ "Tiền cọc sản phẩm: -" + cocMoneyFormarted + " VND")
+        													.orderRentDTO(x)
+        													.accountDTO(x.getCustomerDTO().getAccountDTO())
+        													.build();      												
+        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+        	if(checkCusTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkCusTrans);
+        	
+        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+															.amount(x.getTotal())
+															.transactionType("Thuê")
+															.description("Nhận tiền từ hóa đơn thuê:  +" + totalRentPriceFormarted + " VND. "
+																	+ "Nhận tiền cọc sản phẩm: +" + cocMoneyFormarted + " VND")
+															.orderRentDTO(x)
+															.accountDTO(x.getProductownerDTO().getAccountDTO())
+															.build();
+        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+        	if(checkPOTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkPOTrans);
+		}
         rentRepo.saveAll(listRent);
         rentDetailRepo.saveAll(listOrderRentDetail);
-		productService.updateListProductStatusExceptRentingStatus(listProduct);
-//
-//        
-//        
-//        for (OrderBuyDTO x : listOrder) {
-//        	WalletDTO checkCus = walletService.updateBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
-//        	if(checkCus == null) 
-//        		throw new WalletInOrderServiceFailed();
-//        	
-//        	listWallet.add(checkCus);
-//        	
-//        	WalletDTO checkPo = walletService.updatePendingMoneyReturnDTO(x.getProductownerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
-//        	if(checkPo == null) 
-//        		throw new WalletInOrderServiceFailed();
-//        	
-//        	listWallet.add(checkPo);
-//        	
-//        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
-//        													.amount(x.getTotal())
-//        													.transactionType("Mua")
-//        													.description("thanh toan hóa đơn: " + x.getOrderBuyID() + ". -" +x.getTotal() + " VND")
-//        													.orderBuyDTO(x)
-//        													.accountDTO(x.getCustomerDTO().getAccountDTO())
-//        													.build();      												
-//        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
-//        	if(checkCusTrans == null) 
-//        		throw new TransactionHistoryCreatedFailed();
-//        	
-//        	listTrans.add(checkCusTrans);
-//        	
-//        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
-//															.amount(x.getTotal())
-//															.transactionType("Mua")
-//															.description("Nhận tiền từ hóa đơn: " + x.getOrderBuyID() + ". +" +x.getTotal() + " VND ")
-//															.orderBuyDTO(x)
-//															.accountDTO(x.getProductownerDTO().getAccountDTO())
-//															.build();
-//        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
-//        	if(checkPOTrans == null) 
-//        		throw new TransactionHistoryCreatedFailed();
-//        	listTrans.add(checkPOTrans);
-//		}
-//        
-//        walletRepo.saveAll(listWallet);
-//        transRepo.saveAll(listTrans);
+		productService.updateListProductStatusExceptRentingStatus(listProduct);  
+        walletRepo.saveAll(listWallet);
+        transRepo.saveAll(listTrans);
 
 		try {
 			return OrderRentResponseEntity.fromListOrderRentDTO(listRent);

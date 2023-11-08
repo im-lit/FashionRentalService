@@ -14,6 +14,12 @@ import lombok.NoArgsConstructor;
 public class OrderRentRequestEntity {
 
 	private double total;
+	
+	private double shippingFee;
+	
+	private double totalRentPriceProduct;
+	
+	private double cocMoneyTotal;
 		
 	private String customerAddress;
 	

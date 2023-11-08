@@ -20,6 +20,12 @@ public class OrderBuyResponseEntity {
 	
 	private double total;
 	
+	private double shippingFee;
+	
+	private double totalBuyPriceProduct;
+	
+	private String customerAddress;
+	
 	private OrderBuyStatus status;
 	
 	private LocalDate dateOrder;
@@ -37,6 +43,9 @@ public class OrderBuyResponseEntity {
 	            .map(dto -> OrderBuyResponseEntity.builder()
 	                    .orderBuyID(dto.getOrderBuyID())
 	                    .total(dto.getTotal())
+	                    .totalBuyPriceProduct(dto.getTotalBuyPriceProduct())
+	                    .shippingFee(dto.getShippingfee())
+	                    .customerAddress(dto.getCustomerAddress())
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
@@ -51,10 +60,15 @@ public class OrderBuyResponseEntity {
 		return OrderBuyResponseEntity.builder()
                 .orderBuyID(dto.getOrderBuyID())
                 .total(dto.getTotal())
+                .totalBuyPriceProduct(dto.getTotalBuyPriceProduct())
+                .shippingFee(dto.getShippingfee())
+                .customerAddress(dto.getCustomerAddress())
                 .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
                 .customerID(dto.getCustomerDTO().getCustomerID())
+                .customerName(dto.getCustomerDTO().getFullName())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
+                .productOwnerName(dto.getProductownerDTO().getFullName())
 				.build();
 	}
 }

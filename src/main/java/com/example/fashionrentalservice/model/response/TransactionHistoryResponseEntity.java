@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,8 @@ public class TransactionHistoryResponseEntity {
 	
 	private OrderBuyDTO orderBuyDTO;
 	
+	private OrderRentDTO orderRentDTO;
+	
 	private int accountID;
 	
 	public static TransactionHistoryResponseEntity fromTransactionHistoryDTO(TransactionHistoryDTO dto) {
@@ -37,6 +40,7 @@ public class TransactionHistoryResponseEntity {
 				.description(dto.getDescription())
 				.transactionDate(dto.getTransactionDate())
 				.orderBuyDTO(dto.getOrderBuyDTO())
+				.orderRentDTO(dto.getOrderRentDTO())
 				.accountID(dto.getAccountDTO().getAccountID())
 				.build();
 	}

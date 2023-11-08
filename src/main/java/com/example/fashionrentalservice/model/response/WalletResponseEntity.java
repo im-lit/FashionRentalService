@@ -20,6 +20,8 @@ public class WalletResponseEntity {
 	
 	private double balance;
 	
+	private double cocMoney;
+	
 	private LocalDate createdDate;
 	
 	private double pendingMoney;
@@ -30,6 +32,7 @@ public class WalletResponseEntity {
 		return WalletResponseEntity.builder()
 				.walletID(dto.getWalletID())
 				.balance(dto.getBalance())
+				.cocMoney(dto.getCocMoney())
 				.pendingMoney(dto.getPendingMoney())
 				.createdDate(dto.getCreatedDate())
 				.accountID(dto.getAccountDTO().getAccountID())

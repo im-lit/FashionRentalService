@@ -35,8 +35,14 @@ public class OrderRentDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderrent_id", columnDefinition = "INT")
 	private int orderRentID;
+	
+	private double totalRentPriceProduct;
+	
+	private double shippingFee;
 
 	private double total;
+	
+	private double cocMoneyTotal;
 	
 	private String customerAddress;
 	

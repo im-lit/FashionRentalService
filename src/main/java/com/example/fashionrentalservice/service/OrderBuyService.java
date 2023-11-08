@@ -87,8 +87,7 @@ public class OrderBuyService {
         
         for (OrderBuyRequestEntity x : entity) {
         	CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
-        	ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);
-        	   	
+        	ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);  	
         	if( cus == null)
         	    throw new CusNotFoundByID(); 	
         	if( po == null)
@@ -100,6 +99,8 @@ public class OrderBuyService {
         	
         	OrderBuyDTO orderBuy = OrderBuyDTO.builder()
         							.total(x.getTotal())
+        							.totalBuyPriceProduct(x.getTotalBuyPriceProduct())
+        							.shippingfee(x.getShippingFee())
         							.dateOrder(LocalDate.now())
         							.status(OrderBuyStatus.PENDING)
         							.customerAddress(x.getCustomerAddress())
@@ -108,7 +109,6 @@ public class OrderBuyService {
         							.build();        	
         	for (OrderBuyDetailRequestEntity detail : x.getOrderDetail()) {
         		ProductDTO product = productRepo.findById(detail.getProductID()).orElse(null);
-        		
         		if(product == null)
         			throw new ProductNotFoundByID();
         		if (product.getStatus() == ProductDTO.ProductStatus.SOLD_OUT || product.getStatus() == ProductDTO.ProductStatus.RENTING) {
@@ -125,40 +125,38 @@ public class OrderBuyService {
         		listProduct.add(detailBuy.getProductDTO());
 			}
         	listOrder.add(orderBuy);
-        }      
-        
+        }
+            
         for (OrderBuyDTO x : listOrder) {
+        	
         	WalletDTO checkCus = walletService.updateBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
         	if(checkCus == null) 
         		throw new WalletInOrderServiceFailed();
-        	
         	listWallet.add(checkCus);
         	
-        	WalletDTO checkPo = walletService.updatePendingMoneyReturnDTO(x.getProductownerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal());
+        	WalletDTO checkPo = walletService.updatePendingMoneyReturnDTO(x.getProductownerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotalBuyPriceProduct());
         	if(checkPo == null) 
         		throw new WalletInOrderServiceFailed();
-        	
         	listWallet.add(checkPo);
         	
         	String formatted = decimalFormat.format(x.getTotal());
-        	
+        	String TotalBuyPriceformatted = decimalFormat.format(x.getTotalBuyPriceProduct());
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(x.getTotal())
         													.transactionType("Mua")
-        													.description("thanh toan hóa đơn " + x.getOrderBuyID() + ": -" + formatted + " VND")
+        													.description("thanh toan hóa đơn: -" + formatted + " VND")
         													.orderBuyDTO(x)
         													.accountDTO(x.getCustomerDTO().getAccountDTO())
         													.build();      												
         	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
         	if(checkCusTrans == null) 
         		throw new TransactionHistoryCreatedFailed();
-        	
         	listTrans.add(checkCusTrans);
         	
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
 															.amount(x.getTotal())
 															.transactionType("Mua")
-															.description("Nhận tiền từ hóa đơn " + x.getOrderBuyID() + ": +" + formatted + " VND ")
+															.description("Nhận tiền từ hóa đơn: +" + TotalBuyPriceformatted + " VND ")
 															.orderBuyDTO(x)
 															.accountDTO(x.getProductownerDTO().getAccountDTO())
 															.build();
@@ -215,15 +213,13 @@ public class OrderBuyService {
 		OrderBuyDTO check = buyRepo.findById(orderBuyID).orElse(null);
 		if(check == null) 
 			throw new OrderBuyNotFoundFailed();
+		
 		WalletDTO checkWalletPO = check.getProductownerDTO().getAccountDTO().getWalletDTO();
 		WalletDTO checkWalletCus = check.getCustomerDTO().getAccountDTO().getWalletDTO();
-		
-		if(checkWalletPO == null) {
+		if(checkWalletPO == null) 
 			throw new WalletPoNotFound();
-		}
-		if(checkWalletCus == null) {
+		if(checkWalletCus == null) 
 			throw new WalletCusNotFound();
-		}		
 		
 		if(status == OrderBuyStatus.COMPLETED) 
 			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotal());		
@@ -232,6 +228,7 @@ public class OrderBuyService {
 			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotal());		
 		
 		check.setStatus(status);
+		
 		return  OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));
 	}
 	

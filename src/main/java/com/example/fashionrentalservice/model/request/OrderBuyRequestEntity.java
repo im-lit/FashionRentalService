@@ -13,6 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderBuyRequestEntity {
 
+	
+	private double totalBuyPriceProduct;
+	
+	private double shippingFee;
+	
 	private double total;
 	
 	private String customerAddress;

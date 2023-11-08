@@ -159,6 +159,44 @@ public class WalletService {
 		return cusWallet;
 	}
 	
+	
+	//================================== Thuê ========================================
+	
+	
+	
+	  //================================== Tru`(-) tien CustomerBalance returnDTO cho createOrderRent ========================================
+    public WalletDTO updateCusBalanceReturnDTO(int walletID, double balance, double cocMoney) throws  CrudException {
+        WalletDTO dto = walletRepo.findById(walletID).orElse(null);
+        if(dto == null)
+        	throw new StaffNotFoundByID();
+        double oldBalance = dto.getBalance();
+        double newBalance = oldBalance - (balance + cocMoney);
+        if (newBalance < 0) {
+            throw new BalanceNegative();
+        }
+        dto.setBalance(newBalance);
+        return dto;
+    }
+    
+    
+	  //================================== cộng tiền OrderRent vào PO pendingMoney và CocMoney vào PO cocMoney ========================================
+    public WalletDTO updatePOPendingMoneyAndCocMoneyReturnDTO(int walletID, double pendingMoney, double cocMoney) throws  CrudException {
+        WalletDTO dto = walletRepo.findById(walletID).orElse(null);
+        if(dto == null)
+        	throw new StaffNotFoundByID();
+        double oldPendingMoney = dto.getPendingMoney();
+        double newPendingMoney = oldPendingMoney + pendingMoney;
+        if (newPendingMoney < 0) {
+            throw new BalanceNegative();
+        }
+        dto.setPendingMoney(newPendingMoney);
+        
+        double oldCocMoney = dto.getCocMoney();
+        double newCocMoney = oldCocMoney + cocMoney;
+        dto.setCocMoney(newCocMoney);
+        return dto;
+    }
+	
     //================================== Xóa Wallet bởi ID========================================  
     public WalletResponseEntity deleteWallet(int walletID) throws CrudException {
     	WalletDTO dto = walletRepo.findById(walletID).orElse(null);   	

@@ -2,6 +2,7 @@ package com.example.fashionrentalservice.controller;
 
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,6 +61,7 @@ public class VNPayController {
 
 	@GetMapping("/vnpay-payment")
     public ModelAndView GetMapping(HttpServletRequest request, Model model) throws CrudException{
+		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 
         String orderInfo = request.getParameter("vnp_OrderInfo");
         String paymentTime = request.getParameter("vnp_PayDate");
@@ -78,7 +80,8 @@ public class VNPayController {
         	TransactionHistoryRequestEntity entity = new TransactionHistoryRequestEntity();
         	entity.setAccountID(accountIDLocal);
         	entity.setAmount(amount);
-        	entity.setDescription("nap " + amount + " tu ngan hang NCB");
+        	String amountFormated = decimalFormat.format(amount);
+        	entity.setDescription("nap " + amountFormated + " tu ngan hang NCB");
         	entity.setTransactionType("nap tien");       	
         	transService.createTransactionHistory(entity);      	
         }

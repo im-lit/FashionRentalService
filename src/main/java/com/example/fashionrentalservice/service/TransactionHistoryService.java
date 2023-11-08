@@ -72,6 +72,7 @@ public class TransactionHistoryService {
                 .description(entity.getDescription())
                 .transactionDate(LocalDate.now())
                 .orderBuyDTO(entity.getOrderBuyDTO())
+                .orderRentDTO(entity.getOrderRentDTO())
                 .accountDTO(entity.getAccountDTO())
                 .build();
         return dto;
