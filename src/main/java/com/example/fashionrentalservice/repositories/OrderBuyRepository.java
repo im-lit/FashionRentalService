@@ -10,21 +10,64 @@ import org.springframework.data.repository.query.Param;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 
 public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
-	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 ORDER BY dto.orderBuyID DESC")
-	List<OrderBuyDTO>findAllOrderBuyByCustomerID(int customerID);
 	
-	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY dto.orderBuyID DESC")
-	List<OrderBuyDTO>findAllOrderBuyByProductOwnerID(int productownerID);
+	//----------------------------------------------------Customer----------------------------------------------------
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllPendingOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'CANCELED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllCanceledOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PREPARE' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllPrepareOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'READY_PICKUP' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllReadyPickUpOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllConfirmingOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'REJECTING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllRejectingOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'REJECTING_COMPLETED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllRejectingCompletedOrderBuyByCustomerID(int customerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'COMPLETED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllCompletedOrderBuyByCustomerID(int customerID);
+	
+	
+	
+	//----------------------------------------------------PO------------------------------------------------------------------------------
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllPendingOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'CANCELED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllCanceledOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'PREPARE' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllPrepareOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'READY_PICKUP' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllReadyPickUpOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllConfirmingOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'REJECTING' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllRejectingOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'REJECTING_COMPLETED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllRejectingCompletedOrderBuyByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'COMPLETED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllCompletedOrderBuyByProductOwnerID(int productownerID);
+	
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")
 	List<OrderBuyDTO> getTotal1MonthByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDate startDate);
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")
 	List<OrderBuyDTO> getTotal1WeekByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDate startDate);
-
-
-
-		
-	
 
 }

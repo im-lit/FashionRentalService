@@ -50,15 +50,69 @@ public class OrderBuyController {
 	}
 	
 	
-	@GetMapping("/customer/{customerID}")
-	private ResponseEntity getAllOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
-		return ResponseEntity.ok().body(buyService.getAllOrderByCustomerID(customerID));
+	@GetMapping("/customer/pending/{customerID}")
+	private ResponseEntity getAllPendingOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllPendingOrderByCustomerID(customerID));
+	}
+	@GetMapping("/customer/rejecting/{customerID}")
+	private ResponseEntity getAllRejectingOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingOrderByCustomerID(customerID));
+	}
+	@GetMapping("/customer/rejectingcompleted/{customerID}")
+	private ResponseEntity getAllRejectingCompletedOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByCustomerID(customerID));
+	}
+	@GetMapping("/customer/readypick/{customerID}")
+	private ResponseEntity getAllReadyPickUpOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllReadyPickUpOrderCustomerID(customerID));
+	}
+	@GetMapping("/customer/canceled/{customerID}")
+	private ResponseEntity getAllCanceledOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllCanceledOrderByCustomerID(customerID));
+	}
+	@GetMapping("/customer/completed/{customerID}")
+	private ResponseEntity getAllCompletedOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByCustomerID(customerID));
+	}
+	@GetMapping("/customer/prepare/{customerID}")
+	private ResponseEntity getAllPrepareOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllPrepareOrderByCustomerID(customerID));
 	}
 	
-	@GetMapping("/po/{productownerID}")
-	private ResponseEntity getAllOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
-		return ResponseEntity.ok().body(buyService.getAllOrderByProductOwnerID(productownerID));
+	
+	
+	
+	
+	@GetMapping("/po/pending/{productownerID}")
+	private ResponseEntity getAllPendingOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllPendingOrderByProductOwnerID(productownerID));
 	}
+	
+	@GetMapping("/po/rejecting/{productownerID}")
+	private ResponseEntity getAllRejectingOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingOrderByProductOwnerID(productownerID));
+	}
+	@GetMapping("/po/rejectingcompleted/{productownerID}")
+	private ResponseEntity getAllRejectingCompletedOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByProductOwnerID(productownerID));
+	}
+	@GetMapping("/po/readypick/{productownerID}")
+	private ResponseEntity getAllReadyPickUpOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllReadyPickUpOrderByProductOwnerID(productownerID));
+	}
+	@GetMapping("/po/canceled/{productownerID}")
+	private ResponseEntity getAllCanceledOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllCanceledOrderByProductOwnerID(productownerID));
+	}
+	@GetMapping("/po/completed/{productownerID}")
+	private ResponseEntity getAllCompletedOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByProductOwnerID(productownerID));
+	}
+	@GetMapping("/po/prepare/{productownerID}")
+	private ResponseEntity getAllPrepareOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllPrepareOrderByProductOwnerID(productownerID));
+	}
+	
 	
 	@GetMapping("/1month/{productownerID}")
 	private ResponseEntity getOrderBuy1Month(@PathVariable int productownerID) throws CrudException{

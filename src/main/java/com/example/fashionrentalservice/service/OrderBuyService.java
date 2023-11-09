@@ -183,23 +183,89 @@ public class OrderBuyService {
             throw new CreateOrderFailed();
         } 
     }
-
-//================================== Lay tat ca Order by CustomerID========================================
-	public List<OrderBuyResponseEntity> getAllOrderByCustomerID(int customerID) {
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllOrderBuyByCustomerID(customerID));
+    
+    
+    /*-------------------------------------------------- Customer OrderBuy ------------------------------------------------------------------------------*/
+    //================================== Lay tat ca Order by CustomerID================================================================
+	public List<OrderBuyResponseEntity> getAllPendingOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPendingOrderBuyByCustomerID(customerID));
 	}
 	
-	//================================== Lay tat ca Order by ProductOwnerID========================================
-	public List<OrderBuyResponseEntity> getAllOrderByProductOwnerID(int productownerID) {
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllOrderBuyByProductOwnerID(productownerID));
+	//================================== Lay tat ca CANCELED OrderBUY by CustomerID================================================
+	public List<OrderBuyResponseEntity> getAllCanceledOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCanceledOrderBuyByCustomerID(customerID));
 	}
 	
-	//================================== Lay tat ca Order ========================================
+	//================================== Lay tat ca PREPARE OrderBUY by CustomerID=================================================
+	public List<OrderBuyResponseEntity> getAllPrepareOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPrepareOrderBuyByCustomerID(customerID));
+	}
+	
+	//================================== Lay tat ca REJECTING OrderBUY by CustomerID===============================================
+	public List<OrderBuyResponseEntity> getAllRejectingOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingOrderBuyByCustomerID(customerID));
+	}
+	
+	//================================== Lay tat ca REJECTING_COMPLETED OrderBUY by CustomerID=====================================
+	public List<OrderBuyResponseEntity> getAllRejectingCompletedOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingCompletedOrderBuyByCustomerID(customerID));
+	}
+	
+	//================================== Lay tat ca CONFIRMING OrderBUY by CustomerID==============================================
+	public List<OrderBuyResponseEntity> getAllConfirmingOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllConfirmingOrderBuyByCustomerID(customerID));
+	}
+	
+	//================================== Lay tat ca READY_PICKUP OrderBUY by CustomerID============================================
+	public List<OrderBuyResponseEntity> getAllReadyPickUpOrderCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllReadyPickUpOrderBuyByCustomerID(customerID));
+	}
+	
+	
+	
+	
+	/*-------------------------------------------------- Productowner OrderBuy ------------------------------------------------------------------------------*/
+	//================================== Lay tat ca PENDING OrderBUY by ProductOwnerID=================================================
+	public List<OrderBuyResponseEntity> getAllPendingOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPendingOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca CANCELED OrderBUY by ProductOwnerID================================================
+	public List<OrderBuyResponseEntity> getAllCanceledOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCanceledOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca PREPARE OrderBUY by ProductOwnerID=================================================
+	public List<OrderBuyResponseEntity> getAllPrepareOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPrepareOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca REJECTING OrderBUY by ProductOwnerID===============================================
+	public List<OrderBuyResponseEntity> getAllRejectingOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca REJECTING_COMPLETED OrderBUY by ProductOwnerID=====================================
+	public List<OrderBuyResponseEntity> getAllRejectingCompletedOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingCompletedOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca CONFIRMING OrderBUY by ProductOwnerID==============================================
+	public List<OrderBuyResponseEntity> getAllConfirmingOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllConfirmingOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca READY_PICKUP OrderBUY by ProductOwnerID============================================
+	public List<OrderBuyResponseEntity> getAllReadyPickUpOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllReadyPickUpOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca OrderBuy ==========================================================================
 	public List<OrderBuyResponseEntity> getAllOrder() {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll());
 	}
 	
-	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID ========================================
+	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID =============================================
 	public List<OrderBuyResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
 		LocalDate startDate = LocalDate.now().minusMonths(1);
 		List<OrderBuyDTO> list = buyRepo.getTotal1MonthByProductOwnerID(productOwnerID, startDate);
