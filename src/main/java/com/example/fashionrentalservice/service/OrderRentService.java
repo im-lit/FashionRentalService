@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.CreateOrderFailed;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
+import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.ProductIsRented;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
@@ -19,11 +20,13 @@ import com.example.fashionrentalservice.exception.ProductNotFoundByID;
 import com.example.fashionrentalservice.exception.TransactionHistoryCreatedFailed;
 import com.example.fashionrentalservice.exception.WalletCusNotFound;
 import com.example.fashionrentalservice.exception.WalletInOrderServiceFailed;
+import com.example.fashionrentalservice.exception.WalletPoNotFound;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
@@ -31,6 +34,7 @@ import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderRentDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
+import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderRentResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
@@ -220,29 +224,30 @@ public class OrderRentService {
 		return OrderRentResponseEntity.fromListOrderRentDTO(list);
 	}
 
-	// ================================== UpdateOrderStatus // ========================================
-//	public OrderBuyResponseEntity updateOrderBuyByOrderBuyID(int orderBuyID, OrderBuyStatus status) throws CrudException {
-//		OrderBuyDTO check = rentRepo.findById(orderBuyID).orElse(null);
-//		if (check == null)
-//			throw new OrderBuyNotFoundFailed();
-//		WalletDTO checkWalletPO = check.getProductownerDTO().getAccountDTO().getWalletDTO();
-//		WalletDTO checkWalletCus = check.getCustomerDTO().getAccountDTO().getWalletDTO();
-//
-//		if (checkWalletPO == null) {
-//			throw new WalletPoNotFound();
-//		}
-//		if (checkWalletCus == null) {
-//			throw new WalletCusNotFound();
-//		}
-//
-//		if (status == OrderBuyStatus.COMPLETED)
-//			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotal());
-//
-//		if (status == OrderBuyStatus.CANCELED)
-//			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus, checkWalletPO, check.getTotal());
-//
-//		check.setStatus(status);
-//		return OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));
-//	}
+// ================================== UpdateOrderRentStatus  ========================================
+	public OrderRentResponseEntity updateOrderRentByOrderRentID(int orderRentID, OrderRentStatus status) throws CrudException {
+		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
+		if (check == null)
+			throw new OrderBuyNotFoundFailed();
+		WalletDTO checkWalletPO = check.getProductownerDTO().getAccountDTO().getWalletDTO();
+		WalletDTO checkWalletCus = check.getCustomerDTO().getAccountDTO().getWalletDTO();
 
+		if (checkWalletPO == null) 
+			throw new WalletPoNotFound();
+		if (checkWalletCus == null) 
+			throw new WalletCusNotFound();
+		
+
+		if (status == OrderRentStatus.COMPLETED)
+			walletService.updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
+		if (status == OrderRentStatus.CANCELED)
+			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
+		if (status == OrderRentStatus.REJECTING_COMPLETED)
+			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
+		
+		check.setStatus(status);
+		
+		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
+
+		}
 }

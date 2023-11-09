@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
 import com.example.fashionrentalservice.service.OrderRentDetailService;
 import com.example.fashionrentalservice.service.OrderRentService;
@@ -38,13 +41,13 @@ public class OrderRentController {
 	
 	@PostMapping
 	private ResponseEntity createOrderRentAndOrderRentDetail(@RequestBody List<OrderRentRequestEntity> entity) throws CrudException {			
-		return ResponseEntity.ok().body( rentService.createOrderRent(entity));
+		return ResponseEntity.ok().body(rentService.createOrderRent(entity));
 	}
 	
-//	@PutMapping
-//	private ResponseEntity updateStatusOrder(@RequestParam int orderRentID, @RequestParam OrderRentStatus status) throws CrudException{
-//		return ResponseEntity.ok().body(rentService.(orderRentID, status));
-//	}
+	@PutMapping
+	private ResponseEntity updateStatusOrder(@RequestParam int orderRentID, @RequestParam OrderRentStatus status) throws CrudException{
+		return ResponseEntity.ok().body(rentService.updateOrderRentByOrderRentID(orderRentID, status));
+	}
 	
 	
 	@GetMapping("/customer/{customerID}")
@@ -53,17 +56,17 @@ public class OrderRentController {
 	}
 	
 	@GetMapping("/po/{productownerID}")
-	private ResponseEntity getAllOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+	private ResponseEntity getAllOrderRentByProductOwnerID(@PathVariable int productownerID) throws CrudException{
 		return ResponseEntity.ok().body(rentService.getAllOrderRentByProductOwnerID(productownerID));
 	}
 	
 	@GetMapping("/1month/{productownerID}")
-	private ResponseEntity getOrderBuy1Month(@PathVariable int productownerID) throws CrudException{
+	private ResponseEntity getOrderRent1Month(@PathVariable int productownerID) throws CrudException{
 		return ResponseEntity.ok().body(rentService.getTotal1MonthOrderByProductOwnerID(productownerID));
 	}
 	
 	@GetMapping("/1week/{productownerID}")
-	private ResponseEntity getOrderBuy1week(@PathVariable int productownerID) throws CrudException{
+	private ResponseEntity getOrderRent1week(@PathVariable int productownerID) throws CrudException{
 		return ResponseEntity.ok().body(rentService.getTotalOrderRent1WeekOrderByProductOwnerID(productownerID));
 	}
 	

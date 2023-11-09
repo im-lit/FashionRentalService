@@ -119,9 +119,9 @@ public class WalletService {
 
 		oldPendingMoney = dto.getPendingMoney();
 		newPendingMoney = oldPendingMoney - orderTotal;
-		if (newPendingMoney < 0) {
-			throw new PendingMoneyNegative();
-		}
+        if (newPendingMoney < 0) {
+            throw new PendingMoneyNegative("PendingMoney can not be a negative number!");
+        }
 
 		dto.setPendingMoney(newPendingMoney);
 
@@ -142,9 +142,9 @@ public class WalletService {
 		List<WalletDTO> list = new ArrayList<>();
 		
 		newPendingMoney = poWallet.getPendingMoney() - orderTotal;
-		if (newPendingMoney < 0) {
-			throw new PendingMoneyNegative();
-		}
+        if (newPendingMoney < 0) {
+            throw new PendingMoneyNegative("PendingMoney can not be a negative number!");
+        }
 		poWallet.setPendingMoney(newPendingMoney);
 		list.add(poWallet);
 		
@@ -187,7 +187,7 @@ public class WalletService {
         double oldPendingMoney = dto.getPendingMoney();
         double newPendingMoney = oldPendingMoney + pendingMoney;
         if (newPendingMoney < 0) {
-            throw new BalanceNegative();
+            throw new PendingMoneyNegative("PendingMoney can not be a negative");
         }
         dto.setPendingMoney(newPendingMoney);
         
@@ -195,6 +195,64 @@ public class WalletService {
         double newCocMoney = oldCocMoney + cocMoney;
         dto.setCocMoney(newCocMoney);
         return dto;
+    }
+    
+    //================================== trừ tiền OrderRent pendingMoney và cộng tiền OrderRent vào PO Balance,  trả CocMoney từ PO vào  Cus Balance ========================================
+    public WalletDTO updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(WalletDTO cusWallet, WalletDTO poWallet, double rentProductTotal, double cocMoneyTotal) throws CrudException {
+    	List<WalletDTO> list = new ArrayList<>();
+    	double cocMoney;
+    	double newPendingMoney;
+    	double newBalancePO;
+    	double newBalanceCus;
+    	
+    	newPendingMoney = poWallet.getPendingMoney() - rentProductTotal;
+        if (newPendingMoney < 0) 
+          throw new PendingMoneyNegative("PendingMoney can not be a negative number!");
+    	poWallet.setPendingMoney(newPendingMoney);
+    	
+    	newBalancePO = poWallet.getBalance() + rentProductTotal;
+    	poWallet.setBalance(newBalancePO);
+    	
+    	cocMoney = poWallet.getCocMoney() - cocMoneyTotal;
+    	if (cocMoney < 0) 
+            throw new PendingMoneyNegative("Coc Money can not be a neagtive number!");
+    	poWallet.setCocMoney(cocMoney);
+    	list.add(poWallet);
+    	
+    	newBalanceCus = cusWallet.getBalance() + cocMoneyTotal;
+    	cusWallet.setBalance(newBalanceCus);  	
+    	list.add(cusWallet);
+    	
+    	walletRepo.saveAll(list);
+
+    	return cusWallet;
+    }
+    
+    //================================== trừ tiền OrderRent trong pendingMoney của PO sau đó cộng tiền OrderRent vào Cus Balance,  trả CocMoney từ PO vào Cus Balance ========================================
+    public WalletDTO updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(WalletDTO cusWallet, WalletDTO poWallet, double rentProductTotal, double cocMoneyTotal) throws CrudException {
+    List<WalletDTO> list = new ArrayList<>();
+	double newCocMoney;
+	double newPendingMoney;
+	double newBalanceCus;
+	
+	newPendingMoney = poWallet.getPendingMoney() - rentProductTotal;
+	if (newPendingMoney < 0) 
+        throw new PendingMoneyNegative("Pending Money can not be a neagtive number!");
+	poWallet.setPendingMoney(newPendingMoney);
+	
+	newCocMoney = poWallet.getCocMoney() - cocMoneyTotal;
+	if (newCocMoney < 0) 
+        throw new PendingMoneyNegative("Coc Money can not be a neagtive number!");
+	poWallet.setCocMoney(newCocMoney);
+	list.add(poWallet);
+	
+	newBalanceCus = cusWallet.getBalance() + rentProductTotal + cocMoneyTotal;
+	cusWallet.setBalance(newBalanceCus);
+	list.add(cusWallet);
+	
+	walletRepo.saveAll(list);
+	
+	return cusWallet;
     }
 	
     //================================== Xóa Wallet bởi ID========================================  

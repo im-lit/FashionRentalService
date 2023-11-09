@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 import com.example.fashionrentalservice.model.request.ProductRentalPricesRequestEntity;
-import com.example.fashionrentalservice.model.response.CustomerResponseEntity;
 import com.example.fashionrentalservice.model.response.ProductRentalPricesResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductRentalPricesRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;

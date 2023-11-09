@@ -222,10 +222,13 @@ public class OrderBuyService {
 			throw new WalletCusNotFound();
 		
 		if(status == OrderBuyStatus.COMPLETED) 
-			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotal());		
+			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotalBuyPriceProduct());		
 		
 		if(status == OrderBuyStatus.CANCELED) 
-			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotal());		
+			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
+		
+		if(status == OrderBuyStatus.REJECTING_COMPLETED) 
+			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
 		
 		check.setStatus(status);
 		

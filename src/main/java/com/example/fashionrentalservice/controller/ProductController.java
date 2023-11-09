@@ -43,11 +43,11 @@ public class ProductController {
 	private ResponseEntity getAllProduct() throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProduct());
 	}
-	@GetMapping("/getallonsale")
+	@GetMapping("/onsale")
 	private ResponseEntity getAllProductOnSale() throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProductsOnSale());
 	}
-	@GetMapping("/getallonrent")
+	@GetMapping("/onrent")
 	private ResponseEntity getAllProductOnRent() throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProductsOnRent());
 	}
