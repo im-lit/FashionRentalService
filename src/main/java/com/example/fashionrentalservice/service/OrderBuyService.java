@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.controller.AccountTransactionHistoryController;
 import com.example.fashionrentalservice.exception.CreateOrderFailed;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
@@ -149,7 +150,7 @@ public class OrderBuyService {
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(x.getTotal())
         													.transactionType("Mua")
-        													.description("thanh toan hóa đơn: -" + formatted + " VND")
+        													.description("Thanh toán hóa đơn: -" + formatted + " VND")
         													.orderBuyDTO(x)
         													.accountDTO(x.getCustomerDTO().getAccountDTO())
         													.build();      												
@@ -282,6 +283,10 @@ public class OrderBuyService {
 	//================================== UpdateOrderStatus .  ========================================
 	public OrderBuyResponseEntity updateOrderBuyByOrderBuyID(int orderBuyID, OrderBuyStatus status) throws CrudException {
 		OrderBuyDTO check = buyRepo.findById(orderBuyID).orElse(null);
+		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
+		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
+		
+		
 		if(check == null) 
 			throw new OrderBuyNotFoundFailed();
 		
@@ -292,26 +297,59 @@ public class OrderBuyService {
 		if(checkWalletCus == null) 
 			throw new WalletCusNotFound();
 		
-		if(status == OrderBuyStatus.COMPLETED) 
-			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotalBuyPriceProduct());		
+		if(status == OrderBuyStatus.COMPLETED) { 
+			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotalBuyPriceProduct());
+			String TotalBuyPriceformatted = decimalFormat.format(check.getTotalBuyPriceProduct());	
+			TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+														.amount(check.getTotalBuyPriceProduct())
+														.transactionType("Mua")
+														.description("Hoàn tất đơn hàng : +" + TotalBuyPriceformatted + " VND vào số dư ví.")
+														.orderBuyDTO(check)
+														.accountDTO(check.getProductownerDTO().getAccountDTO())
+														.build();
+			TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+			if(checkPOTrans == null) 
+				throw new TransactionHistoryCreatedFailed();
+			
+			transRepo.save(checkPOTrans);
+		}
 		
-		if(status == OrderBuyStatus.CANCELED) { 
+		if(status == OrderBuyStatus.CANCELED || status == OrderBuyStatus.REJECTING_COMPLETED) { 
 			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
+		
+        	String TotalBuyPriceformatted = decimalFormat.format(check.getTotalBuyPriceProduct());
+        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
+        													.amount(check.getTotalBuyPriceProduct())
+        													.transactionType("Mua")
+        													.description("Hoàn tiền hóa đơn: +" + TotalBuyPriceformatted + " VND")
+        													.orderBuyDTO(check)
+        													.accountDTO(check.getCustomerDTO().getAccountDTO())
+        													.build();      												
+        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+        	if(checkCusTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkCusTrans);
+        	
+        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+															.amount(check.getTotalBuyPriceProduct())
+															.transactionType("Mua")
+															.description("Hoàn trả tiền đơn hàng : -" + TotalBuyPriceformatted + " VND ")
+															.orderBuyDTO(check)
+															.accountDTO(check.getProductownerDTO().getAccountDTO())
+															.build();
+        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+        	if(checkPOTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkPOTrans);
+    
 			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
 				for (OrderBuyDetailDTO x : list) {
 					ProductDTO productt = x.getProductDTO();
 					productt.setStatus(ProductStatus.AVAILABLE);	
 				}
-		}
-		
-		if(status == OrderBuyStatus.REJECTING_COMPLETED) { 
-			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
-			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
-				for (OrderBuyDetailDTO x : list) {
-					ProductDTO productt = x.getProductDTO();
-					productt.setStatus(ProductStatus.AVAILABLE);	
-				}
-		}
+				
+			transRepo.saveAll(listTrans);
+		}	
 		
 		check.setStatus(status);
 		

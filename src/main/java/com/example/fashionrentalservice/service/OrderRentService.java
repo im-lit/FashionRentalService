@@ -227,6 +227,9 @@ public class OrderRentService {
 // ================================== UpdateOrderRentStatus  ========================================
 	public OrderRentResponseEntity updateOrderRentByOrderRentID(int orderRentID, OrderRentStatus status) throws CrudException {
 		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
+		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
+		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
+		
 		if (check == null)
 			throw new OrderBuyNotFoundFailed();
 		WalletDTO checkWalletPO = check.getProductownerDTO().getAccountDTO().getWalletDTO();
@@ -237,13 +240,72 @@ public class OrderRentService {
 		if (checkWalletCus == null) 
 			throw new WalletCusNotFound();
 		
-
-		if (status == OrderRentStatus.COMPLETED)
+// Thành công thì ghi Log , PO Nhận tiền hóa đơn hoàn tất  và trả tiền cọc, CusTomer nhận lại tiền cọc. 
+		if (status == OrderRentStatus.COMPLETED) {	
 			walletService.updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
-		if (status == OrderRentStatus.CANCELED)
+			
+        	String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal());
+        	String totalRentPriceFormarted = decimalFormat.format(check.getTotalRentPriceProduct());
+        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
+        													.amount(check.getCocMoneyTotal())
+        													.transactionType("Thuê")
+        													.description("Nhận lại tiền cọc từ hóa đơn : +" + cocMoneyFormarted + " VND.")
+        													.orderRentDTO(check)
+        													.accountDTO(check.getCustomerDTO().getAccountDTO())
+        													.build();      												
+        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+        	if(checkCusTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkCusTrans);
+        	
+        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+															.amount(check.getTotalRentPriceProduct())
+															.transactionType("Thuê")
+															.description("Nhận tiền hoàn tất hóa đơn thuê:  +" + totalRentPriceFormarted + " VND vào số dư ví. "
+																	+ "Hoàn trả tiền cọc hóa đơn : -" + cocMoneyFormarted + " VND")
+															.orderRentDTO(check)
+															.accountDTO(check.getProductownerDTO().getAccountDTO())
+															.build();
+        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+        	if(checkPOTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	
+        	listTrans.add(checkPOTrans);
+			transRepo.saveAll(listTrans);
+		}
+// Canceled  thì ghi Log , PO trả tiền hóa đơn cho CUS và trả tiền cọc, CusTomer nhận lại tiền cọc + hoàn lại tiền hóa đơn, 
+		if (status == OrderRentStatus.CANCELED || status == OrderRentStatus.REJECTING_COMPLETED) {
 			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
-		if (status == OrderRentStatus.REJECTING_COMPLETED)
-			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
+		
+			String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal());
+			String totalRentPriceFormarted = decimalFormat.format(check.getTotalRentPriceProduct());
+			TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
+    													.amount(check.getCocMoneyTotal() + check.getTotalRentPriceProduct())
+    													.transactionType("Thuê")
+    													.description("Hoàn tiền cọc từ hóa đơn : +" + cocMoneyFormarted + " VND. Hoàn trả tiền hóa đơn: +" + totalRentPriceFormarted + " VND")
+    													.orderRentDTO(check)
+    													.accountDTO(check.getCustomerDTO().getAccountDTO())
+    													.build();      												
+			TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+			if(checkCusTrans == null) 
+				throw new TransactionHistoryCreatedFailed();
+			listTrans.add(checkCusTrans);
+    	
+			TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+														.amount(check.getTotalRentPriceProduct())
+														.transactionType("Thuê")
+														.description("Hoàn trả tiền hóa đơn thuê:  -" + totalRentPriceFormarted + " VND. "
+																+ "Hoàn trả tiền cọc hóa đơn : -" + cocMoneyFormarted + " VND")
+														.orderRentDTO(check)
+														.accountDTO(check.getProductownerDTO().getAccountDTO())
+														.build();
+			TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+			if(checkPOTrans == null) 
+				throw new TransactionHistoryCreatedFailed();
+    	
+			listTrans.add(checkPOTrans);
+			transRepo.saveAll(listTrans);
+		}
 		
 		check.setStatus(status);
 		
