@@ -65,12 +65,16 @@ public class VoucherService {
 	//================================== List All Voucher ========================================
 		public List<VoucherResponseEntity> getVoucherByProductOwnerIDNotExpired(int productowner) throws  CrudException {
 			List<VoucherDTO> dto = voucherRepo.findByProductOwnerID(productowner);
+			
 			if(dto==null) {
 				throw new StaffNotFoundByID();
 			}
 			List<VoucherDTO> expiredList = new ArrayList<>();
-			for (VoucherDTO x : dto) {
-				long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
+			for (VoucherDTO x : dto)
+			{
+				LocalDate currentDate =LocalDate.now();
+			    long daysBetween = ChronoUnit.DAYS.between(currentDate, x.getEndDate());
+			//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
 				if(daysBetween < 0) 
 				expiredList.add(x);
 			}
@@ -97,13 +101,20 @@ public class VoucherService {
 		long daysBetween = ChronoUnit.DAYS.between(entity.getStartDate(), entity.getEndDate());
 		if(daysBetween < 0) 
 			throw new DaysBetweenTwoDays();
+		
 		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
 	}
 	
 	//================================== Update Status Voucher ========================================
     public VoucherResponseEntity updateStatusVoucherByVoucherID(int voucherID,Boolean status) throws CrudException {
         VoucherDTO dto = voucherRepo.findById(voucherID).orElseThrow();
-        dto.setStatus(status);    
+        LocalDate currentDate =LocalDate.now();
+        long daysBetween = ChronoUnit.DAYS.between(currentDate, dto.getEndDate());
+   if(daysBetween <0) {
+	   	dto.setStatus(false);
+   }else {
+	   dto.setStatus(status);
+   }    
         	return VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));
     }
 

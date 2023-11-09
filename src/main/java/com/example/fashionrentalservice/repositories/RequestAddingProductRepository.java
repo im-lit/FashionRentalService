@@ -10,5 +10,7 @@ import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDT
 public interface RequestAddingProductRepository extends JpaRepository<RequestAddingProductDTO, Integer>{
 	@Query("SELECT dto FROM RequestAddingProductDTO dto WHERE dto.status = 'APPROVING' AND dto.productDTO.status = 'WAITING' ORDER BY dto.requestAddingProductID DESC")
 	List<RequestAddingProductDTO>findApprovingRequest();
+	
+	
 
 }

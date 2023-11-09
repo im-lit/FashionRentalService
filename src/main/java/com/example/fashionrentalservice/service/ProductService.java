@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.ProductStatusNotApproved;
 import com.example.fashionrentalservice.exception.ProductStatusOnSale;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
@@ -72,16 +73,19 @@ public class ProductService {
      			dto.setStatus(ProductStatus.BLOCKED);
      		}else if(dto.getStatus().equals(ProductStatus.BLOCKED)) {
      			dto.setStatus(ProductStatus.AVAILABLE);
-     		}
+     		}   	
     	 }
- 	 
     	 else if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.APPROVING)){
     		 if(dto.getStatus().equals(ProductStatus.WAITING)) {
       			dto.setStatus(ProductStatus.BLOCKED);
       		}else if(dto.getStatus().equals(ProductStatus.BLOCKED)) {
       			dto.setStatus(ProductStatus.WAITING);
       		}
-    	 }	
+    		
+    	 } else if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.NOT_APPROVED)){
+    		 throw new ProductStatusNotApproved();
+    	 }
+    	
     
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
     }
@@ -89,8 +93,7 @@ public class ProductService {
     public ProductResponseEntity updateStatusProductByIDStaff(int productID,ProductStatus status) throws CrudException {
     	ProductDTO dto = productRepo.findById(productID).orElseThrow();
     		dto.setStatus(status);
-	
-    	
+    				
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
     }
           
@@ -140,8 +143,6 @@ public class ProductService {
                 .collect(Collectors.toList());
 	}
 	public List<ProductSlimResponseEntity> getProductbyCategory(String categoryName) throws CrudException{
-
-
 		return  productRepo.findAllByCategory(categoryName).stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
