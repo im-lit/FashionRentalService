@@ -169,7 +169,7 @@ public class OrderRentService {
         	listTrans.add(checkCusTrans);
         	
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
-															.amount(x.getTotal())
+															.amount(x.getTotalRentPriceProduct())
 															.transactionType("Thuê")
 															.description("Nhận tiền từ hóa đơn thuê:  +" + totalRentPriceFormarted + " VND. "
 																	+ "Nhận tiền cọc sản phẩm: +" + cocMoneyFormarted + " VND")

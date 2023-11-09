@@ -28,9 +28,11 @@ import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
+import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyDetailRepository;
@@ -54,6 +56,9 @@ public class OrderBuyService {
 	
 	@Autowired
 	private OrderBuyDetailRepository buyDetailRepo;
+	
+	@Autowired
+	private OrderBuyDetailService buyDetailService;
 	
 	@Autowired
 	private ProductRepository productRepo;
@@ -154,7 +159,7 @@ public class OrderBuyService {
         	listTrans.add(checkCusTrans);
         	
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
-															.amount(x.getTotal())
+															.amount(x.getTotalBuyPriceProduct())
 															.transactionType("Mua")
 															.description("Nhận tiền từ hóa đơn: +" + TotalBuyPriceformatted + " VND ")
 															.orderBuyDTO(x)
@@ -224,11 +229,23 @@ public class OrderBuyService {
 		if(status == OrderBuyStatus.COMPLETED) 
 			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotalBuyPriceProduct());		
 		
-		if(status == OrderBuyStatus.CANCELED) 
+		if(status == OrderBuyStatus.CANCELED) { 
 			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
+			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
+				for (OrderBuyDetailDTO x : list) {
+					ProductDTO productt = x.getProductDTO();
+					productt.setStatus(ProductStatus.AVAILABLE);	
+				}
+		}
 		
-		if(status == OrderBuyStatus.REJECTING_COMPLETED) 
+		if(status == OrderBuyStatus.REJECTING_COMPLETED) { 
 			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
+			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
+				for (OrderBuyDetailDTO x : list) {
+					ProductDTO productt = x.getProductDTO();
+					productt.setStatus(ProductStatus.AVAILABLE);	
+				}
+		}
 		
 		check.setStatus(status);
 		

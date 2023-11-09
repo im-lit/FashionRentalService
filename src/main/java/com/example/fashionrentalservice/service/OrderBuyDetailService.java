@@ -6,19 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.fashionrentalservice.exception.CreateOrderBuyDetailFailed;
-import com.example.fashionrentalservice.exception.CreateOrderFailed;
-import com.example.fashionrentalservice.exception.CusNotFoundByID;
-import com.example.fashionrentalservice.exception.OrderBuyIDNotFound;
-import com.example.fashionrentalservice.exception.PONotFoundByID;
-import com.example.fashionrentalservice.exception.ProductNotFoundByID;
-import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
-import com.example.fashionrentalservice.model.dto.product.ProductDTO;
-import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
-import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
 import com.example.fashionrentalservice.repositories.OrderBuyDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
@@ -65,6 +54,12 @@ public class OrderBuyDetailService {
 //================================== Lay tat ca OrderDetail By OrderBuyID========================================
 	public List<OrderBuyDetailResponseEntity> getAllOrderDetailByOrderBuyID(int orderBuyID) {
 		return OrderBuyDetailResponseEntity.fromListOrderBuyDetailDTO(buyDetailRepo.findAllOrderDetailByOrderBuyID(orderBuyID));
+	}
+	
+	public List<OrderBuyDetailDTO> getAllOrderDetailByOrderBuyIDReturnDTO(int orderBuyID) {
+		List<OrderBuyDetailDTO> list = new ArrayList<>();
+		list = buyDetailRepo.findAllOrderDetailByOrderBuyID(orderBuyID);
+		return list;
 	}
 	
 }

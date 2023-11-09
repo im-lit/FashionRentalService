@@ -70,7 +70,7 @@ public class WalletService {
         if(dto == null)
         	throw new StaffNotFoundByID();
         double oldBalance = dto.getBalance();
-        double newBalance = oldBalance - balance;
+        double newBalance = (oldBalance - balance);
         if (newBalance < 0) {
             throw new BalanceNegative();
         }
@@ -79,16 +79,19 @@ public class WalletService {
     }
     
   //================================== Tru`(-) tien Balance returnDTO cho createOrder ========================================
-    public WalletDTO updateBalanceReturnDTO(int walletID, double balance) throws  CrudException {
+    public WalletDTO updateBalanceReturnDTO(int walletID, double total) throws  CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
+        double oldBalance;
+        double newBalance;
         if(dto == null)
         	throw new StaffNotFoundByID();
-        double oldBalance = dto.getBalance();
-        double newBalance = oldBalance - balance;
+        oldBalance = dto.getBalance();
+        newBalance = (oldBalance - total);
         if (newBalance < 0) {
             throw new BalanceNegative();
         }
         dto.setBalance(newBalance);
+        
         return dto;
     }
     
