@@ -88,6 +88,7 @@ public class OrderBuyController {
 	
 	
 	
+
 	
 	@GetMapping("/po/pending/{productownerID}")
 	private ResponseEntity getAllPendingOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
@@ -117,6 +118,11 @@ public class OrderBuyController {
 	@GetMapping("/po/prepare/{productownerID}")
 	private ResponseEntity getAllPrepareOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
 		return ResponseEntity.ok().body(buyService.getAllPrepareOrderByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/getall/{productownerID}")
+	private ResponseEntity getAllOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllOrderByCustomerID(productownerID));
 	}
 	
 	

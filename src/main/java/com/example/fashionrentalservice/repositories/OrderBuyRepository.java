@@ -39,6 +39,9 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	
 	
 	//----------------------------------------------------PO------------------------------------------------------------------------------
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllOrderBuyByProductOwnerID(int productownerID);
+	
 	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllPendingOrderBuyByProductOwnerID(int productownerID);
 	

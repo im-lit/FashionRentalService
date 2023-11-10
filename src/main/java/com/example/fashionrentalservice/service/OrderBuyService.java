@@ -191,6 +191,10 @@ public class OrderBuyService {
 	public List<OrderBuyResponseEntity> getAllPendingOrderByCustomerID(int customerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPendingOrderBuyByCustomerID(customerID));
 	}
+	public List<OrderBuyResponseEntity> getAllOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllOrderBuyByProductOwnerID(customerID));
+	}
+	
 	
 	//================================== Lay tat ca CANCELED OrderBUY by CustomerID================================================
 	public List<OrderBuyResponseEntity> getAllCanceledOrderByCustomerID(int customerID) {
