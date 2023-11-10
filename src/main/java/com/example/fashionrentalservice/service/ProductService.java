@@ -90,6 +90,9 @@ public class ProductService {
     	 if(dto.getStatus().equals(ProductStatus.SOLD_OUT)){
     		 throw new ProductIsSoldOut("Product Is SoldOut!");
     	 }
+    	 if(dto.getStatus().equals(ProductStatus.RENTING)) {
+    		 throw new ProductIsSoldOut("Product is Renting you cannot updated status");
+    	 }
     	 
     	
     
