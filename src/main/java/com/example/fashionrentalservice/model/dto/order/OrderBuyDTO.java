@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
+
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -45,6 +47,9 @@ public class OrderBuyDTO {
 	private String customerAddress;
 	
 	private LocalDate dateOrder;
+	
+	@Nullable
+	private String orderCode;
 	
 	@Enumerated(EnumType.STRING)
 	private OrderBuyStatus status;

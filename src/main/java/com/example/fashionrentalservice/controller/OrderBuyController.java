@@ -49,6 +49,12 @@ public class OrderBuyController {
 		return ResponseEntity.ok().body(buyService.updateOrderBuyByOrderBuyID(orderBuyID, status));
 	}
 	
+	@PutMapping("/updateorderbuycode")
+	private ResponseEntity updateOrderCode(@RequestParam int orderBuyID, @RequestParam String orderCode) throws CrudException{
+		return ResponseEntity.ok().body(buyService.updateOrderCode(orderBuyID, orderCode));
+	}
+	
+	
 	
 	@GetMapping("/customer/pending/{customerID}")
 	private ResponseEntity getAllPendingOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.lang.Nullable;
+
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 
@@ -32,6 +34,8 @@ public class OrderRentResponseEntity {
 	
 	private LocalDate dateOrder;
 	
+	
+	private String orderCode;
 	private int customerID;
 	
 	private int productownerID;
@@ -47,6 +51,7 @@ public class OrderRentResponseEntity {
 	                    .cocMoneyTotal(dto.getCocMoneyTotal())
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
+	                    .orderCode(dto.getOrderCode())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .build())
@@ -63,6 +68,7 @@ public class OrderRentResponseEntity {
                 .cocMoneyTotal(dto.getCocMoneyTotal())
                 .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
+                .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
 				.build();

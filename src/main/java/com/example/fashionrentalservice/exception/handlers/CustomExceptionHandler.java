@@ -20,6 +20,7 @@ import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.ProductIsRented;
+import com.example.fashionrentalservice.exception.ProductIsSoldOut;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotForRent;
 import com.example.fashionrentalservice.exception.ProductNotForSale;
@@ -65,7 +66,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		ProductIsRented.class,
 		ProductStatusOnSale.class,
 		ProductStatusNotApproved.class,
-		
+		ProductIsSoldOut.class,	
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity

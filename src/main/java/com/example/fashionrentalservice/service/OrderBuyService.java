@@ -355,6 +355,16 @@ public class OrderBuyService {
 		
 		return  OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));
 	}
+	public OrderBuyResponseEntity updateOrderCode(int orderBuyID, String orderCode) throws CrudException {
+		OrderBuyDTO check = buyRepo.findById(orderBuyID).orElse(null);
+
+		if(check == null) {
+			throw new OrderBuyNotFoundFailed();
+	}
+		check.setOrderCode(orderCode);
+		return OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));
+	}
+	
 	
 }
 	

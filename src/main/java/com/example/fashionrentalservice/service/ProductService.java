@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
+import com.example.fashionrentalservice.exception.ProductIsSoldOut;
 import com.example.fashionrentalservice.exception.ProductStatusNotApproved;
 import com.example.fashionrentalservice.exception.ProductStatusOnSale;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
@@ -85,6 +87,10 @@ public class ProductService {
     	 } else if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.NOT_APPROVED)){
     		 throw new ProductStatusNotApproved();
     	 }
+    	 if(dto.getStatus().equals(ProductStatus.SOLD_OUT)){
+    		 throw new ProductIsSoldOut("Product Is SoldOut!");
+    	 }
+    	 
     	
     
     	return ProductResponseEntity.fromProductDTO(productRepo.save(dto));

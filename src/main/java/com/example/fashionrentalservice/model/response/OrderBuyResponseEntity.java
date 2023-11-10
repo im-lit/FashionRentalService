@@ -36,6 +36,8 @@ public class OrderBuyResponseEntity {
 	
 	private String customerName;
 	
+	private String orderCode;
+	
 	private String productOwnerName;
 	
 	public static List<OrderBuyResponseEntity> fromListOrderBuyDTO(List<OrderBuyDTO> dtos) {
@@ -48,6 +50,7 @@ public class OrderBuyResponseEntity {
 	                    .customerAddress(dto.getCustomerAddress())
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
+	                    .orderCode(dto.getOrderCode())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .customerName(dto.getCustomerDTO().getFullName())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
@@ -65,6 +68,7 @@ public class OrderBuyResponseEntity {
                 .customerAddress(dto.getCustomerAddress())
                 .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
+                .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .customerName(dto.getCustomerDTO().getFullName())
                 .productownerID(dto.getProductownerDTO().getProductownerID())

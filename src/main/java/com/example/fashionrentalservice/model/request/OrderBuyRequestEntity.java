@@ -26,6 +26,8 @@ public class OrderBuyRequestEntity {
 	
 	private int productownerID;
 	
+	private String orderCode;
+	
 	private List<OrderBuyDetailRequestEntity> orderDetail;
 	
 }

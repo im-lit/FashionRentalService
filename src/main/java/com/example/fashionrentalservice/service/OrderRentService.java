@@ -27,6 +27,7 @@ import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
@@ -312,4 +313,14 @@ public class OrderRentService {
 		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
 
 		}
+	
+	public OrderRentResponseEntity updateOrderCode(int orderRentID, String orderCode) throws CrudException {
+		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
+
+		if(check == null) {
+			throw new OrderBuyNotFoundFailed();
+	}
+		check.setOrderCode(orderCode);
+		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
+	}
 }

@@ -48,6 +48,10 @@ public class OrderRentController {
 	private ResponseEntity updateStatusOrder(@RequestParam int orderRentID, @RequestParam OrderRentStatus status) throws CrudException{
 		return ResponseEntity.ok().body(rentService.updateOrderRentByOrderRentID(orderRentID, status));
 	}
+	@PutMapping("/updateorderbuycode")
+	private ResponseEntity updateOrderCode(@RequestParam int orderRentID, @RequestParam String orderCode) throws CrudException{
+		return ResponseEntity.ok().body(rentService.updateOrderCode(orderRentID, orderCode));
+	}
 	
 	
 	@GetMapping("/customer/{customerID}")
