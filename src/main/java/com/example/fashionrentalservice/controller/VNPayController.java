@@ -81,8 +81,8 @@ public class VNPayController {
         	entity.setAccountID(accountIDLocal);
         	entity.setAmount(amount);
         	String amountFormated = decimalFormat.format(amount);
-        	entity.setDescription("nap " + amountFormated + " tu ngan hang NCB");
-        	entity.setTransactionType("nap tien");       	
+        	entity.setDescription("Nạp " + amountFormated + " từ ngân hàng NCB");
+        	entity.setTransactionType("Nạp tiền");       	
         	transService.createTransactionHistory(entity);      	
         }
 
