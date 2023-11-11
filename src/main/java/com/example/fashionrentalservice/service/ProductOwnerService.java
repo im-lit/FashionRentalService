@@ -13,6 +13,7 @@ import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
+import com.example.fashionrentalservice.model.request.POUpdateTokenAndShopIDResquestEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
@@ -58,6 +59,15 @@ public class ProductOwnerService {
     	
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
+    
+    public POResponseEntity updateProductOwnerTokenAndShopID(int productownerID,POUpdateTokenAndShopIDResquestEntity entity) {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    	dto.setPOShopID(entity.getPOShopID());
+    	dto.setPOToken(entity.getPOToken());
+    	
+    	return POResponseEntity.fromPODTO(poRepo.save(dto));
+    }
+    
     
     //================================== Lấy ProductOwner bởi ID========================================    
 	public POResponseEntity getPOByID(int productownerID) throws CrudException{

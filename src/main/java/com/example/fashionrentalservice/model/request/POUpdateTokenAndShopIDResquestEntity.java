@@ -4,23 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PORequestEntity {
-	private String fullName;
-
-	private String phone;
-
-	private String avatarUrl;
-
-	private String address;
+public class POUpdateTokenAndShopIDResquestEntity {
 	
-    private String POToken;
+	    private String POToken;
+		
+		private int POShopID;
 	
-	private int POShopID;
-	
-	private int accountID;
+
 }

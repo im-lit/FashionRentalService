@@ -1,5 +1,7 @@
 package com.example.fashionrentalservice.model.request;
 
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +26,7 @@ public class ProductRequestEntity {
 	private double price;
 	
 	private String productAvt;
-
+	
 	private String status;
 
 	private int categoryID;
@@ -32,5 +34,7 @@ public class ProductRequestEntity {
 	private int productownerID;
 	
 	private String productSpecificationData;
+	
+
 	
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
+import com.example.fashionrentalservice.model.request.POUpdateTokenAndShopIDResquestEntity;
 import com.example.fashionrentalservice.service.ProductOwnerService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,11 @@ public class ProductOwnerController {
 	@PutMapping
 	private ResponseEntity updateProductOwner(@RequestParam int productownerID,@RequestBody POUpdateRequestEntity entity) {
 		return ResponseEntity.ok().body(poService.updateProductOwner(productownerID,entity));
+	}
+	
+	@PutMapping("/updatetoken")
+	private ResponseEntity updatePOTokenAndShopID(@RequestParam int productownerID,@RequestBody POUpdateTokenAndShopIDResquestEntity entity) {
+		return ResponseEntity.ok().body(poService.updateProductOwnerTokenAndShopID(productownerID,entity));
 	}
 	
 	@GetMapping("/{productownerID}")

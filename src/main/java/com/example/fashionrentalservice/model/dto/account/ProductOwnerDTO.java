@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -35,6 +37,12 @@ public class ProductOwnerDTO {
 	private String fullName;
 	
 	private String phone;
+	
+	@Nullable
+	private String POToken;
+	
+	@Nullable
+	private int POShopID;
 	
 	private String avatarUrl;
 	

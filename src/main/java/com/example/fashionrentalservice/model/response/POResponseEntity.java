@@ -26,6 +26,10 @@ public class POResponseEntity {
 	
 	private AccountDTO accountDTO;
 	
+    private String POToken;
+	
+	private int POShopID;
+	
 	public static POResponseEntity fromPODTO(ProductOwnerDTO dto) {
         return POResponseEntity.builder()
                 .productownerID(dto.getProductownerID())
@@ -33,6 +37,8 @@ public class POResponseEntity {
                 .phone(dto.getPhone())
                 .avatarUrl(dto.getAvatarUrl())
                 .address(dto.getAddress())
+                .POShopID(dto.getPOShopID())
+                .POToken(dto.getPOToken())
                 .accountDTO(dto.getAccountDTO())
                 .build();   
 	}
