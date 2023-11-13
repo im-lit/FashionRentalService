@@ -11,9 +11,10 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.ProductIsSoldOut;
 import com.example.fashionrentalservice.exception.ProductStatusNotApproved;
-import com.example.fashionrentalservice.exception.ProductStatusOnSale;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
+import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO.AddProductStatus;
@@ -37,6 +38,9 @@ public class ProductService {
 	
 	//================================== Tạo Product========================================
     public ProductResponseEntity createProduct(ProductRequestEntity entity) throws CrudException{
+    	ProductOwnerDTO po = poRepo.findById(entity.getProductownerID()).orElse(null);
+    	if(po.getAccountDTO().getStatus() == AccountStatus.NOT_VERIFIED) 
+    		throw new PendingMoneyNegative("Your account is not verified");
     	
     	ProductDTO dto = ProductDTO.builder()
                 .productName(entity.getProductName())
@@ -160,4 +164,13 @@ public class ProductService {
 	
 	
 	//================================== Delete Product========================================
+	
+	public  ProductResponseEntity deleteProductbyProductID(int productID) throws CrudException{
+		ProductDTO check = productRepo.findById(productID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductID not found!");
+		productRepo.delete(check);
+		return  ProductResponseEntity.fromProductDTO(check);
+		
+	}
 }

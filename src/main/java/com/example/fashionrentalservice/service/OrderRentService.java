@@ -13,6 +13,7 @@ import com.example.fashionrentalservice.exception.CreateOrderFailed;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
 import com.example.fashionrentalservice.exception.OrderBuyNotFoundFailed;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.ProductIsRented;
 import com.example.fashionrentalservice.exception.ProductNotAvailable;
 import com.example.fashionrentalservice.exception.ProductNotForSale;
@@ -26,6 +27,7 @@ import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
@@ -94,8 +96,11 @@ public class OrderRentService {
 		for (OrderRentRequestEntity x : entity) {
 			CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
 			ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);
+	
 			if (cus == null)
 				throw new CusNotFoundByID();
+        	if( cus.getAccountDTO().getStatus() == AccountStatus.NOT_VERIFIED)
+        		throw new PendingMoneyNegative("Your account is not verified!");
 			if (po == null)
 				throw new PONotFoundByID();
 			if (cus.getAccountDTO().getWalletDTO() == null)
