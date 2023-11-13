@@ -2,6 +2,7 @@ package com.example.fashionrentalservice.model.response;
 
 import java.util.List;
 
+import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 
@@ -31,6 +32,8 @@ public class ProductSlimResponseEntity {
 	
 	private String productSpecifications;
 	
+	private CategoryDTO categoryDTO;
+	
 	private List<ProductRentalPricesDTO> rentprices;
 	
 	
@@ -38,6 +41,7 @@ public class ProductSlimResponseEntity {
 		return ProductSlimResponseEntity.builder()
 				.productID(dto.getProductID())
 				.productName(dto.getProductName())
+				.categoryDTO(dto.getCategory())
 				.productCondition(dto.getProductCondition())
 				.productAvt(dto.getProductAvt())
 				.price(dto.getPrice())
