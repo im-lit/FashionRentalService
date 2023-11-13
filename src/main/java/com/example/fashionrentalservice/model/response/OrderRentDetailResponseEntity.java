@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class OrderRentDetailResponseEntity {
 	
 	private LocalDate endDate;
 	
-	private int productID;
+	private ProductDTO productDTO;
 	
 	private int orderRentID;
 	
@@ -37,7 +38,7 @@ public class OrderRentDetailResponseEntity {
 	                    .cocMoney(dto.getCocMoney())
 	                    .startDate(dto.getStartDate())
 	                    .endDate(dto.getEndDate())
-	                    .productID(dto.getProductDTO().getProductID())
+	                    .productDTO(dto.getProductDTO())
 	                    .orderRentID(dto.getOrderRentDTO().getOrderRentID())
 	                    .build())
 	            .collect(Collectors.toList());
@@ -47,7 +48,7 @@ public class OrderRentDetailResponseEntity {
 		return OrderRentDetailResponseEntity.builder()
 				 .orderRentDetailID(dto.getOrderRentDetailID())
                  .rentPrice(dto.getRentPrice())
-                 .productID(dto.getProductDTO().getProductID())
+                 .productDTO(dto.getProductDTO())
                  .orderRentID(dto.getOrderRentDTO().getOrderRentID())
                  .build();
 	}

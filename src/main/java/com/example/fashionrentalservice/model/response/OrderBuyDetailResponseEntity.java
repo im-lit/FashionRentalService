@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class OrderBuyDetailResponseEntity {
 	
 	private double price;
 	
-	private int productID;
+	private ProductDTO productDTO;
 	
 	private int orderBuyID;
 	
@@ -27,7 +28,7 @@ public class OrderBuyDetailResponseEntity {
 	            .map(dto -> OrderBuyDetailResponseEntity.builder()
 	                    .orderBuyDetailID(dto.getOrderBuyDetailID())
 	                    .price(dto.getPrice())
-	                    .productID(dto.getProductDTO().getProductID())
+	                    .productDTO(dto.getProductDTO())
 	                    .orderBuyID(dto.getOrderBuyDTO().getOrderBuyID())
 	                    .build())
 	            .collect(Collectors.toList());
@@ -37,7 +38,7 @@ public class OrderBuyDetailResponseEntity {
 		return OrderBuyDetailResponseEntity.builder()
 				 .orderBuyDetailID(dto.getOrderBuyDetailID())
                  .price(dto.getPrice())
-                 .productID(dto.getProductDTO().getProductID())
+                 .productDTO(dto.getProductDTO())
                  .orderBuyID(dto.getOrderBuyDTO().getOrderBuyID())
                  .build();
 	}

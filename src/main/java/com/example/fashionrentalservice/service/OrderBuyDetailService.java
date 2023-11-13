@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
+import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
 import com.example.fashionrentalservice.repositories.OrderBuyDetailRepository;
@@ -54,6 +56,13 @@ public class OrderBuyDetailService {
 //================================== Lay tat ca OrderDetail By OrderBuyID========================================
 	public List<OrderBuyDetailResponseEntity> getAllOrderDetailByOrderBuyID(int orderBuyID) {
 		return OrderBuyDetailResponseEntity.fromListOrderBuyDetailDTO(buyDetailRepo.findAllOrderDetailByOrderBuyID(orderBuyID));
+	}
+	
+	public OrderBuyDetailResponseEntity getOrderDetailByProductID(int productID) throws CrudException {
+		OrderBuyDetailDTO dto = buyDetailRepo.findOrderDetailByProductID(productID);
+		if(dto == null)
+			throw new PendingMoneyNegative("Not found orderdetail");
+		return OrderBuyDetailResponseEntity.fromOrderBuyDetailDTO(dto);
 	}
 	
 	public List<OrderBuyDetailDTO> getAllOrderDetailByOrderBuyIDReturnDTO(int orderBuyID) {

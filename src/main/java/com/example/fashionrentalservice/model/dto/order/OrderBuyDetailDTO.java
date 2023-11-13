@@ -31,7 +31,7 @@ public class OrderBuyDetailDTO {
 	
 	private double price;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductDTO productDTO;
