@@ -36,7 +36,7 @@ public class CustomerService {
 	//================================== Tao Customer========================================
     public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) throws CrudException{
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
-    	if(check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
+    	if(check.getStaffDTO() == null && check.getProductOwnerDTO() == null && check.getCustomerDTO() == null) {
             CustomerDTO dto = CustomerDTO.builder()
                     .fullName(entity.getFullName())
                     .phone(entity.getPhone())

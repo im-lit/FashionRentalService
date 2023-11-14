@@ -35,7 +35,7 @@ public class StaffService {
 	//================================== Tao Staff========================================
     public StaffResponseEntity createStaff(StaffRequestEntity entity) throws CrudException{
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
-    	if(check.getCustomerDTO() == null && check.getProductOwnerDTO() == null) {
+    	if(check.getCustomerDTO() == null && check.getProductOwnerDTO() == null && check.getStaffDTO() == null) {
         	StaffDTO dto = StaffDTO.builder()
                     .fullName(entity.getFullName())
                     .avatarUrl(entity.getAvatarUrl())

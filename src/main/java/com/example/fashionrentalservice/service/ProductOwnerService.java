@@ -37,7 +37,7 @@ public class ProductOwnerService {
 	 //================================== Tạo PO========================================
     public POResponseEntity createProductOwner(PORequestEntity entity) throws CrudException{
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
-    	if(check.getCustomerDTO() == null && check.getStaffDTO() == null) {
+    	if(check.getCustomerDTO() == null && check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
