@@ -42,7 +42,7 @@ public class VoucherResponseEntity {
 	private int productOwnerID;
 	//private VoucherTypeDTO voucherTypeDTO;
 	//private ProductOwnerDTO productOwnerDTO;
- 	private boolean status;
+ 	private String status;
 	    
 		public static VoucherResponseEntity fromVoucherDTO(VoucherDTO dto) {
 			return VoucherResponseEntity.builder()
@@ -55,7 +55,7 @@ public class VoucherResponseEntity {
 					.description(dto.getDescription())
 					.maxDiscount(dto.getMaxDiscount())
 					.discountAmount(dto.getDiscountAmount())
-					.status(dto.isStatus())
+					.status(dto.getStatus().toString())
 					.voucherTypeID(dto.getVoucherTypeDTO().getVoucherTypeID())
 					.productOwnerID(dto.getProductOwnerDTO().getProductownerID())
 					.build();
@@ -72,7 +72,7 @@ public class VoucherResponseEntity {
 							.description(dto.getDescription())
 							.maxDiscount(dto.getMaxDiscount())
 							.discountAmount(dto.getDiscountAmount())
-							.status(dto.isStatus())
+							.status(dto.getStatus().toString())
 							.voucherTypeID(dto.getVoucherTypeDTO().getVoucherTypeID())
 							.productOwnerID(dto.getProductOwnerDTO().getProductownerID())
 							.build())

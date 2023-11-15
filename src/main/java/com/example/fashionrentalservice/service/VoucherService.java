@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.DaysBetweenTwoDays;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
@@ -20,6 +22,7 @@ import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO.VoucherStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.request.VoucherRequestEntity;
 import com.example.fashionrentalservice.model.request.WalletRequestEntity;
@@ -58,7 +61,16 @@ public class VoucherService {
 		List<VoucherDTO> dto = voucherRepo.findByProductOwnerID(productownerID);
 		if(dto==null) 
 			throw new StaffNotFoundByID();
+		for (VoucherDTO x : dto)
+		{
+			LocalDate currentDate =LocalDate.now();
+		    long daysBetween = ChronoUnit.DAYS.between(currentDate, x.getEndDate());
+		//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
+			if(daysBetween < 0) 
 		
+			updateStatusVoucherByVoucherID(x.getProductOwnerDTO().getProductownerID());
+			
+		}
 		return VoucherResponseEntity.fromListVoucherDTO(dto);
 	
 	}
@@ -94,29 +106,43 @@ public class VoucherService {
 				.description(entity.getDescription())
 				.discountAmount(entity.getDiscountAmount())
 				.maxDiscount(entity.getMaxDiscount())
-				.status(entity.isStatus())
+				.status(VoucherStatus.ACTIVE)
 				.productOwnerDTO(poRepo.findById(entity.getProductownerID()).orElse(null))
 				.voucherTypeDTO(voucherTypeRepo.findById(entity.getVoucherTypeID()).orElse(null))
 				.build();
-		long daysBetween = ChronoUnit.DAYS.between(entity.getStartDate(), entity.getEndDate());
-		if(daysBetween < 0) 
-			throw new DaysBetweenTwoDays();
 		
+	
+		
+		long daysBetween = ChronoUnit.DAYS.between(entity.getStartDate(), entity.getEndDate());
+		if(daysBetween < 0) { 
+			throw new DaysBetweenTwoDays();
+		}
 		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
 	}
 	
 	//================================== Update Status Voucher ========================================
-    public VoucherResponseEntity updateStatusVoucherByVoucherID(int voucherID,Boolean status) throws CrudException {
+    public VoucherResponseEntity updateStatusVoucherByVoucherID(int voucherID) throws CrudException {
         VoucherDTO dto = voucherRepo.findById(voucherID).orElseThrow();
+        if(dto==null) {
+			throw new PendingMoneyNegative("Can not find voucher by ID");
+		}
+        if(dto.getStatus().equals(VoucherStatus.INACTIVE)) {
+        	dto.setStatus(VoucherStatus.ACTIVE);
+        }else if(dto.getStatus().equals(VoucherStatus.ACTIVE)) {
+        	dto.setStatus(VoucherStatus.INACTIVE);
+        }
+        
         LocalDate currentDate =LocalDate.now();
-        long daysBetween = ChronoUnit.DAYS.between(currentDate, dto.getEndDate());
-   if(daysBetween <0) {
-	   	dto.setStatus(false);
-   }else {
-	   dto.setStatus(status);
-   }    
+	    long daysBetween = ChronoUnit.DAYS.between(currentDate, dto.getEndDate());
+	//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
+		if(daysBetween < 0) {
+			dto.setStatus(VoucherStatus.OUTDATE);
+		}
+		
+    
         	return VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));
     }
-
-	
 }
+
+
+

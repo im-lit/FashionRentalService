@@ -29,7 +29,6 @@ public class VoucherRequestEntity {
  	
 	private int maxDiscount;
  	
-	private boolean status;
 	private int discountAmount;
 	private int voucherTypeID;
 	private int productownerID;
