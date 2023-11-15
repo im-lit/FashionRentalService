@@ -67,7 +67,6 @@ public class VoucherService {
 		    long daysBetween = ChronoUnit.DAYS.between(currentDate, x.getEndDate());
 		//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
 			if(daysBetween < 0) 
-		
 			updateStatusVoucherByVoucherID(x.getProductOwnerDTO().getProductownerID());
 			
 		}
