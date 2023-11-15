@@ -28,6 +28,8 @@ public class ProductSlimResponseEntity {
 
 	private String checkType;
 	
+	private String status;
+	
 	private String productOwnerName;
 	
 	private String productSpecifications;
@@ -46,6 +48,7 @@ public class ProductSlimResponseEntity {
 				.productAvt(dto.getProductAvt())
 				.price(dto.getPrice())
 				.checkType(dto.getCheckType().toString())
+				.status(dto.getStatus().toString())
 				.productOwnerName(dto.getProductownerDTO().getFullName())
 				.rentprices(dto.getRentprices())
 				.productSpecifications(dto.getProductSpecificationData())
