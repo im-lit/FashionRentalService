@@ -49,7 +49,7 @@ public class VoucherController {
 		return ResponseEntity.ok().body(voucherService.getAllVoucher());
 	}
 	@PutMapping
-	private ResponseEntity updateVoucherStatus(@RequestParam int voucherID,@RequestParam Boolean status) throws CrudException {
-		return ResponseEntity.ok().body(voucherService.updateStatusVoucherByVoucherID(voucherID,status));
+	private ResponseEntity updateVoucherStatus(@RequestParam int voucherID) throws CrudException {
+		return ResponseEntity.ok().body(voucherService.updateStatusVoucherByVoucherID(voucherID));
 	}
 }
