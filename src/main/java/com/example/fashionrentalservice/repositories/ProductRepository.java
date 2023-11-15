@@ -16,7 +16,19 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 //	List<StaffRequestedDTO> findAllApprovedRequestedByStaffID(int staffID);
 	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='SALE' ")
 	List<ProductDTO> findAllSaleProduct();
-//	
+//	@Query("SELECT dto FROM ProductDTO dto WHERE JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') = :brandName")
+	 @Query("SELECT dto FROM ProductDTO dto WHERE " +
+    "(dto.category.categoryName = 'Watch' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') = :brandName) OR " +
+    "(dto.category.categoryName = 'Shoe' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes') = :brandName) OR " +
+    "(dto.category.categoryName = 'Sunglasses' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses') = :brandName) OR " +
+    "(dto.category.categoryName = 'Jewelry' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry') = :brandName) OR " +
+    "(dto.category.categoryName = 'Hat' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat') = :brandName) OR " +
+    "(dto.category.categoryName = 'Bag' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') = :brandName)")
+    List<ProductDTO> findAllByBrandName(String brandName);
+//    @Query("SELECT dto from ProductDTO JSON_EXTRACT(p.productSpecificationData, '$.brandName') where dto.productownerDTO.productownerID = ?1")
+
+	
+	
 	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='RENT' ")
 	List<ProductDTO> findAllRentProduct();
 	

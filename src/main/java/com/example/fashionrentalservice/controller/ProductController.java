@@ -67,6 +67,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.getProductbyCategory(categoryName));
 	}
 	
+	@GetMapping("/getallbybrandname/{brandName}")
+	private ResponseEntity getAllProductByBrandName(@PathVariable String brandName) throws CrudException {
+		return ResponseEntity.ok().body(productService.getProductBrandName(brandName));
+	}
+	
 	@GetMapping("/getproducts/{productownerID}")
 	private ResponseEntity getProductByProductOwnerID(@PathVariable int productownerID) throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProductByProductOwnerID(productownerID));

@@ -172,6 +172,12 @@ public class ProductService {
                 .collect(Collectors.toList());
 		
 	}
+	public List<ProductSlimResponseEntity> getProductBrandName(String brandName) throws CrudException{
+		return  productRepo.findAllByBrandName(brandName).stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+		
+	}
 	
 	
 	//================================== Delete Product========================================
