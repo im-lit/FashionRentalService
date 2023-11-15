@@ -78,7 +78,7 @@ public class OrderBuyController {
 	}
 	@GetMapping("/customer/completed/{customerID}")
 	private ResponseEntity getAllCompletedOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
-		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByCustomerID(customerID));
+		return ResponseEntity.ok().body(buyService.getAllCompletedOrderByCustomerID(customerID));
 	}
 	@GetMapping("/customer/prepare/{customerID}")
 	private ResponseEntity getAllPrepareOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
@@ -113,7 +113,7 @@ public class OrderBuyController {
 	}
 	@GetMapping("/po/completed/{productownerID}")
 	private ResponseEntity getAllCompletedOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
-		return ResponseEntity.ok().body(buyService.getAllRejectingCompletedOrderByProductOwnerID(productownerID));
+		return ResponseEntity.ok().body(buyService.getAllCompletedOrderByProductOwnerID(productownerID));
 	}
 	@GetMapping("/po/prepare/{productownerID}")
 	private ResponseEntity getAllPrepareOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{

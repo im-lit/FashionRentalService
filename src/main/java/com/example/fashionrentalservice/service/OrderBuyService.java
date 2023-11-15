@@ -220,6 +220,11 @@ public class OrderBuyService {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingCompletedOrderBuyByCustomerID(customerID));
 	}
 	
+	//================================== Lay tat ca COMPLETED OrderBUY by CustomerID=====================================
+	public List<OrderBuyResponseEntity> getAllCompletedOrderByCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCompletedOrderBuyByCustomerID(customerID));
+	}
+	
 	//================================== Lay tat ca CONFIRMING OrderBUY by CustomerID==============================================
 	public List<OrderBuyResponseEntity> getAllConfirmingOrderByCustomerID(int customerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllConfirmingOrderBuyByCustomerID(customerID));
@@ -257,6 +262,11 @@ public class OrderBuyService {
 	//================================== Lay tat ca REJECTING_COMPLETED OrderBUY by ProductOwnerID=====================================
 	public List<OrderBuyResponseEntity> getAllRejectingCompletedOrderByProductOwnerID(int productownerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllRejectingCompletedOrderBuyByProductOwnerID(productownerID));
+	}
+	
+	//================================== Lay tat ca COMPLETED OrderBUY by ProductOwnerID=====================================
+	public List<OrderBuyResponseEntity> getAllCompletedOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCompletedOrderBuyByProductOwnerID(productownerID));
 	}
 	
 	//================================== Lay tat ca CONFIRMING OrderBUY by ProductOwnerID==============================================
