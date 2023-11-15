@@ -155,6 +155,17 @@ public class ProductService {
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
+	public List<ProductSlimResponseEntity> getAllProductsOnAvailable() throws CrudException{
+		return  productRepo.findAllAvailableProduct().stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	public List<ProductSlimResponseEntity> getAllProductsOnSoldOut() throws CrudException{
+		return  productRepo.findAllSoldOutProduct().stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	
 	public List<ProductSlimResponseEntity> getProductbyCategory(String categoryName) throws CrudException{
 		return  productRepo.findAllByCategory(categoryName).stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)

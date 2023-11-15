@@ -52,6 +52,16 @@ public class ProductController {
 	private ResponseEntity getAllProductOnRent() throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProductsOnRent());
 	}
+	
+	@GetMapping("/onavailable")
+	private ResponseEntity getAllProductOnAvailable() throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductsOnAvailable());
+	}
+	@GetMapping("/onsoldout")
+	private ResponseEntity getAllProductOnSoldOut() throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductsOnSoldOut());
+	}
+	
 	@GetMapping("/getallbycategory/{categoryName}")
 	private ResponseEntity getAllProductBycategoryName(@PathVariable String categoryName) throws CrudException {
 		return ResponseEntity.ok().body(productService.getProductbyCategory(categoryName));

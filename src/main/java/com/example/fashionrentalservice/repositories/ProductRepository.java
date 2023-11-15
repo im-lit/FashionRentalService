@@ -20,6 +20,12 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='RENT' ")
 	List<ProductDTO> findAllRentProduct();
 	
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='AVAILABLE' ")
+	List<ProductDTO> findAllAvailableProduct();
+	
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='SOLD_OUT' ")
+	List<ProductDTO> findAllSoldOutProduct();
+	
 	@Query("SELECT dto FROM ProductDTO dto WHERE dto.category.categoryName =?1 ")
 	List<ProductDTO> findAllByCategory(String categoryname);
 
