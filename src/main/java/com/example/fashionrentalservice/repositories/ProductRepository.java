@@ -12,7 +12,7 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1 WHEN dto.status = 'WAITING' THEN 2 WHEN dto.status = 'BLOCKED' THEN 3 WHEN dto.status = 'RENTING' THEN 4 ELSE 5 END")
 	List<ProductDTO>findAllByProductOwnerID(int productownerID);
 	
-	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status IN ('AVAILABLE', 'RENTING') ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1   WHEN dto.status = 'RENTING' THEN 2  END")
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status IN ('AVAILABLE', 'RENTING','SOLD_OUT') ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1   WHEN dto.status = 'RENTING' THEN 2 WHEN dto.status = 'SOLD_OUT' THEN 3  END")
 	List<ProductDTO>findAllAvailbleAndRentingByProductOwnerID(int productownerID);
 	
 //	@Query("select dto from StaffRequestedDTO dto where dto.staffDTO.staffID = ?1 AND dto.requestAddingProductDTO.status = 'APPROVED' ORDER BY dto.staffRequestedID DESC")
