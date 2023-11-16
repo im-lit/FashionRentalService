@@ -77,6 +77,12 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.getAllProductByProductOwnerID(productownerID));
 	}
 	
+	@GetMapping("/getproductsforcus/{productownerID}")
+	private ResponseEntity getProductByProductOwnerIDForCus(@PathVariable int productownerID) throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductByProductOwnerIDForCus(productownerID));
+	}
+	
+	
 	@PutMapping
 	private ResponseEntity updateProduct(@RequestParam int productID) throws CrudException {
 		return ResponseEntity.ok().body(productService.updateStatusProductByID(productID));
