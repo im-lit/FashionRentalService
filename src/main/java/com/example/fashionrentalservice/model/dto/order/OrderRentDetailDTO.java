@@ -39,7 +39,7 @@ public class OrderRentDetailDTO {
 	
 	private double rentPrice;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductDTO productDTO;

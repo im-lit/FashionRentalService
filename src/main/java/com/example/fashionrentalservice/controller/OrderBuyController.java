@@ -85,6 +85,11 @@ public class OrderBuyController {
 		return ResponseEntity.ok().body(buyService.getAllPrepareOrderByCustomerID(customerID));
 	}
 	
+	@GetMapping("/customer/confirm/{customerID}")
+	private ResponseEntity getAllConfirmOrderBuyByCustomerID(@PathVariable int customerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllConfirmingOrderByCustomerID(customerID));
+	}
+	
 	
 	
 	
@@ -118,6 +123,11 @@ public class OrderBuyController {
 	@GetMapping("/po/prepare/{productownerID}")
 	private ResponseEntity getAllPrepareOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
 		return ResponseEntity.ok().body(buyService.getAllPrepareOrderByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/confirm/{productownerID}")
+	private ResponseEntity getAllConfirmOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAllConfirmingOrderByProductOwnerID(productownerID));
 	}
 	
 	@GetMapping("/po/getall/{productownerID}")

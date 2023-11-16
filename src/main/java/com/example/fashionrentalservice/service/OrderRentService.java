@@ -126,12 +126,9 @@ public class OrderRentService {
 					throw new ProductNotForSale();
 				} else if (product.getStatus() == ProductDTO.ProductStatus.RENTING) {
 					LocalDate newDate = LocalDate.parse(detail.getStartDate(), formatter);
-					List<OrderRentDetailDTO> list = renDetailService.getOrderRentDetailByProductIDAndCheckDate(product.getProductID(), newDate);
-					if (list.size() != 0) {
-						int lastIndex = list.size() - 1;
-						OrderRentDetailDTO checkDate = list.get(lastIndex);
-						throw new ProductIsRented(product.getProductName(), checkDate.getEndDate());
-					}
+					OrderRentDetailDTO checkOrder = renDetailService.getOrderRentDetailByProductIDAndCheckDate(product.getProductID(), newDate);
+					if (checkOrder != null) 
+						throw new ProductIsRented(product.getProductName(), checkOrder.getEndDate());
 				}
 
 				OrderRentDetailDTO detailRent = OrderRentDetailDTO.builder()

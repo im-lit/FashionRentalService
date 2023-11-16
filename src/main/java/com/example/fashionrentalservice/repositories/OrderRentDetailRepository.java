@@ -11,5 +11,5 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 public interface OrderRentDetailRepository extends JpaRepository<OrderRentDetailDTO, Integer>{
 
 	@Query("select dto from OrderRentDetailDTO dto where dto.productDTO.productID = ?1 AND ?2 BETWEEN dto.startDate AND dto.endDate")
-	List<OrderRentDetailDTO> findAllOrderDetailByProductIDAndCheckDate(int productID, LocalDate date);
+	OrderRentDetailDTO findAllOrderDetailByProductIDAndCheckDate(int productID, LocalDate date);
 }

@@ -57,8 +57,8 @@ public class OrderRentDetailService {
 	
 	
 	//================================== Lay tat ca OrderRentDetail By ProductID========================================
-	public List<OrderRentDetailDTO> getOrderRentDetailByProductIDAndCheckDate(int productID,LocalDate date) {
-		List<OrderRentDetailDTO> detail = rentDetailRepo.findAllOrderDetailByProductIDAndCheckDate(productID, date);
+	public OrderRentDetailDTO getOrderRentDetailByProductIDAndCheckDate(int productID,LocalDate date) {
+		OrderRentDetailDTO detail = rentDetailRepo.findAllOrderDetailByProductIDAndCheckDate(productID, date);
 		return detail;
 	}
 	
