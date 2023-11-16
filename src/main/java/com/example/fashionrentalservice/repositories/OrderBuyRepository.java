@@ -21,8 +21,8 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PREPARE' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllPrepareOrderBuyByCustomerID(int customerID);
 	
-	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'READY_PICKUP' ORDER BY dto.orderBuyID DESC")
-	List<OrderBuyDTO>findAllReadyPickUpOrderBuyByCustomerID(int customerID);
+	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'DELIVERY' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllDeliveryOrderBuyByCustomerID(int customerID);
 	
 	@Query("select dto from OrderBuyDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllConfirmingOrderBuyByCustomerID(int customerID);
@@ -51,8 +51,8 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'PREPARE' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllPrepareOrderBuyByProductOwnerID(int productownerID);
 	
-	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'READY_PICKUP' ORDER BY dto.orderBuyID DESC")
-	List<OrderBuyDTO>findAllReadyPickUpOrderBuyByProductOwnerID(int productownerID);
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'DELIVERY' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO>findAllDeliveryOrderBuyByProductOwnerID(int productownerID);
 	
 	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllConfirmingOrderBuyByProductOwnerID(int productownerID);

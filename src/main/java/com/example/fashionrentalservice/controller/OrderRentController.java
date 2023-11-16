@@ -74,4 +74,30 @@ public class OrderRentController {
 		return ResponseEntity.ok().body(rentService.getTotalOrderRent1WeekOrderByProductOwnerID(productownerID));
 	}
 	
+	
+	
+	
+	@GetMapping("/po/prepare/{productownerID}")
+	private ResponseEntity getAllPrepareOrderRentbyProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllPrepareOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/completed/{productownerID}")
+	private ResponseEntity getAllCompletedOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllCompletedOrderRentByProductOwnerID(productownerID));
+	}
+	
+	
+	
+	@GetMapping("/cus/prepare/{customerID}")
+	private ResponseEntity getAllPrepareOrderRentbyCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllPrepareOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/completed/{customerID}")
+	private ResponseEntity getOrderRentDetailByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllCompletedOrderRentByCustomerID(customerID));
+	}
+	
+	
 }

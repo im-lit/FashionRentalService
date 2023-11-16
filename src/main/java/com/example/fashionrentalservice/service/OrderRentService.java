@@ -23,13 +23,11 @@ import com.example.fashionrentalservice.exception.WalletCusNotFound;
 import com.example.fashionrentalservice.exception.WalletInOrderServiceFailed;
 import com.example.fashionrentalservice.exception.WalletPoNotFound;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
-import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
-import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
-import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
@@ -37,7 +35,6 @@ import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderRentDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
-import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderRentResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
@@ -325,4 +322,46 @@ public class OrderRentService {
 		check.setOrderCode(orderCode);
 		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
 	}
+	
+	public List<OrderRentResponseEntity> getAllPrepareOrderRentByProductOwnerID(int productOwnerID) throws CrudException{
+		List<OrderRentDTO> list = new ArrayList<>();
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null) 
+			throw new PendingMoneyNegative("ProductOwner not found");
+		
+		 list = rentRepo.findAllPrepareOrderRentByProductOwnerID(productOwnerID);
+		 return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+	}
+
+	
+	public List<OrderRentResponseEntity> getAllCompletedOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		
+		List<OrderRentDTO> list = rentRepo.findAllCompletedOrderRentByProductOwnerID(productOwnerID);
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+	}
+	
+	public List<OrderRentResponseEntity> getAllPrepareOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		List<OrderRentDTO> list = rentRepo.findAllPrepareOrderRentByCustomerID(customerID);
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+	}
+	
+	public List<OrderRentResponseEntity> getAllCompletedOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		List<OrderRentDTO> list = rentRepo.findAllCompletedOrderRentByCustomerID(customerID);
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+	}
+	
+	
+	
+	
 }

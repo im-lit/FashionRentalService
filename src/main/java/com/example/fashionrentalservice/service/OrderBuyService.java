@@ -231,8 +231,8 @@ public class OrderBuyService {
 	}
 	
 	//================================== Lay tat ca READY_PICKUP OrderBUY by CustomerID============================================
-	public List<OrderBuyResponseEntity> getAllReadyPickUpOrderCustomerID(int customerID) {
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllReadyPickUpOrderBuyByCustomerID(customerID));
+	public List<OrderBuyResponseEntity> getAllDeliveryOrderCustomerID(int customerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllDeliveryOrderBuyByCustomerID(customerID));
 	}
 	
 	
@@ -275,8 +275,8 @@ public class OrderBuyService {
 	}
 	
 	//================================== Lay tat ca READY_PICKUP OrderBUY by ProductOwnerID============================================
-	public List<OrderBuyResponseEntity> getAllReadyPickUpOrderByProductOwnerID(int productownerID) {
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllReadyPickUpOrderBuyByProductOwnerID(productownerID));
+	public List<OrderBuyResponseEntity> getDeliveryOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllDeliveryOrderBuyByProductOwnerID(productownerID));
 	}
 	
 	//================================== Lay tat ca OrderBuy ==========================================================================
