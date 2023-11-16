@@ -12,6 +12,14 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1 WHEN dto.status = 'WAITING' THEN 2 WHEN dto.status = 'BLOCKED' THEN 3 WHEN dto.status = 'RENTING' THEN 4 ELSE 5 END")
 	List<ProductDTO>findAllByProductOwnerID(int productownerID);
 	
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='RENT'")
+	List<ProductDTO>findAllRentTypeByProductOwnerID(int productownerID);
+	
+
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='SALE'")
+	List<ProductDTO>findAllSaleTypeByProductOwnerID(int productownerID);
+	
+	
 	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status IN ('AVAILABLE', 'RENTING','SOLD_OUT') ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1   WHEN dto.status = 'RENTING' THEN 2 WHEN dto.status = 'SOLD_OUT' THEN 3  END")
 	List<ProductDTO>findAllAvailbleAndRentingByProductOwnerID(int productownerID);
 	
@@ -29,9 +37,56 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
     "(dto.category.categoryName = 'Bag' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') = :brandName)")
     List<ProductDTO> findAllByBrandName(String brandName);
 //    @Query("SELECT dto from ProductDTO JSON_EXTRACT(p.productSpecificationData, '$.brandName') where dto.productownerDTO.productownerID = ?1")
-
-	
-	
+//	 @Query("SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Watch' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') IS NOT NULL " +
+//		        "UNION " +
+//		        "SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Shoe' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes') IS NOT NULL " +
+//		        "UNION " +
+//		        "SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Sunglasses' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses') IS NOT NULL " +
+//		        "UNION " +
+//		        "SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Jewelry' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry') IS NOT NULL " +
+//		        "UNION " +
+//		        "SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Hat' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat') IS NOT NULL " +
+//		        "UNION " +
+//		        "SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') AS brandName " +
+//		        "FROM ProductDTO dto WHERE dto.category.categoryName = 'Bag' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') IS NOT NULL")
+////		List<String> findAllBrandNamesInCategory();
+//
+//	 @Query("SELECT DISTINCT " +
+//		        "   WHEN dto.category.categoryName = 'Watch' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch')" +
+////		        "   WHEN dto.category.categoryName = 'Shoe' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes') " +
+////		        "   WHEN dto.category.categoryName = 'Sunglasses' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses') " +
+////		        "   WHEN dto.category.categoryName = 'Jewelry' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry') " +
+////		        "   WHEN dto.category.categoryName = 'Hat' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat') " +
+////	        "   WHEN dto.category.categoryName = 'Bag' THEN JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') " +
+//		        "END AS brandName " +	
+//		        "FROM ProductDTO dto " +
+//		        "WHERE dto.category.categoryName = :categoryName " +
+//		        "AND brandName IS NOT NULL")
+//	List<String> findAllBrandNames(String categoryName);
+//	 @Query("SELECT DISTINCT COALESCE(" +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag')" +
+//		        ") AS brandName " +
+//		        "FROM ProductDTO dto " +
+//		        "WHERE dto.category.categoryName = :categoryName " +
+//		        "AND COALESCE(" +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameShoes'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat'), " +
+//		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag')" +
+//		        ") IS NOT NULL")
+//		List<String> findAllBrandNames(String category);
 	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='RENT' ")
 	List<ProductDTO> findAllRentProduct();
 	

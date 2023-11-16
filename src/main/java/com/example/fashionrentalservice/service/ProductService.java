@@ -140,17 +140,33 @@ public class ProductService {
                 .collect(Collectors.toList());
 	}
 	
+//	public List<String>getAllBrandName(String category){
+//		return productRepo.findAllBrandNames(category);
+//	}
+	
 	public List<ProductResponseEntity> getAllProductByProductOwnerID(int productownerID) throws CrudException{
 		return  productRepo.findAllByProductOwnerID(productownerID).stream()
                 .map(ProductResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
 	
+	public List<ProductSlimResponseEntity> getAllProductOnRentByProductOwnerIDForCus(int productownerID) throws CrudException{
+		return  productRepo.findAllRentTypeByProductOwnerID(productownerID).stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
+	public List<ProductSlimResponseEntity> getAllProductOnSaleByProductOwnerIDForCus(int productownerID) throws CrudException{
+		return  productRepo.findAllSaleTypeByProductOwnerID(productownerID).stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
 	public List<ProductSlimResponseEntity> getAllProductByProductOwnerIDForCus(int productownerID) throws CrudException{
 		return  productRepo.findAllAvailbleAndRentingByProductOwnerID(productownerID).stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
+	
+	
 	public List<ProductSlimResponseEntity> getAllProductsOnSale() throws CrudException{
 		return  productRepo.findAllSaleProduct().stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)

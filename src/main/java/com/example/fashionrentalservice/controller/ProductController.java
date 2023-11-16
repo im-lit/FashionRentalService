@@ -1,7 +1,11 @@
 package com.example.fashionrentalservice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,6 +85,21 @@ public class ProductController {
 	private ResponseEntity getProductByProductOwnerIDForCus(@PathVariable int productownerID) throws CrudException {
 		return ResponseEntity.ok().body(productService.getAllProductByProductOwnerIDForCus(productownerID));
 	}
+	@GetMapping("/getproductsonrent/{productownerID}")
+	private ResponseEntity getProductOnRentByProductOwnerIDForCus(@PathVariable int productownerID) throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductOnRentByProductOwnerIDForCus(productownerID));
+	}
+	
+	@GetMapping("/getproductsonsale/{productownerID}")
+	private ResponseEntity getProductOnSaleByProductOwnerIDForCus(@PathVariable int productownerID) throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductOnSaleByProductOwnerIDForCus(productownerID));
+	}
+	
+	
+//	@GetMapping("/onrllllll")
+//	private ResponseEntity getAllBrandNames(@Param(value = "categoryName") String category) throws CrudException {
+//		return ResponseEntity.ok().body(productService.getAllBrandName(category));
+//	}
 	
 	
 	@PutMapping
