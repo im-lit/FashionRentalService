@@ -34,11 +34,16 @@ public class OrderRentResponseEntity {
 	
 	private LocalDate dateOrder;
 	
-	
 	private String orderCode;
+	
+	private String productownerName;
+	
+	private String customerName;
+	
 	private int customerID;
 	
 	private int productownerID;
+	
 	
 	public static List<OrderRentResponseEntity> fromListOrderRentDTO(List<OrderRentDTO> dtos) {
 		return dtos.stream()
@@ -52,6 +57,8 @@ public class OrderRentResponseEntity {
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
 	                    .orderCode(dto.getOrderCode())
+	                    .productownerName(dto.getProductownerDTO().getFullName())
+	                    .customerName(dto.getCustomerDTO().getFullName())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .build())
