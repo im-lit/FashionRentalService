@@ -323,42 +323,175 @@ public class OrderRentService {
 		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
 	}
 	
+	// ================================== PO ===============================================================================================================
+	
+	
+	// ================================== PREPARE =========================================================================
 	public List<OrderRentResponseEntity> getAllPrepareOrderRentByProductOwnerID(int productOwnerID) throws CrudException{
-		List<OrderRentDTO> list = new ArrayList<>();
 		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
 		if(check == null) 
 			throw new PendingMoneyNegative("ProductOwner not found");
 		
-		 list = rentRepo.findAllPrepareOrderRentByProductOwnerID(productOwnerID);
-		 return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+		 return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllPrepareOrderRentByProductOwnerID(productOwnerID));
 	}
 
-	
+	// ================================== COMPELTE =========================================================================
 	public List<OrderRentResponseEntity> getAllCompletedOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
 		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("ProductOwner not found");
-		
-		List<OrderRentDTO> list = rentRepo.findAllCompletedOrderRentByProductOwnerID(productOwnerID);
-		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCompletedOrderRentByProductOwnerID(productOwnerID));
 	}
 	
+	// ================================== PENDING =========================================================================
+	public List<OrderRentResponseEntity> getAllPendingOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllPendingOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== DELIVERY =========================================================================
+	public List<OrderRentResponseEntity> getAllDeliveryOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllDeliveryOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== CONFIRMING =========================================================================
+	public List<OrderRentResponseEntity> getAllConfirmingOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllConfirmingOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== RENTING =========================================================================
+	public List<OrderRentResponseEntity> getAllRentingOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRentingOrderRentByProductOwnerID(productOwnerID));
+	}
+	
+	// ================================== RETURNING =========================================================================Returning
+	public List<OrderRentResponseEntity> getAllReturningOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllReturningOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== REJECTING =========================================================================
+	
+	public List<OrderRentResponseEntity> getAllRejectingOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRejectingOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== REJECTING_COMPLETED =========================================================================
+	public List<OrderRentResponseEntity> getAllRejectingCompletedOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRejectingCompletedOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== CANCELED =========================================================================
+	public List<OrderRentResponseEntity> getAllCanceledOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCanceledOrderRentByProductOwnerID(productOwnerID));
+	}
+	
+	
+	// ================================== Customer ===============================================================================================================
+	
+	// ================================== PREPARE =========================================================================
 	public List<OrderRentResponseEntity> getAllPrepareOrderRentByCustomerID(int customerID) throws CrudException {
 		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("Customer not found");
-		
-		List<OrderRentDTO> list = rentRepo.findAllPrepareOrderRentByCustomerID(customerID);
-		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+		return OrderRentResponseEntity.fromListOrderRentDTO( rentRepo.findAllPrepareOrderRentByCustomerID(customerID));
 	}
 	
+	// ================================== Completed =========================================================================
 	public List<OrderRentResponseEntity> getAllCompletedOrderRentByCustomerID(int customerID) throws CrudException {
 		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("Customer not found");
 		
-		List<OrderRentDTO> list = rentRepo.findAllCompletedOrderRentByCustomerID(customerID);
-		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.saveAll(list));
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCompletedOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== PENDING =========================================================================
+	public List<OrderRentResponseEntity> getAllPendingOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllPendingOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== DELIVERY =========================================================================
+	public List<OrderRentResponseEntity> getAllDeliveryOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllDeliveryOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== CONFIRMING =========================================================================
+	public List<OrderRentResponseEntity> getAllConfirmingOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllConfirmingOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== RENTING =========================================================================
+	public List<OrderRentResponseEntity> getAllRentingOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRentingOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== RETURNING =========================================================================
+	public List<OrderRentResponseEntity> getAllReturningOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllReturningOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== REJECTING =========================================================================
+	public List<OrderRentResponseEntity> getAllRejectingOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRejectingOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== REJECTING_COMPLETED =========================================================================
+	public List<OrderRentResponseEntity> getAllRejectingCompletedOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRejectingCompletedOrderRentByCustomerID(customerID));
+	}
+	
+	// ================================== CANCELED =========================================================================
+	public List<OrderRentResponseEntity> getAllCanceledOrderRentByCustomerID(int customerID) throws CrudException {
+		CustomerDTO check = cusRepo.findById(customerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Customer not found");
+		
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCanceledCompletedOrderRentByCustomerID(customerID));
 	}
 	
 	

@@ -30,9 +30,68 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'COMPLETED' ORDER BY dto.orderRentID DESC")
 	List<OrderRentDTO> findAllCompletedOrderRentByProductOwnerID(int productownerID);
 	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'DELIVERY' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllDeliveryOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllConfirmingOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'RENTING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRentingOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'RETURNING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllReturningOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'REJECTING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRejectingOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'REJECTING_COMPLETED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRejectingCompletedOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'CANCELED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllCanceledOrderRentByProductOwnerID(int productownerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllPendingOrderRentByProductOwnerID(int productownerID);
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PREPARE' ORDER BY dto.orderRentID DESC")
 	List<OrderRentDTO> findAllPrepareOrderRentByCustomerID(int customerID);
 	
 	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'COMPLETED' ORDER BY dto.orderRentID DESC")
 	List<OrderRentDTO> findAllCompletedOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'DELIVERY' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllDeliveryOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'CONFIRMING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllConfirmingOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'RENTING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRentingOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'RETURNING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllReturningOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'REJECTING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRejectingOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'REJECTING_COMPLETED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllRejectingCompletedOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'CANCELED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllCanceledCompletedOrderRentByCustomerID(int customerID);
+	
+	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllPendingOrderRentByCustomerID(int customerID);
+	
+	
+	
 }

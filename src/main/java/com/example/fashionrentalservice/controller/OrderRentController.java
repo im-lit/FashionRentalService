@@ -77,6 +77,7 @@ public class OrderRentController {
 	
 	
 	
+	
 	@GetMapping("/po/prepare/{productownerID}")
 	private ResponseEntity getAllPrepareOrderRentbyProductOwnerID(@PathVariable int productownerID ) throws CrudException {
 		return ResponseEntity.ok().body(rentService.getAllPrepareOrderRentByProductOwnerID(productownerID));
@@ -87,17 +88,96 @@ public class OrderRentController {
 		return ResponseEntity.ok().body(rentService.getAllCompletedOrderRentByProductOwnerID(productownerID));
 	}
 	
+	@GetMapping("/po/pending/{productownerID}")
+	private ResponseEntity getAllPendingOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllPendingOrderRentByProductOwnerID(productownerID));
+	}
 	
+	@GetMapping("/po/delivery/{productownerID}")
+	private ResponseEntity getAllDeliveryOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllDeliveryOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/renting/{productownerID}")
+	private ResponseEntity getAllRentingOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRentingOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/returning/{productownerID}")
+	private ResponseEntity getAllReturningOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllReturningOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/rejecting/{productownerID}")
+	private ResponseEntity getAllRejectingOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRejectingOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/rejectcompleted/{productownerID}")
+	private ResponseEntity getAllRejectingCompletedOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRejectingCompletedOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/cancel/{productownerID}")
+	private ResponseEntity getAllCancledOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllCanceledOrderRentByProductOwnerID(productownerID));
+	}
+	
+	@GetMapping("/po/confirming/{productownerID}")
+	private ResponseEntity getAllConfirmingOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllConfirmingOrderRentByProductOwnerID(productownerID));
+	}
+	
+	//pending Pending, delivery Delivery,confirming Confirming renting Renting, returning Returning, rejecting Rejecting, rejectcompleted RejetingCompleted, cancel Cancled
 	
 	@GetMapping("/cus/prepare/{customerID}")
 	private ResponseEntity getAllPrepareOrderRentbyCustomerID(@PathVariable int customerID ) throws CrudException {
 		return ResponseEntity.ok().body(rentService.getAllPrepareOrderRentByCustomerID(customerID));
 	}
 	
+	@GetMapping("/cus/confirming/{customerID}")
+	private ResponseEntity getAllConfirmingOrderRentbyCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllConfirmingOrderRentByCustomerID(customerID));
+	}
+	
 	@GetMapping("/cus/completed/{customerID}")
-	private ResponseEntity getOrderRentDetailByCustomerID(@PathVariable int customerID ) throws CrudException {
+	private ResponseEntity getAllCompletedOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
 		return ResponseEntity.ok().body(rentService.getAllCompletedOrderRentByCustomerID(customerID));
 	}
 	
+	@GetMapping("/cus/pending/{customerID}")
+	private ResponseEntity getAllPendingOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllPendingOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/delivery/{customerID}")
+	private ResponseEntity getAllDeliveryOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllDeliveryOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/renting/{customerID}")
+	private ResponseEntity getAllRentingOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRentingOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/returning/{customerID}")
+	private ResponseEntity getAllReturningOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllReturningOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/rejecting/{customerID}")
+	private ResponseEntity getAllRejectingOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRejectingOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/rejectcompleted/{customerID}")
+	private ResponseEntity getAllRejectingCompletedOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRejectingCompletedOrderRentByCustomerID(customerID));
+	}
+	
+	@GetMapping("/cus/cancel/{customerID}")
+	private ResponseEntity getAllCancledOrderRentByCustomerID(@PathVariable int customerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllCanceledOrderRentByCustomerID(customerID));
+	}
 	
 }
