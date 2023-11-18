@@ -209,6 +209,10 @@ public class OrderRentService {
 	public List<OrderRentResponseEntity> getAllOrder() {
 		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAll());
 	}
+	
+	public List<OrderRentResponseEntity> getAllCanceledOrderRent() {
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCancelOrderRent());
+	}
 
 	// ================================== Lay tat ca OrderRent trong 1 thang by ProductOwnerID ========================================
 	public List<OrderRentResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
@@ -493,6 +497,8 @@ public class OrderRentService {
 		
 		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllCanceledCompletedOrderRentByCustomerID(customerID));
 	}
+	
+	
 	
 	
 	

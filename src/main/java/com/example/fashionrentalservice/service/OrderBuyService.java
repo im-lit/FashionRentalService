@@ -284,6 +284,11 @@ public class OrderBuyService {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll());
 	}
 	
+	//================================== Lay tat ca OrderBuy ==========================================================================
+	public List<OrderBuyResponseEntity> getAllCanceledOrderBuy() {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCanceledOrderBuy());
+	}
+	
 	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID =============================================
 	public List<OrderBuyResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
 		LocalDate startDate = LocalDate.now().minusMonths(1);

@@ -1,6 +1,8 @@
 package com.example.fashionrentalservice.service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
-import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderRentDetailResponseEntity;
 import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderRentRepository;
@@ -57,7 +57,26 @@ public class OrderRentDetailService {
 
 //================================== Lay tat ca OrderDetail By OrderBuyID========================================
 	public List<OrderRentDetailResponseEntity> getAllOrderDetailByOrderRentID(int orderRentID) {
-		return OrderRentDetailResponseEntity.fromListOrderRentDetailDTO(rentDetailRepo.findAllOrderDetailByOrderRentID(orderRentID));
+		List<OrderRentDetailDTO> list = new ArrayList<>();
+		List<OrderRentDetailResponseEntity> listReturn = new ArrayList<>();
+		
+		list = rentDetailRepo.findAllOrderDetailByOrderRentID(orderRentID);
+		
+		for (OrderRentDetailDTO x : list) {
+			long daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), x.getEndDate());
+			OrderRentDetailResponseEntity dto = OrderRentDetailResponseEntity.builder()
+												.cocMoney(x.getCocMoney())
+												.startDate(x.getStartDate())
+												.endDate(x.getEndDate())
+												.orderRentDetailID(x.getOrderRentDetailID())
+												.productDTO(x.getProductDTO())
+												.rentPrice(x.getRentPrice())
+												.orderRentID(x.getOrderRentDTO().getOrderRentID())
+												.dayRemaining(daysRemaining)
+												.build();
+			listReturn.add(dto);	
+		}
+		return listReturn;
 	}
 	
 	//================================== Lay tat ca OrderRentDetail By ProductID========================================
@@ -73,6 +92,11 @@ public class OrderRentDetailService {
 	public OrderRentDetailDTO getOrderRentDetailByProductIDAndCheckDate(int productID,LocalDate date) {
 		OrderRentDetailDTO detail = rentDetailRepo.findAllOrderDetailByProductIDAndCheckDate(productID, date);
 		return detail;
+	}
+	
+	public List<OrderRentDetailDTO> getAllOrderRentDetail() {
+		List<OrderRentDetailDTO> list = rentDetailRepo.findAll();
+		return list;
 	}
 	
 }

@@ -39,6 +39,11 @@ public class OrderRentController {
 		return ResponseEntity.ok().body(rentService.getAllOrder());
 	}
 	
+	@GetMapping("/cancel/staff")
+	private ResponseEntity getAllCanceledOrderRent() {
+		return ResponseEntity.ok().body(rentService.getAllCanceledOrderRent());
+	}
+	
 	@PostMapping
 	private ResponseEntity createOrderRentAndOrderRentDetail(@RequestBody List<OrderRentRequestEntity> entity) throws CrudException {			
 		return ResponseEntity.ok().body(rentService.createOrderRent(entity));

@@ -55,8 +55,8 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	List<OrderRentDTO> findAllPendingOrderRentByProductOwnerID(int productownerID);
 	
 	
-	
-	
+	@Query("select dto from OrderRentDTO dto where dto.status = 'CANCELED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllCancelOrderRent();
 	
 	
 	

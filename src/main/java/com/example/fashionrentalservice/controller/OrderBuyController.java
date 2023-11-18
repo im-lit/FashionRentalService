@@ -39,6 +39,11 @@ public class OrderBuyController {
 		return ResponseEntity.ok().body(buyService.getAllOrder());
 	}
 	
+	@GetMapping("/cancel/staff")
+	private ResponseEntity getAllCancelOrderBuy() {
+		return ResponseEntity.ok().body(buyService.getAllCanceledOrderBuy());
+	}
+	
 	@PostMapping
 	private ResponseEntity createOrderBuyAndOrderBuyDetail(@RequestBody List<OrderBuyRequestEntity> entity) throws CrudException {			
 		return ResponseEntity.ok().body( buyService.createOrderBuy(entity));

@@ -26,6 +26,8 @@ public class OrderRentDetailResponseEntity {
 	
 	private LocalDate endDate;
 	
+	private long dayRemaining;
+	
 	private ProductDTO productDTO;
 	
 	private int orderRentID;
