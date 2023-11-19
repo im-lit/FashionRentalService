@@ -155,6 +155,12 @@ public class ProductService {
                 .map(ProductSlimResponseEntity::fromProductDTO)
                 .collect(Collectors.toList());
 	}
+	
+	public List<ProductSlimResponseEntity> getAllProductByProductName(String productownerName) throws CrudException{
+		return  productRepo.findAllByProductNameLike(productownerName).stream()
+                .map(ProductSlimResponseEntity::fromProductDTO)
+                .collect(Collectors.toList());
+	}
 	public List<ProductSlimResponseEntity> getAllProductOnSaleByProductOwnerIDForCus(int productownerID) throws CrudException{
 		return  productRepo.findAllSaleTypeByProductOwnerID(productownerID).stream()
                 .map(ProductSlimResponseEntity::fromProductDTO)

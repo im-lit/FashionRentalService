@@ -95,6 +95,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(productService.getAllProductOnSaleByProductOwnerIDForCus(productownerID));
 	}
 	
+	@GetMapping("/getallbyproductname/{productName}")
+	private ResponseEntity getAllProductByProName(@PathVariable String productName) throws CrudException {
+		return ResponseEntity.ok().body(productService.getAllProductByProductName(productName));
+	}
+	
 	
 //	@GetMapping("/onrllllll")
 //	private ResponseEntity getAllBrandNames(@Param(value = "categoryName") String category) throws CrudException {

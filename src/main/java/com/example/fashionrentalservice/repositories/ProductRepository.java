@@ -100,6 +100,9 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	List<ProductDTO> findAllByCategory(String categoryname);
 
 	
+	@Query("SELECT dto FROM ProductDTO dto WHERE LOWER(dto.productName) LIKE %?1%")
+	List<ProductDTO> findAllByProductNameLike(String productName);
+	
     @Query("SELECT dto FROM ProductDTO dto WHERE dto.status NOT IN ('BLOCKED', 'WAITING')")
     List<ProductDTO> findAllActiveProducts();
 }
