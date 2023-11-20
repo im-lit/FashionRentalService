@@ -36,7 +36,7 @@ public class VoucherResponseEntity {
  	
 	private int maxDiscount;
  	
- 	
+ 	private int quantity;
 	private int discountAmount;
 	private int voucherTypeID;
 	private int productOwnerID;
@@ -54,6 +54,7 @@ public class VoucherResponseEntity {
 					.endDate(dto.getEndDate())
 					.description(dto.getDescription())
 					.maxDiscount(dto.getMaxDiscount())
+					.quantity(dto.getQuantity())
 					.discountAmount(dto.getDiscountAmount())
 					.status(dto.getStatus().toString())
 					.voucherTypeID(dto.getVoucherTypeDTO().getVoucherTypeID())
@@ -70,6 +71,7 @@ public class VoucherResponseEntity {
 							.startDate(dto.getStartDate())
 							.endDate(dto.getEndDate())
 							.description(dto.getDescription())
+							.quantity(dto.getQuantity())
 							.maxDiscount(dto.getMaxDiscount())
 							.discountAmount(dto.getDiscountAmount())
 							.status(dto.getStatus().toString())

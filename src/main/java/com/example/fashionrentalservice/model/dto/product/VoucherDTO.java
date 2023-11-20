@@ -50,6 +50,8 @@ public class VoucherDTO {
 	 	@Column(columnDefinition = "nvarchar(255)")
 		private String description;
 	 	
+	 	private int quantity;
+	 	
 	 	
 		private int maxDiscount;
 	 	
@@ -60,7 +62,7 @@ public class VoucherDTO {
 		private VoucherStatus status;
 		
 		public enum VoucherStatus {
-			ACTIVE, INACTIVE, OUTDATE
+			ACTIVE, INACTIVE, OUTDATE,OUT_OF_STOCK
 		}
 	 	
 	 	

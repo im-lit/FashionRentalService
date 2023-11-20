@@ -27,6 +27,7 @@ public class VoucherRequestEntity {
 	private String description;
  	
  	
+	private int quantity;
 	private int maxDiscount;
  	
 	private int discountAmount;

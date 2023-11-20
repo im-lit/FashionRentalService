@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 
 public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	

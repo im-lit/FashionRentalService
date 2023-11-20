@@ -35,6 +35,7 @@ import com.example.fashionrentalservice.model.response.WalletResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.VoucherRepository;
 import com.example.fashionrentalservice.repositories.VoucherTypeRepository;
+import com.google.common.math.Quantiles;
 
 
 @Service
@@ -105,13 +106,15 @@ public class VoucherService {
 				.description(entity.getDescription())
 				.discountAmount(entity.getDiscountAmount())
 				.maxDiscount(entity.getMaxDiscount())
+				.quantity(entity.getQuantity())
 				.status(VoucherStatus.ACTIVE)
 				.productOwnerDTO(poRepo.findById(entity.getProductownerID()).orElse(null))
 				.voucherTypeDTO(voucherTypeRepo.findById(entity.getVoucherTypeID()).orElse(null))
 				.build();
 		
-	
-		
+		if((dto.getQuantity()<=0)) {
+			throw new PendingMoneyNegative("Quantity must be greater or equal 0");
+		}
 		long daysBetween = ChronoUnit.DAYS.between(entity.getStartDate(), entity.getEndDate());
 		if(daysBetween < 0) { 
 			throw new DaysBetweenTwoDays();
@@ -119,12 +122,34 @@ public class VoucherService {
 		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
 	}
 	
+	public VoucherResponseEntity useVoucher(String voucherCode) throws  CrudException {
+		VoucherDTO dto = voucherRepo.findByVoucherCode(voucherCode);
+		
+		if(dto==null) {
+			throw new PendingMoneyNegative("Can not find this Voucher Code");
+		}
+		
+		if(dto.getQuantity()==0) {
+			throw new PendingMoneyNegative("This voucher is out of stock");
+		}else {
+		dto.setQuantity(dto.getQuantity()-1);
+		}
+		if(dto.getQuantity()==0) {
+			dto.setStatus(VoucherStatus.OUT_OF_STOCK);
+		}
+		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
+	}
+	
+	
 	//================================== Update Status Voucher ========================================
     public VoucherResponseEntity updateStatusVoucherByVoucherID(int voucherID) throws CrudException {
         VoucherDTO dto = voucherRepo.findById(voucherID).orElseThrow();
         if(dto==null) {
 			throw new PendingMoneyNegative("Can not find voucher by ID");
 		}
+        if(dto.getQuantity()==0) {
+        	dto.setStatus(VoucherStatus.OUT_OF_STOCK);
+        }
         if(dto.getStatus().equals(VoucherStatus.INACTIVE)) {
         	dto.setStatus(VoucherStatus.ACTIVE);
         }else if(dto.getStatus().equals(VoucherStatus.ACTIVE)) {
@@ -137,6 +162,7 @@ public class VoucherService {
 		if(daysBetween < 0) {
 			dto.setStatus(VoucherStatus.OUTDATE);
 		}
+	
 		
     
         	return VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));
