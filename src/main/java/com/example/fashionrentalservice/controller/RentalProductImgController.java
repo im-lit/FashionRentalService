@@ -45,9 +45,9 @@ public class RentalProductImgController {
 		return ResponseEntity.ok().body(rentPicService.getAllRentalProductImgByAccountID(accountID));
 	}
 	
-	@GetMapping("/{orderdetailID}")
-	private ResponseEntity getAllRentalProductImgByOrderDetailID(@PathVariable int orderdetailID) throws CrudException {
-		return ResponseEntity.ok().body(rentPicService.getAllRentalProductImgByOrderDetailID(orderdetailID));
+	@GetMapping("/img/{orderRentID}")
+	private ResponseEntity getAllRentalProductImgByOrderRentID(@PathVariable int orderRentID) throws CrudException {
+		return ResponseEntity.ok().body(rentPicService.getAllRentalProductImgByOrderRentID(orderRentID));
 	}
 	
 	

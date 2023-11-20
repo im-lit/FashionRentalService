@@ -238,7 +238,13 @@ public class OrderBuyService {
 	
 	
 	
+	
+	
 	/*-------------------------------------------------- Productowner OrderBuy ------------------------------------------------------------------------------*/
+	public List<OrderBuyResponseEntity> getAll3StatusOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll3StatusOrderBuyByProductOwnerID(productownerID));
+	}
+	
 	//================================== Lay tat ca PENDING OrderBUY by ProductOwnerID=================================================
 	public List<OrderBuyResponseEntity> getAllPendingOrderByProductOwnerID(int productownerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPendingOrderBuyByProductOwnerID(productownerID));

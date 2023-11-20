@@ -12,7 +12,7 @@ public interface RentalProductimgRepository extends JpaRepository<RentalProductI
 	@Query("select dto from RentalProductImgDTO dto where dto.accountDTO.accountID = ?1")
 	List<RentalProductImgDTO> findAllRentalProductImgByAccountID(int accountID);
 	
-	@Query("select dto from RentalProductImgDTO dto where dto.orderRentDetailDTO.orderRentDetailID = ?1")
-	List<RentalProductImgDTO> findAllRentalProductImgByOrderDetailID(int orderDetailID);
+	@Query("select dto from RentalProductImgDTO dto where dto.orderRentDTO.orderRentID = ?1")
+	List<RentalProductImgDTO> findAllRentalProductImgByOrderRentID(int orderRentID);
 	
 }

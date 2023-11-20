@@ -67,6 +67,13 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status = 'COMPLETED' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO>findAllCompletedOrderBuyByProductOwnerID(int productownerID);
 	
+	
+
+	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status IN ('DELIVERY', 'CONFIRMING', 'COMPLETED') ORDER BY CASE WHEN dto.status = 'DELIVERY' THEN 1 WHEN dto.status = 'CONFIRMING' THEN 2 WHEN dto.status = 'COMPLETED' THEN 3 END")
+	List<OrderBuyDTO> findAll3StatusOrderBuyByProductOwnerID(int productownerID);
+	
+	
+	
 	@Query("select dto from OrderBuyDTO dto where dto.status = 'CANCELED' ORDER BY dto.orderBuyID DESC")
 	List<OrderBuyDTO> findAllCanceledOrderBuy();
 	

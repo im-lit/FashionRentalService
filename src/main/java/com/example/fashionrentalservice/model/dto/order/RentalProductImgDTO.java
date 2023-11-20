@@ -43,8 +43,8 @@ public class RentalProductImgDTO {
 	private AccountDTO accountDTO;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JoinColumn(name = "orderrentdetail_id")
+	@JoinColumn(name = "orderrent_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
-	private OrderRentDetailDTO orderRentDetailDTO;
+	private OrderRentDTO orderRentDTO;
 
 }
