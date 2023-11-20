@@ -328,7 +328,13 @@ public class OrderRentService {
 	}
 	
 	// ================================== PO ===============================================================================================================
-	
+	public List<OrderRentResponseEntity> getAll3StatusOrderRentByProductOwnerID(int productOwnerID) throws CrudException{
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null) 
+			throw new PendingMoneyNegative("ProductOwner not found");
+		
+		 return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAll3StatusOrderRentByProductOwnerID(productOwnerID));
+	}
 	
 	// ================================== PREPARE =========================================================================
 	public List<OrderRentResponseEntity> getAllPrepareOrderRentByProductOwnerID(int productOwnerID) throws CrudException{

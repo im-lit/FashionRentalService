@@ -99,6 +99,10 @@ public class OrderBuyController {
 	
 	
 
+	@GetMapping("/po/three/{productownerID}")
+	private ResponseEntity getAll3StatusOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{
+		return ResponseEntity.ok().body(buyService.getAll3StatusOrderByProductOwnerID(productownerID));
+	}
 	
 	@GetMapping("/po/pending/{productownerID}")
 	private ResponseEntity getAllPendingOrderBuyByProductOwnerID(@PathVariable int productownerID) throws CrudException{

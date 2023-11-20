@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO;
 import com.example.fashionrentalservice.model.request.RentalProductImgRequestEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.AddressRepository;
-import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
+import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.RentalProductimgRepository;
 
 @Service
@@ -28,7 +29,7 @@ public class RentalProductImgService {
 	private AddressRepository addressRepo;
 	
 	@Autowired
-	private OrderRentDetailRepository rentRepo;
+	private OrderRentRepository rentRepo;
 	
 	@Autowired
 	private RentalProductimgRepository rentPicRepo;
@@ -41,7 +42,7 @@ public class RentalProductImgService {
     public List<RentalProductImgDTO> createPicture(RentalProductImgRequestEntity entity) throws CrudException{
     	List<RentalProductImgDTO> list = new ArrayList<>();
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElse(null);
-    	OrderRentDetailDTO order = rentRepo.findById(entity.getOrderRentDetailID()).orElse(null);
+    	OrderRentDTO order = rentRepo.findById(entity.getOrderRentID()).orElse(null);
     	
     	if(check == null)
     		throw new PendingMoneyNegative("not found Account");
@@ -53,7 +54,7 @@ public class RentalProductImgService {
         			.createdDate(LocalDate.now())
         			.productImg(x)
         			.accountDTO(check)
-                    .orderRentDetailDTO(order)
+                    .orderRentDTO(order)
                     .build();
     		list.add(dto);
 		}
@@ -83,13 +84,13 @@ public class RentalProductImgService {
     	return list;
     }
     
-    public List<RentalProductImgDTO> getAllRentalProductImgByOrderDetailID (int orderDetailID) throws CrudException{
+    public List<RentalProductImgDTO> getAllRentalProductImgByOrderRentID (int orderRentID) throws CrudException{
     	List<RentalProductImgDTO> list = new ArrayList<>();
-    	OrderRentDetailDTO order = rentRepo.findById(orderDetailID).orElse(null);
+    	OrderRentDTO order = rentRepo.findById(orderRentID).orElse(null);
     	if(order == null)
     		throw new PendingMoneyNegative("not found OrderDetail");
     	
-    	list = rentPicRepo.findAllRentalProductImgByOrderDetailID(orderDetailID);
+    	list = rentPicRepo.findAllRentalProductImgByOrderRentID(orderRentID);
     	return list;
     }
 }

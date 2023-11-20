@@ -17,6 +17,6 @@ public class RentalProductImgRequestEntity {
 
 	private int accountID;
 
-	private int orderRentDetailID;
+	private int orderRentID;
 
 }

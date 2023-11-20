@@ -23,7 +23,7 @@ public class RentalProductImgResponseEntity {
 	
 	private int accountID;
 	
-	private int orderRentDetailID;
+	private int orderRentID;
 	
 	
 	
@@ -36,7 +36,7 @@ public class RentalProductImgResponseEntity {
 	                    .imgUrl(dto.getProductImg())
 	                    .createdDate(dto.getCreatedDate().toString())
 	                    .accountID(dto.getAccountDTO().getAccountID())
-	                    .orderRentDetailID(dto.getOrderRentDetailDTO().getOrderRentDetailID())
+	                    .orderRentID(dto.getOrderRentDTO().getOrderRentID())
 	                    .build())
 	            .collect(Collectors.toList());
 	}
@@ -47,7 +47,7 @@ public class RentalProductImgResponseEntity {
                 .imgUrl(dto.getProductImg())
                 .createdDate(dto.getCreatedDate().toString())
                 .accountID(dto.getAccountDTO().getAccountID())
-                .orderRentDetailID(dto.getOrderRentDetailDTO().getOrderRentDetailID())
+                .orderRentID(dto.getOrderRentDTO().getOrderRentID())
 				.build();
 	}
 }
