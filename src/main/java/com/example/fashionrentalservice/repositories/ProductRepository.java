@@ -12,11 +12,11 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1 WHEN dto.status = 'WAITING' THEN 2 WHEN dto.status = 'BLOCKED' THEN 3 WHEN dto.status = 'RENTING' THEN 4 ELSE 5 END")
 	List<ProductDTO>findAllByProductOwnerID(int productownerID);
 	
-	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='RENT'")
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='RENT'  AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO>findAllRentTypeByProductOwnerID(int productownerID);
 	
 
-	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='SALE'")
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='SALE'  AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO>findAllSaleTypeByProductOwnerID(int productownerID);
 	
 	
@@ -34,7 +34,8 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
     "(dto.category.categoryName = 'Sunglasses' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameGlasses') = :brandName) OR " +
     "(dto.category.categoryName = 'Jewelry' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameJewelry') = :brandName) OR " +
     "(dto.category.categoryName = 'Hat' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameHat') = :brandName) OR " +
-    "(dto.category.categoryName = 'Bag' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') = :brandName)")
+    "(dto.category.categoryName = 'Bag' AND JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag') = :brandName)"+
+    " AND dto.status NOT IN ('WAITING', 'BLOCKED')")
     List<ProductDTO> findAllByBrandName(String brandName);
 //    @Query("SELECT dto from ProductDTO JSON_EXTRACT(p.productSpecificationData, '$.brandName') where dto.productownerDTO.productownerID = ?1")
 //	 @Query("SELECT DISTINCT JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') AS brandName " +
@@ -87,20 +88,20 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 //		        "   JSON_EXTRACT(dto.productSpecificationData, '$.brandNameBag')" +
 //		        ") IS NOT NULL")
 //		List<String> findAllBrandNames(String category);
-	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='RENT' ")
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='RENT' AND dto.status NOT IN ('WAITING', 'BLOCKED') ")
 	List<ProductDTO> findAllRentProduct();
 	
-	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='AVAILABLE' ")
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='AVAILABLE' AND dto.status NOT IN ('WAITING', 'BLOCKED') ")
 	List<ProductDTO> findAllAvailableProduct();
 	
-	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='SOLD_OUT' ")
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.status ='SOLD_OUT' AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO> findAllSoldOutProduct();
 	
-	@Query("SELECT dto FROM ProductDTO dto WHERE dto.category.categoryName =?1 ")
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.category.categoryName =?1 AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO> findAllByCategory(String categoryname);
 
 	
-	@Query("SELECT dto FROM ProductDTO dto WHERE LOWER(dto.productName) LIKE %?1%")
+	@Query("SELECT dto FROM ProductDTO dto WHERE LOWER(dto.productName) LIKE %?1% AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO> findAllByProductNameLike(String productName);
 	
     @Query("SELECT dto FROM ProductDTO dto WHERE dto.status NOT IN ('BLOCKED', 'WAITING')")
