@@ -25,7 +25,7 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
 	
 //	@Query("select dto from StaffRequestedDTO dto where dto.staffDTO.staffID = ?1 AND dto.requestAddingProductDTO.status = 'APPROVED' ORDER BY dto.staffRequestedID DESC")
 //	List<StaffRequestedDTO> findAllApprovedRequestedByStaffID(int staffID);
-	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='SALE' ")
+	@Query("SELECT dto FROM ProductDTO dto WHERE dto.checkType ='SALE' AND dto.status NOT IN ('WAITING', 'BLOCKED')")
 	List<ProductDTO> findAllSaleProduct();
 //	@Query("SELECT dto FROM ProductDTO dto WHERE JSON_EXTRACT(dto.productSpecificationData, '$.brandNameWatch') = :brandName")
 	 @Query("SELECT dto FROM ProductDTO dto WHERE " +

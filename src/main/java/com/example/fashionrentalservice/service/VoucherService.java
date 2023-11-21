@@ -67,8 +67,9 @@ public class VoucherService {
 			LocalDate currentDate =LocalDate.now();
 		    long daysBetween = ChronoUnit.DAYS.between(currentDate, x.getEndDate());
 		//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
-			if(daysBetween < 0) 
-			updateStatusVoucherByVoucherID(x.getProductOwnerDTO().getProductownerID());
+			if( daysBetween < 0 ) {
+				updateStatusVoucherByVoucherID(x.getVoucherID());
+			}
 			
 		}
 		return VoucherResponseEntity.fromListVoucherDTO(dto);
@@ -147,10 +148,10 @@ public class VoucherService {
         if(dto==null) {
 			throw new PendingMoneyNegative("Can not find voucher by ID");
 		}
-        if(dto.getQuantity()==0) {
+        else if(dto.getQuantity()<=0) {
         	dto.setStatus(VoucherStatus.OUT_OF_STOCK);
         }
-        if(dto.getStatus().equals(VoucherStatus.INACTIVE)) {
+        else if(dto.getStatus().equals(VoucherStatus.INACTIVE)) {
         	dto.setStatus(VoucherStatus.ACTIVE);
         }else if(dto.getStatus().equals(VoucherStatus.ACTIVE)) {
         	dto.setStatus(VoucherStatus.INACTIVE);
@@ -162,11 +163,12 @@ public class VoucherService {
 		if(daysBetween < 0) {
 			dto.setStatus(VoucherStatus.OUTDATE);
 		}
-	
-		
-    
         	return VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));
     }
+    
+    
+    
+   
 }
 
 
