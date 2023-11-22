@@ -77,21 +77,20 @@ public class VoucherService {
 	}
 	//================================== List All Voucher ========================================
 		public List<VoucherResponseEntity> getVoucherByProductOwnerIDNotExpired(int productowner) throws  CrudException {
-			List<VoucherDTO> dto = voucherRepo.findByProductOwnerID(productowner);
+			List<VoucherDTO> dto = voucherRepo.findVoucherByProductOwnerID(productowner);
 			
 			if(dto==null) {
 				throw new StaffNotFoundByID();
 			}
-			List<VoucherDTO> expiredList = new ArrayList<>();
+			
 			for (VoucherDTO x : dto)
 			{
 				LocalDate currentDate =LocalDate.now();
 			    long daysBetween = ChronoUnit.DAYS.between(currentDate, x.getEndDate());
 			//	long daysBetween = ChronoUnit.DAYS.between(x.getStartDate(), x.getEndDate());
 				if(daysBetween < 0) 
-				expiredList.add(x);
+					updateStatusVoucherByVoucherID(x.getVoucherID());
 			}
-			dto.removeIf(expiredList::contains);
 			return VoucherResponseEntity.fromListVoucherDTO(dto);
 		}
 

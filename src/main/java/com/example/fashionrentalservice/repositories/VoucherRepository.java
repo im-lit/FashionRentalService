@@ -17,6 +17,9 @@ public interface VoucherRepository extends JpaRepository<VoucherDTO, Integer> {
 	@Query("SELECT dto FROM VoucherDTO dto WHERE dto.productOwnerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'ACTIVE' THEN 1 WHEN dto.status = 'INACTIVE' THEN 2   WHEN dto.status = 'OUTDATE' THEN 3 ELSE 4 END")
 	List<VoucherDTO> findByProductOwnerID(int productownerID);
 	
+	@Query("SELECT dto FROM VoucherDTO dto WHERE dto.productOwnerDTO.productownerID = ?1 AND dto.quantity > 0 ORDER BY CASE WHEN dto.status = 'ACTIVE' THEN 1 WHEN dto.status = 'INACTIVE' THEN 2 WHEN dto.status = 'OUTDATE' THEN 3 ELSE 4 END")
+	List<VoucherDTO> findVoucherByProductOwnerID(int productownerID);
+	
 	@Query("select dto from VoucherDTO dto where dto.voucherCode = ?1")
 	VoucherDTO findByVoucherCode(String VoucherCode);
 }
