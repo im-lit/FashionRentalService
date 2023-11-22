@@ -22,4 +22,10 @@ public interface VoucherRepository extends JpaRepository<VoucherDTO, Integer> {
 	
 	@Query("select dto from VoucherDTO dto where dto.voucherCode = ?1")
 	VoucherDTO findByVoucherCode(String VoucherCode);
+	
+	@Query("SELECT dto FROM VoucherDTO dto WHERE dto.voucherCode = ?1 AND dto.productOwnerDTO.productownerID =?2")
+	VoucherDTO findByVoucherCodeAndProductOwnerID( String voucherCode,int productOwnerID);
+
+	
+	
 }

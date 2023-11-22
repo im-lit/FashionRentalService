@@ -111,9 +111,13 @@ public class VoucherService {
 				.productOwnerDTO(poRepo.findById(entity.getProductownerID()).orElse(null))
 				.voucherTypeDTO(voucherTypeRepo.findById(entity.getVoucherTypeID()).orElse(null))
 				.build();
+		VoucherDTO dtos =voucherRepo.findByVoucherCodeAndProductOwnerID(entity.getVoucherCode(), entity.getProductownerID());
+		
 		
 		if((dto.getQuantity()<=0)) {
 			throw new PendingMoneyNegative("Quantity must be greater or equal 0");
+		}else if(dtos!=null){
+			throw new PendingMoneyNegative("This code already existed");
 		}
 		long daysBetween = ChronoUnit.DAYS.between(entity.getStartDate(), entity.getEndDate());
 		if(daysBetween < 0) { 
@@ -130,12 +134,24 @@ public class VoucherService {
 		}
 		
 		if(dto.getQuantity()==0) {
+			dto.setStatus(VoucherStatus.OUT_OF_STOCK);
 			throw new PendingMoneyNegative("This voucher is out of stock");
 		}else {
 		dto.setQuantity(dto.getQuantity()-1);
 		}
+		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
+	}
+	public VoucherResponseEntity cancelVoucherUsage(String voucherCode) throws  CrudException {
+		VoucherDTO dto = voucherRepo.findByVoucherCode(voucherCode);
+		
+		if(dto==null) {
+			throw new PendingMoneyNegative("Can not find this Voucher Code");
+		}
 		if(dto.getQuantity()==0) {
 			dto.setStatus(VoucherStatus.OUT_OF_STOCK);
+			throw new PendingMoneyNegative("This voucher is out of stock");
+		}else {
+		dto.setQuantity(dto.getQuantity()+1);
 		}
 		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
 	}

@@ -28,6 +28,8 @@ public class OrderBuyRequestEntity {
 	
 	private String orderCode;
 	
+	private int voucherID;
+	
 	private List<OrderBuyDetailRequestEntity> orderDetail;
 	
 }

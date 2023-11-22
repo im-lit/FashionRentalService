@@ -32,6 +32,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderRentDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
@@ -42,6 +43,7 @@ import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
+import com.example.fashionrentalservice.repositories.VoucherRepository;
 import com.example.fashionrentalservice.repositories.WalletRepository;
 
 @Service
@@ -79,6 +81,9 @@ public class OrderRentService {
 
 	@Autowired
 	private OrderRentDetailService renDetailService;
+	
+	@Autowired
+	private VoucherRepository voRepo;
 
 //================================== Tạo mới OrderBuy - ========================================
 	public List<OrderRentResponseEntity> createOrderRent(List<OrderRentRequestEntity> entity) throws CrudException {
@@ -89,11 +94,12 @@ public class OrderRentService {
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
+		
 
 		for (OrderRentRequestEntity x : entity) {
 			CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
 			ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);
-	
+			VoucherDTO voucher = voRepo.findById(x.getVoucherID()).orElse(null);
 			if (cus == null)
 				throw new CusNotFoundByID();
         	if( cus.getAccountDTO().getStatus() == AccountStatus.NOT_VERIFIED)
@@ -112,7 +118,9 @@ public class OrderRentService {
 									.cocMoneyTotal(x.getCocMoneyTotal())
 									.dateOrder(LocalDate.now())
 									.status(OrderRentStatus.PENDING).customerAddress(x.getCustomerAddress()).customerDTO(cus)
+									.voucherDTO(voucher)
 									.productownerDTO(po).build();
+			
 			for (OrderRentDetailRequestEntity detail : x.getOrderRentDetail()) {				
 				ProductDTO product = productRepo.findById(detail.getProductID()).orElse(null);
 				if (product == null)

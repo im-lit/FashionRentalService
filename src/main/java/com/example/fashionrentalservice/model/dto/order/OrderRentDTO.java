@@ -13,12 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.lang.Nullable;
 
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -66,6 +68,11 @@ public class OrderRentDTO {
 	@JoinColumn(name = "productowner_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductOwnerDTO productownerDTO;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "voucher_id", unique = true)
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private VoucherDTO voucherDTO;
 
 	public enum OrderRentStatus {
 		PENDING, PREPARE, DELIVERY, CONFIRMING, RENTING, RETURNING, REJECTING, REJECTING_COMPLETED, CANCELED, COMPLETED

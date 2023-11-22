@@ -47,7 +47,7 @@ public class ProductDTO {
 	
 	private String productAvt;
 	
-	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(500)")
 	private String description;
 	
 	private double price;

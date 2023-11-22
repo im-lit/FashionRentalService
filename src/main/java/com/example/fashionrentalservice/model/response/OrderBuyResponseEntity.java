@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class OrderBuyResponseEntity {
 	private String orderCode;
 	
 	private String productOwnerName;
+	private int voucherID;
 	
 	public static List<OrderBuyResponseEntity> fromListOrderBuyDTO(List<OrderBuyDTO> dtos) {
 		return dtos.stream()
@@ -53,6 +55,7 @@ public class OrderBuyResponseEntity {
 	                    .orderCode(dto.getOrderCode())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .customerName(dto.getCustomerDTO().getFullName())
+	                    .voucherID(dto.getVoucherDTO().getVoucherID())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .productOwnerName(dto.getProductownerDTO().getFullName())
 	                    .build())
@@ -71,6 +74,7 @@ public class OrderBuyResponseEntity {
                 .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .customerName(dto.getCustomerDTO().getFullName())
+                .voucherID(dto.getVoucherDTO().getVoucherID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
                 .productOwnerName(dto.getProductownerDTO().getFullName())
 				.build();

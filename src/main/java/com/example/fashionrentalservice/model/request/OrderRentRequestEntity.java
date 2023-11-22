@@ -27,6 +27,8 @@ public class OrderRentRequestEntity {
 	
 	private int productownerID;
 	
+	private int voucherID;
+	
 	private List<OrderRentDetailRequestEntity> orderRentDetail;
 	
 }

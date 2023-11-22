@@ -33,6 +33,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
@@ -43,6 +44,7 @@ import com.example.fashionrentalservice.repositories.OrderBuyRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
+import com.example.fashionrentalservice.repositories.VoucherRepository;
 import com.example.fashionrentalservice.repositories.WalletRepository;
 
 @Service
@@ -80,6 +82,9 @@ public class OrderBuyService {
 	
 	@Autowired
 	private WalletRepository walletRepo;
+	
+	@Autowired
+	private VoucherRepository voRepo;
 
 
 
@@ -96,6 +101,7 @@ public class OrderBuyService {
         for (OrderBuyRequestEntity x : entity) {
         	CustomerDTO cus = cusRepo.findById(x.getCustomerID()).orElse(null);
         	ProductOwnerDTO po = poRepo.findById(x.getProductownerID()).orElse(null);  	
+        	VoucherDTO voucher = voRepo.findById(x.getVoucherID()).orElse(null);
         	if( cus == null)
         	    throw new CusNotFoundByID();
         	if( cus.getAccountDTO().getStatus() == AccountStatus.NOT_VERIFIED)
@@ -116,6 +122,7 @@ public class OrderBuyService {
         							.customerAddress(x.getCustomerAddress())
         							.customerDTO(cus)
         							.productownerDTO(po)
+        							.voucherDTO(voucher)
         							.build();        	
         	for (OrderBuyDetailRequestEntity detail : x.getOrderDetail()) {
         		ProductDTO product = productRepo.findById(detail.getProductID()).orElse(null);
