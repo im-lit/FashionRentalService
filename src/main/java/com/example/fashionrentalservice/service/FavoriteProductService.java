@@ -51,18 +51,19 @@ public class FavoriteProductService {
 	
 	
 	public FavoriteProductResponseEntity createFavoriteProduct(FavoriteProductRequestEntity entity) throws CrudException {
-		FavoriteProductDTO checked = fpRepo.findByCustomerAndProduct(entity.getCustomerID(), entity.getProductID());
-	
+		
 		FavoriteProductDTO dto = FavoriteProductDTO.builder()
 				.customerDTO(cusRepo.findById(entity.getCustomerID()).orElse(null))
 				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
 				.status(FavoriteStatus.ACTIVE)
 				.build();
 		
-	if(checked!=null) {
-			dto.setStatus(FavoriteStatus.ACTIVE);
-		}
 		
+		FavoriteProductDTO checked = fpRepo.findByCustomerAndProduct(entity.getCustomerID(), entity.getProductID());
+		if(checked!=null) {
+			throw new PendingMoneyNegative("Can't find CustomerID to add Favorite");
+		}
+	
 		CustomerDTO cusCheck=cusRepo.findById(entity.getCustomerID()).orElse(null);
 		ProductDTO productCheck=productRepo.findById(entity.getProductID()).orElse(null);
 		if(cusCheck==null) {

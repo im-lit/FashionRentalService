@@ -39,12 +39,12 @@ public class FavoriteProductDTO {
     @Column(name = "favoriteproduct_id", unique = true)
 	private int favoriteProductID;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductDTO productDTO;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private CustomerDTO customerDTO;

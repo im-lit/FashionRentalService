@@ -41,6 +41,12 @@ public class VoucherController {
 		return ResponseEntity.ok().body(voucherService.useVoucher(voucherCode));
 	}
 	
+	
+	@PostMapping("/cancle/{voucherCode}")
+	private ResponseEntity cancelVoucher(@PathVariable String voucherCode) throws CrudException {
+		return ResponseEntity.ok().body(voucherService.cancelVoucherUsage(voucherCode));
+	}
+	
 	@GetMapping("/{productownerID}")
 	private ResponseEntity getVoucherByProrductOwnerIDNotExpired(@PathVariable int productownerID) throws CrudException {
 		return ResponseEntity.ok().body(voucherService.getVoucherByProductOwnerIDNotExpired(productownerID));
