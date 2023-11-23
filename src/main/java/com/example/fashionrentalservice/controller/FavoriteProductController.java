@@ -1,6 +1,7 @@
 package com.example.fashionrentalservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class FavoriteProductController {
 		return ResponseEntity.ok().body(fpService.getFavoriteProductByCusID(customerID));
 	}
 	@PutMapping
-	private ResponseEntity unmarkFavoriteStatus(@PathVariable int FavoriteProductID) throws CrudException {
+	private ResponseEntity unmarkFavoriteStatus(@RequestParam int FavoriteProductID) throws CrudException {
 		return ResponseEntity.ok().body(fpService.unmarkFavoriteByFavoriteID(FavoriteProductID));
 	}
 }
