@@ -4,10 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.lang.Nullable;
-
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +43,7 @@ public class OrderRentResponseEntity {
 	
 	private int productownerID;
 	
+	private VoucherDTO voucherDTO;
 	
 	public static List<OrderRentResponseEntity> fromListOrderRentDTO(List<OrderRentDTO> dtos) {
 		return dtos.stream()
@@ -56,6 +56,7 @@ public class OrderRentResponseEntity {
 	                    .cocMoneyTotal(dto.getCocMoneyTotal())
 	                    .dateOrder(dto.getDateOrder())
 	                    .status(dto.getStatus())
+	                    .voucherDTO(dto.getVoucherDTO())
 	                    .orderCode(dto.getOrderCode())
 	                    .productownerName(dto.getProductownerDTO().getFullName())
 	                    .customerName(dto.getCustomerDTO().getFullName())
@@ -75,6 +76,7 @@ public class OrderRentResponseEntity {
                 .cocMoneyTotal(dto.getCocMoneyTotal())
                 .status(dto.getStatus())
                 .dateOrder(dto.getDateOrder())
+                .voucherDTO(dto.getVoucherDTO())
                 .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())

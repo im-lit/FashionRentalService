@@ -33,6 +33,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentSt
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
 import com.example.fashionrentalservice.model.request.OrderRentDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
@@ -241,6 +242,7 @@ public class OrderRentService {
 		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
 		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
+
 		
 		if (check == null)
 			throw new OrderBuyNotFoundFailed();
@@ -256,6 +258,8 @@ public class OrderRentService {
 		if (status == OrderRentStatus.COMPLETED) {	
 			walletService.updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
 			
+			List<OrderRentDetailDTO> listOrderRent = new ArrayList<>();
+			List<ProductDTO> listProduct = new ArrayList<>();
         	String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal());
         	String totalRentPriceFormarted = decimalFormat.format(check.getTotalRentPriceProduct());
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
@@ -283,12 +287,23 @@ public class OrderRentService {
         		throw new TransactionHistoryCreatedFailed();
         	
         	listTrans.add(checkPOTrans);
+        	
+        	listOrderRent = renDetailService.getAllOrderDetailByOrderRentIDReturnDTO(orderRentID);
+        	for (OrderRentDetailDTO x : listOrderRent) {
+        		ProductDTO prod = x.getProductDTO();
+        		prod.setStatus(ProductStatus.AVAILABLE);
+        		listProduct.add(prod);
+			}
+        	
 			transRepo.saveAll(listTrans);
+			productRepo.saveAll(listProduct);
 		}
 // Canceled  thì ghi Log , PO trả tiền hóa đơn cho CUS và trả tiền cọc, CusTomer nhận lại tiền cọc + hoàn lại tiền hóa đơn, 
 		if (status == OrderRentStatus.CANCELED || status == OrderRentStatus.REJECTING_COMPLETED) {
 			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
-		
+			
+			List<OrderRentDetailDTO> listOrderRent = new ArrayList<>();
+			List<ProductDTO> listProduct = new ArrayList<>();
 			String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal());
 			String totalRentPriceFormarted = decimalFormat.format(check.getTotalRentPriceProduct());
 			TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
@@ -316,7 +331,16 @@ public class OrderRentService {
 				throw new TransactionHistoryCreatedFailed();
     	
 			listTrans.add(checkPOTrans);
+			
+			listOrderRent = renDetailService.getAllOrderDetailByOrderRentIDReturnDTO(orderRentID);
+        	for (OrderRentDetailDTO x : listOrderRent) {
+        		ProductDTO prod = x.getProductDTO();
+        		prod.setStatus(ProductStatus.AVAILABLE);
+        		listProduct.add(prod);
+			}
+			
 			transRepo.saveAll(listTrans);
+			productRepo.saveAll(listProduct);
 		}
 		
 		check.setStatus(status);

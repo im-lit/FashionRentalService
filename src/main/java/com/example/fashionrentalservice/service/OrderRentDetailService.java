@@ -79,6 +79,12 @@ public class OrderRentDetailService {
 		return listReturn;
 	}
 	
+	public List<OrderRentDetailDTO> getAllOrderDetailByOrderRentIDReturnDTO(int orderRentID) {
+		List<OrderRentDetailDTO> list = new ArrayList<>();	
+		list = rentDetailRepo.findAllOrderDetailByOrderRentID(orderRentID);
+		return list;
+	}
+	
 	//================================== Lay tat ca OrderRentDetail By ProductID========================================
 	public OrderRentDetailResponseEntity getOrderRentDetailByProductID(int productID) throws CrudException {
 		OrderRentDetailDTO dto = rentDetailRepo.findOrderDetailByProductID(productID);

@@ -40,7 +40,8 @@ public class OrderBuyResponseEntity {
 	private String orderCode;
 	
 	private String productOwnerName;
-	private int voucherID;
+	
+	private VoucherDTO voucherDTO;
 	
 	public static List<OrderBuyResponseEntity> fromListOrderBuyDTO(List<OrderBuyDTO> dtos) {
 		return dtos.stream()
@@ -55,7 +56,7 @@ public class OrderBuyResponseEntity {
 	                    .orderCode(dto.getOrderCode())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .customerName(dto.getCustomerDTO().getFullName())
-	                    .voucherID(dto.getVoucherDTO().getVoucherID())
+	                    .voucherDTO(dto.getVoucherDTO())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .productOwnerName(dto.getProductownerDTO().getFullName())
 	                    .build())
@@ -74,7 +75,7 @@ public class OrderBuyResponseEntity {
                 .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .customerName(dto.getCustomerDTO().getFullName())
-                .voucherID(dto.getVoucherDTO().getVoucherID())
+                .voucherDTO(dto.getVoucherDTO())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
                 .productOwnerName(dto.getProductownerDTO().getFullName())
 				.build();

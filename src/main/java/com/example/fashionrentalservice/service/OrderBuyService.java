@@ -321,6 +321,7 @@ public class OrderBuyService {
 		OrderBuyDTO check = buyRepo.findById(orderBuyID).orElse(null);
 		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
+		List<ProductDTO> listProduct = new ArrayList<>();
 		
 		
 		if(check == null) 
@@ -381,10 +382,11 @@ public class OrderBuyService {
 			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
 				for (OrderBuyDetailDTO x : list) {
 					ProductDTO productt = x.getProductDTO();
-					productt.setStatus(ProductStatus.AVAILABLE);	
-				}
-				
+					productt.setStatus(ProductStatus.AVAILABLE);
+					listProduct.add(productt);
+					}	
 			transRepo.saveAll(listTrans);
+			productRepo.saveAll(listProduct);
 		}	
 		
 		check.setStatus(status);
