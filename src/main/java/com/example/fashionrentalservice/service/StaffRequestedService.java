@@ -7,9 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
+import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.product.RequestComplainingOrderDTO;
 import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
 import com.example.fashionrentalservice.model.response.StaffRequestedResponseEntity;
 import com.example.fashionrentalservice.repositories.RequestAddingProductRepository;
+import com.example.fashionrentalservice.repositories.RequestComplainingOrderRepository;
 import com.example.fashionrentalservice.repositories.StaffRepository;
 import com.example.fashionrentalservice.repositories.StaffRequestedRepository;
 @Service
@@ -19,6 +23,9 @@ public class StaffRequestedService {
 	
 	@Autowired
 	private RequestAddingProductRepository addRequestedRepo;
+	
+	@Autowired
+	private RequestComplainingOrderRepository requestComRepo;
 	
 	@Autowired
 	private StaffRepository staffRepository;
@@ -35,6 +42,19 @@ public class StaffRequestedService {
     	StaffRequestedDTO dto = StaffRequestedDTO.builder()
     			.createdDate(LocalDate.now())
     			.requestAddingProductDTO(addRequestedRepo.findById(requestAddingProductID).orElseThrow())
+    			.staffDTO(staffRepository.findById(staffID).orElseThrow())
+                .build();
+        return staffRequestedRepo.save(dto);
+
+}
+    
+    public StaffRequestedDTO createComplaining(int requestComplainingOrderID, int staffID) throws CrudException {
+    	RequestComplainingOrderDTO check = requestComRepo.findById(requestComplainingOrderID).orElse(null);
+    	if(check == null)
+    		throw new PendingMoneyNegative("Request Complaining Not Found!");
+    	StaffRequestedDTO dto = StaffRequestedDTO.builder()
+    			.createdDate(LocalDate.now())
+    			.requestComplainingOrderDTO(check)
     			.staffDTO(staffRepository.findById(staffID).orElseThrow())
                 .build();
         return staffRequestedRepo.save(dto);

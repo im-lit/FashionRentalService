@@ -16,7 +16,6 @@ import com.example.fashionrentalservice.model.request.BuyTransactionHistoryReque
 import com.example.fashionrentalservice.model.request.TransactionHistoryRequestEntity;
 import com.example.fashionrentalservice.model.response.TransactionHistoryResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
-import com.example.fashionrentalservice.repositories.OrderBuyRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
 @Service
 public class TransactionHistoryService {
@@ -25,10 +24,6 @@ public class TransactionHistoryService {
 	
 	@Autowired
 	private AccountRepository accRepo;
-	
-	@Autowired
-	private OrderBuyRepository orderBuyRepo;
-	
 	
 	public List<TransactionHistoryResponseEntity> getAllTransactionByAccountID(int accountID) throws CrudException{
 		AccountDTO accDTO = accRepo.findById(accountID).orElse(null);

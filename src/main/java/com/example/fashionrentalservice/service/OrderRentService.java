@@ -243,9 +243,9 @@ public class OrderRentService {
 		DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
 
-		
 		if (check == null)
 			throw new OrderBuyNotFoundFailed();
+		
 		WalletDTO checkWalletPO = check.getProductownerDTO().getAccountDTO().getWalletDTO();
 		WalletDTO checkWalletCus = check.getCustomerDTO().getAccountDTO().getWalletDTO();
 

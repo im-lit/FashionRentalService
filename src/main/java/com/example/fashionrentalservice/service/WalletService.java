@@ -14,6 +14,7 @@ import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.request.WalletRequestEntity;
 import com.example.fashionrentalservice.model.response.WalletResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
@@ -256,6 +257,49 @@ public class WalletService {
 	walletRepo.saveAll(list);
 	
 	return cusWallet;
+    }
+    
+    //= lấy tiền Cọc trong PO trừ ExpectedCost và chuyển tiền cọc về CusBalance, Cộng tiền ExpectedCost vào PO Balance và tiền OrderRent từ pending Money chuyển sang PO Balance. ========================================
+    public WalletDTO StaffUpdate(WalletDTO cusWallet, WalletDTO poWallet, double expectedCost, OrderRentDTO orderRent) throws CrudException {
+    	List<WalletDTO> list = new ArrayList<>();
+    	double poCocMoney;
+    	double poNewCocMoney;
+    	double newCocMoney;
+    	double newCusBalance;
+    	double poNewBalance;
+    	double poNewPendingMoney;
+    	
+    	poCocMoney = poWallet.getCocMoney();
+    	newCocMoney = orderRent.getCocMoneyTotal() - expectedCost;
+    	if(newCocMoney < 0) 
+    		throw new PendingMoneyNegative("Coc Money can not be a negative number");
+    	//Hoàn Trả tiền cọc - tiền làm hư đồ lại vào Customer Balance .
+    	newCusBalance = cusWallet.getBalance() + newCocMoney;
+    	cusWallet.setBalance(newCusBalance);
+    	list.add(cusWallet);
+    	
+    	//Trừ tiền cọc trong ví PO .
+    	poNewCocMoney = poCocMoney - orderRent.getCocMoneyTotal();
+    	if(poNewCocMoney < 0) 
+    		throw new PendingMoneyNegative("ProductOwner Coc Money can not be a negative number");
+    	poWallet.setCocMoney(poNewCocMoney);
+    	
+    	//Trừ tiền PendingMoney trong ví PO , tiền hóa đơn thuê hoàn thành rồi thì trừ pendingMOney để cộng tiền đó vào Balance.
+    	poNewPendingMoney = poWallet.getPendingMoney() - orderRent.getTotalRentPriceProduct();
+    	if(poNewPendingMoney < 0) 
+    		throw new PendingMoneyNegative("ProductOwner Pending Money can not be a negative number");
+    	poWallet.setPendingMoney(poNewPendingMoney);
+    	
+    	//Cộng tiền hóa đơn thuê và tiền bồi thường vào Po Balance.
+    	poNewBalance = poWallet.getBalance() + orderRent.getTotalRentPriceProduct() + expectedCost;
+    	if(poNewBalance < 0) 
+    		throw new PendingMoneyNegative("ProductOwner Balance can not be a negative number");
+    	poWallet.setBalance(poNewBalance);
+    	list.add(poWallet);
+
+    	walletRepo.saveAll(list);
+    		
+    	return poWallet;
     }
 	
     //================================== Xóa Wallet bởi ID========================================  

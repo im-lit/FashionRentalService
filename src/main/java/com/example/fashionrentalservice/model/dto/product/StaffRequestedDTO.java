@@ -44,6 +44,11 @@ public class StaffRequestedDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private RequestAddingProductDTO requestAddingProductDTO;
 	
+	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinColumn(name = "requestcomplainingorder_id", unique = true)
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private RequestComplainingOrderDTO requestComplainingOrderDTO;
+	
 	@ManyToOne(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
 	@JoinColumn(name = "staff_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
