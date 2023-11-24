@@ -60,18 +60,18 @@ public class FavoriteProductService {
 		}
 		
 		FavoriteProductDTO checked = fpRepo.findByCustomerAndProduct(entity.getCustomerID(),entity.getProductID());
-			
 		if(checked!=null) {
-			throw new PendingMoneyNegative("This Product is already in Favorite");
+			int favoriteFound = fpRepo.findFavoriteProductIDByCustomerAndProduct(entity.getCustomerID(),entity.getProductID());
 			
+			return markFavoriteByFavoriteID(favoriteFound);
+//			throw new PendingMoneyNegative("Can't find CustomerID to add Favorite");
 		}
 		FavoriteProductDTO dto = FavoriteProductDTO.builder()
 				.customerDTO(cusRepo.findById(entity.getCustomerID()).orElse(null))
 				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
 				.status(FavoriteStatus.ACTIVE)
 				.build();
-	
-		return FavoriteProductResponseEntity.fromFavoriteProductDTO(fpRepo.save(dto));
+		 return FavoriteProductResponseEntity.fromFavoriteProductDTO(fpRepo.save(dto));
 	}
 	
 	public FavoriteProductResponseEntity unmarkFavoriteByFavoriteID(int favoriteproductID) throws CrudException {

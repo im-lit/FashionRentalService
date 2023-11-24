@@ -15,4 +15,7 @@ public interface FavoriteProductRepository extends JpaRepository<FavoriteProduct
 	
 	@Query("SELECT dto FROM FavoriteProductDTO dto WHERE dto.customerDTO.customerID = ?1 AND dto.productDTO.productID =?2")
 	FavoriteProductDTO findByCustomerAndProduct(int customerID, int productID);
+	
+	@Query("SELECT dto.favoriteProductID FROM FavoriteProductDTO dto WHERE dto.customerDTO.customerID = ?1 AND dto.productDTO.productID = ?2")
+	int findFavoriteProductIDByCustomerAndProduct(int customerID, int productID);
 }
