@@ -41,7 +41,7 @@ public class FavoriteProductController {
 		return ResponseEntity.ok().body(fpService.getFavoriteProductByCusID(customerID));
 	}
 	@PutMapping
-	private ResponseEntity unmarkFavoriteStatus(@RequestParam int FavoriteProductID) throws CrudException {
-		return ResponseEntity.ok().body(fpService.unmarkFavoriteByFavoriteID(FavoriteProductID));
+	private ResponseEntity unmarkFavoriteStatus(@RequestParam int favoriteproductID) throws CrudException {
+		return ResponseEntity.ok().body(fpService.unmarkFavoriteByFavoriteID(favoriteproductID));
 	}
 }
