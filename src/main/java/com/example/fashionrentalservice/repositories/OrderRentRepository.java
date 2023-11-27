@@ -56,7 +56,7 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	
 	
 	
-	@Query("SELECT dto FROM OrderRentDTO dto WHERE dto.productownerDTO.productownerID = ?1 AND dto.status IN ('DELIVERY', 'CONFIRMING', 'RENTING', 'RETURNING') ORDER BY CASE WHEN dto.status = 'RETURNING' THEN 1 WHEN dto.status = 'DELIVERY' THEN 2 WHEN dto.status = 'CONFIRMING' THEN 3 ELSE 4 END")
+	@Query("SELECT dto FROM OrderRentDTO dto WHERE dto.productownerDTO.productownerID = ?1 AND dto.status IN ('DELIVERY', 'CONFIRMING', 'RENTING', 'PROGRESSING','RETURNING') ORDER BY CASE WHEN dto.status = 'RETURNING' THEN 1 WHEN dto.status = 'DELIVERY' THEN 2 WHEN dto.status = 'CONFIRMING' THEN 3 WHEN dto.status = 'PROGRESSING' THEN 4 ELSE 5 END")
 	List<OrderRentDTO>findAll3StatusOrderRentByProductOwnerID(int productownerID);
 	
 	

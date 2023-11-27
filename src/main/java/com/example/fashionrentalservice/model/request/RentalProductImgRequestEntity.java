@@ -16,6 +16,8 @@ public class RentalProductImgRequestEntity {
 	private List<String> img;
 
 	private int accountID;
+	
+	private String status;
 
 	private int orderRentID;
 

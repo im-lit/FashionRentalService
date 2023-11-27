@@ -13,6 +13,7 @@ import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO;
+import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO.imgStatus;
 import com.example.fashionrentalservice.model.request.RentalProductImgRequestEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.AddressRepository;
@@ -53,6 +54,7 @@ public class RentalProductImgService {
     		RentalProductImgDTO dto = RentalProductImgDTO.builder()
         			.createdDate(LocalDate.now())
         			.productImg(x)
+        			.status(imgStatus.valueOf(entity.getStatus()))
         			.accountDTO(check)
                     .orderRentDTO(order)
                     .build();
@@ -83,6 +85,9 @@ public class RentalProductImgService {
     	
     	return list;
     }
+    
+    
+    
     
     public List<RentalProductImgDTO> getAllRentalProductImgByOrderRentID (int orderRentID) throws CrudException{
     	List<RentalProductImgDTO> list = new ArrayList<>();

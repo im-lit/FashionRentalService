@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +37,9 @@ public class RentalProductImgDTO {
 	
 	private String productImg;
 	
+	@Enumerated(EnumType.STRING)
+	private imgStatus status;
+	
 	private LocalDate createdDate;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
@@ -46,5 +51,8 @@ public class RentalProductImgDTO {
 	@JoinColumn(name = "orderrent_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private OrderRentDTO orderRentDTO;
-
+	
+	public enum imgStatus {
+		PO_SEND, PO_RECEIVED, CUS_SEND, CUS_RECEIVED
+	}
 }

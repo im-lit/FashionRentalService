@@ -21,6 +21,8 @@ public class RentalProductImgResponseEntity {
 	
 	private String createdDate;
 	
+	private String status;
+	
 	private int accountID;
 	
 	private int orderRentID;
@@ -34,6 +36,7 @@ public class RentalProductImgResponseEntity {
 	            .map(dto -> RentalProductImgResponseEntity.builder()
 	                    .rentalProductImgID(dto.getRentalProductImgID())
 	                    .imgUrl(dto.getProductImg())
+	                    .status(dto.getStatus().toString())
 	                    .createdDate(dto.getCreatedDate().toString())
 	                    .accountID(dto.getAccountDTO().getAccountID())
 	                    .orderRentID(dto.getOrderRentDTO().getOrderRentID())
@@ -45,6 +48,7 @@ public class RentalProductImgResponseEntity {
 		return RentalProductImgResponseEntity.builder()
                 .rentalProductImgID(dto.getRentalProductImgID())
                 .imgUrl(dto.getProductImg())
+                .status(dto.getStatus().toString())
                 .createdDate(dto.getCreatedDate().toString())
                 .accountID(dto.getAccountDTO().getAccountID())
                 .orderRentID(dto.getOrderRentDTO().getOrderRentID())
