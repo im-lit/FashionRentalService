@@ -69,8 +69,8 @@ public class OrderRentDTO {
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductOwnerDTO productownerDTO;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "voucher_id", unique = true)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "voucher_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private VoucherDTO voucherDTO;
 

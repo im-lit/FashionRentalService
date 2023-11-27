@@ -42,7 +42,7 @@ public class VoucherController {
 	}
 	
 	
-	@PostMapping("/cancle/{voucherCode}")
+	@PostMapping("/cancel/{voucherCode}")
 	private ResponseEntity cancelVoucher(@PathVariable String voucherCode) throws CrudException {
 		return ResponseEntity.ok().body(voucherService.cancelVoucherUsage(voucherCode));
 	}
