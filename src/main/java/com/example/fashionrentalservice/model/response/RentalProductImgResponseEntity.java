@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO;
-import com.example.fashionrentalservice.model.dto.product.ProductImgDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -15,6 +15,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO;
 import com.example.fashionrentalservice.model.dto.order.RentalProductImgDTO.imgStatus;
 import com.example.fashionrentalservice.model.request.RentalProductImgRequestEntity;
+import com.example.fashionrentalservice.model.response.RentalProductImgResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.AddressRepository;
 import com.example.fashionrentalservice.repositories.OrderRentRepository;
@@ -25,9 +26,6 @@ public class RentalProductImgService {
 
 	@Autowired
 	private AccountRepository accRepo;
-	
-	@Autowired
-	private AddressRepository addressRepo;
 	
 	@Autowired
 	private OrderRentRepository rentRepo;
@@ -75,28 +73,29 @@ public class RentalProductImgService {
         return dto;
     }
     
-    public List<RentalProductImgDTO> getAllRentalProductImgByAccountID (int accountID) throws CrudException{
+    public List<RentalProductImgResponseEntity> getAllRentalProductImgByAccountID (int accountID, int orderRentID) throws CrudException{
     	List<RentalProductImgDTO> list = new ArrayList<>();
     	AccountDTO check = accRepo.findById(accountID).orElse(null);
     	if(check == null)
     		throw new PendingMoneyNegative("not found Account");
     	
-    	list = rentPicRepo.findAllRentalProductImgByAccountID(accountID);
+    	list = rentPicRepo.findAllRentalProductImgByAccountID(accountID, orderRentID);
     	
-    	return list;
+    	return RentalProductImgResponseEntity.fromListRentalProductImgDTO(list);
     }
     
     
     
     
-    public List<RentalProductImgDTO> getAllRentalProductImgByOrderRentID (int orderRentID) throws CrudException{
+    public List<RentalProductImgResponseEntity> getAllRentalProductImgByOrderRentID (int orderRentID) throws CrudException{
     	List<RentalProductImgDTO> list = new ArrayList<>();
     	OrderRentDTO order = rentRepo.findById(orderRentID).orElse(null);
     	if(order == null)
     		throw new PendingMoneyNegative("not found OrderDetail");
     	
     	list = rentPicRepo.findAllRentalProductImgByOrderRentID(orderRentID);
-    	return list;
+    	
+    	return RentalProductImgResponseEntity.fromListRentalProductImgDTO(list);
     }
 }
 	

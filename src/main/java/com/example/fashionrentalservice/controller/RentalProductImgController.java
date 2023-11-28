@@ -40,9 +40,9 @@ public class RentalProductImgController {
 	
 	
 	//================================== Lấy tất cả Address ========================================	
-	@GetMapping("/{accountID}")
-	private ResponseEntity getAllRentalProductImgByAccountID(@PathVariable int accountID) throws CrudException {
-		return ResponseEntity.ok().body(rentPicService.getAllRentalProductImgByAccountID(accountID));
+	@GetMapping("/{accountID}/{orderRentID}")
+	private ResponseEntity getAllRentalProductImgByAccountID(@PathVariable int accountID, @PathVariable int orderRentID) throws CrudException {
+		return ResponseEntity.ok().body(rentPicService.getAllRentalProductImgByAccountID(accountID,orderRentID));
 	}
 	
 	@GetMapping("/img/{orderRentID}")
