@@ -12,7 +12,7 @@ public class SwaggerCorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/swagger-ui.html")
-                .allowedOrigins("http://localhost:8080", "http://fashionrental.online:8080", "https://fashionrental.online");// Chỉ cho phép từ tên miền của Swagger UI
+                .allowedOrigins("*");// Chỉ cho phép từ tên miền của Swagger UI
     }
     
     @Override
