@@ -49,6 +49,9 @@ public class OrderRentDetailResponseEntity {
 	public static OrderRentDetailResponseEntity fromOrderRentDetailDTO(OrderRentDetailDTO dto) {
 		return OrderRentDetailResponseEntity.builder()
 				 .orderRentDetailID(dto.getOrderRentDetailID())
+				 .cocMoney(dto.getCocMoney())
+                 .startDate(dto.getStartDate())
+                 .endDate(dto.getEndDate())
                  .rentPrice(dto.getRentPrice())
                  .productDTO(dto.getProductDTO())
                  .orderRentID(dto.getOrderRentDTO().getOrderRentID())
