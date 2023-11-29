@@ -38,4 +38,9 @@ public class OrderRentDetailController {
 		return ResponseEntity.ok().body(rentDetailService.getOrderRentDetailByProductID(productID));
 	}
 	
+	@GetMapping("/{productID}/{orderRentID}/rentdetail")
+	private ResponseEntity getOrderRentDetailByProductIDAndOrderRentID(@PathVariable int productID, @PathVariable int orderRentID) throws CrudException {
+		return ResponseEntity.ok().body(rentDetailService.getOrderRentDetailByProductIDAndOrderRentID(productID, orderRentID));
+	}
+	
 }

@@ -94,11 +94,19 @@ public class OrderRentDetailService {
 	}
 	
 	
-	//================================== Lay tat ca OrderRentDetail By ProductID========================================
+	//================================== Lay tat ca OrderRentDetail By ProductID And OrderRentID========================================
 	public OrderRentDetailDTO getOrderRentDetailByProductIDAndCheckDate(int productID,LocalDate date) {
 		OrderRentDetailDTO detail = rentDetailRepo.findAllOrderDetailByProductIDAndCheckDate(productID, date);
 		return detail;
 	}
+	
+	public OrderRentDetailResponseEntity getOrderRentDetailByProductIDAndOrderRentID(int productID, int orderRentID) throws CrudException {
+		OrderRentDetailDTO dto = rentDetailRepo.findOrderDetailByProductIDAndOrderRentID(productID,orderRentID);
+		if(dto == null)
+			throw new PendingMoneyNegative("Not found orderRentdetail");
+		return OrderRentDetailResponseEntity.fromOrderRentDetailDTO(dto);
+	}
+	
 	
 	public List<OrderRentDetailDTO> getAllOrderRentDetail() {
 		List<OrderRentDetailDTO> list = rentDetailRepo.findAll();

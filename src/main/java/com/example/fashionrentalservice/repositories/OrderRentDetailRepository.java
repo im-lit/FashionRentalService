@@ -19,4 +19,7 @@ public interface OrderRentDetailRepository extends JpaRepository<OrderRentDetail
 	
 	@Query("select dto from OrderRentDetailDTO dto where dto.productDTO.productID = ?1 ")
 	OrderRentDetailDTO findOrderDetailByProductID(int productID);
+	
+	@Query("select dto from OrderRentDetailDTO dto where dto.productDTO.productID = ?1 AND dto.orderRentDTO.orderRentID = ?2")
+	OrderRentDetailDTO findOrderDetailByProductIDAndOrderRentID(int productID, int orderRentID);
 }
