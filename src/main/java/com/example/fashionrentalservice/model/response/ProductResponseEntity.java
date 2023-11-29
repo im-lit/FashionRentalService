@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
+import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +43,7 @@ public class ProductResponseEntity {
 	
 	private List<ProductRentalPricesDTO> rentprices;
 	
-//	private String reason;
+	private RequestAddingProductDTO requestDTO;
 	
 	
 
@@ -59,7 +60,7 @@ public class ProductResponseEntity {
 				.checkType(dto.getCheckType().toString())
 				.category(dto.getCategory())
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
-//				.reason(dto.getRequestAddingProductDTO().getDescription())
+				.requestDTO(dto.getRequestAddingProductDTO())
 				.rentprices(dto.getRentprices())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.build();
