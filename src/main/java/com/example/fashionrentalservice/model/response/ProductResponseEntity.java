@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.fashionrentalservice.model.dto.product.CategoryDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductRentalPricesDTO;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 
@@ -45,10 +46,11 @@ public class ProductResponseEntity {
 		
 	private String productSpecificationData;
 	
-	private List<ProductRentalPricesDTO> rentprices;
-	
 	private RequestAddingProductDTO requestDTO;
 	
+	private List<ProductRentalPricesDTO> rentprices;
+	
+	private List<ProductDetailDTO> details;
 	
 
 	public static ProductResponseEntity fromProductDTO(ProductDTO dto) {
@@ -68,6 +70,7 @@ public class ProductResponseEntity {
 				.productOwnerID(dto.getProductownerDTO().getProductownerID())
 				.requestDTO(dto.getRequestAddingProductDTO())
 				.rentprices(dto.getRentprices())
+				.details(dto.getDetailDTO())
 				.productSpecificationData(dto.getProductSpecificationData())
 				.build();
 	}

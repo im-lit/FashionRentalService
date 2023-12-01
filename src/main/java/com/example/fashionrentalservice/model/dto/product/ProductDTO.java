@@ -59,7 +59,7 @@ public class ProductDTO {
 	
 	@Column(name = "product_condition",columnDefinition = "nvarchar(255)")
 	private String productCondition;
-
+ 
 	@Enumerated(EnumType.STRING)
 	private ProductStatus status;
 
@@ -80,6 +80,11 @@ public class ProductDTO {
 	@JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private List<ProductRentalPricesDTO> rentprices;
+	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "productid")
+	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
+	private List<ProductDetailDTO> detailDTO;
 
 	
 	@JsonIgnore
