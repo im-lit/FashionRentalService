@@ -24,6 +24,8 @@ public class FeedBackResponseEntity {
 	private int feedBackID;
 	private ProductDTO productDTO;
 	private CustomerDTO customerDTO;
+	
+	private int ratingPoint;
 	private String description;
 	private LocalDate createdtDate;
 	
@@ -34,6 +36,7 @@ public class FeedBackResponseEntity {
 				.customerDTO(dto.getCustomerDTO())
 				.description(dto.getDescription())
 				.createdtDate(dto.getCreatedtDate())
+				.ratingPoint(dto.getRatingPoint())
 				.build();
 	}
 	
@@ -45,6 +48,7 @@ public class FeedBackResponseEntity {
 	    				.customerDTO(dto.getCustomerDTO())
 	    				.description(dto.getDescription())
 	    				.createdtDate(dto.getCreatedtDate())
+	    				.ratingPoint(dto.getRatingPoint())
 						.build())
 	            .collect(Collectors.toList());
 	}

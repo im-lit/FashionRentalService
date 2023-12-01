@@ -22,6 +22,5 @@ public interface FeedBackRepository  extends JpaRepository<FeedBackDTO, Integer>
 	
 	@Query("SELECT dto FROM FeedBackDTO dto WHERE dto.customerDTO.customerID = ?1 AND dto.productDTO.productID =?2")
 	FeedBackDTO findFeedBackByCustomerAndProductID(int customerID,int productID);
-	
 
 }

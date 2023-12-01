@@ -39,7 +39,7 @@ public class FeedBackDTO {
 	private String description;
 	
 	private LocalDate createdtDate;
-	
+	private int ratingPoint;
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})

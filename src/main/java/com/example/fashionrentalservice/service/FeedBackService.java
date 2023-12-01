@@ -57,13 +57,19 @@ public class FeedBackService {
 		if(checked!=null) {
 			throw new PendingMoneyNegative("This customer already feedback this product");
 		}
+		int checkRating =entity.getRatingPoint();
+		if(checkRating>5 ||checkRating<0) {
+			throw new PendingMoneyNegative("This rating must be smaller than 5 and greater than 0");
+		}
 		FeedBackDTO dto = FeedBackDTO.builder()
 				.createdtDate(LocalDate.now())
 				.customerDTO(cusRepo.findById(entity.getCustomerID()).orElse(null))
 				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
 				.description(entity.getDescription())
+				.ratingPoint(checkRating)
 				.build();
 
+		
 //		
 //		FavoriteProductDTO checked = fpRepo.findByCustomerAndProduct(entity.getCustomerID(),entity.getProductID());
 //		if(checked!=null) {

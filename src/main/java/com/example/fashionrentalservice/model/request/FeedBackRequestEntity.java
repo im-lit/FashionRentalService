@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class FeedBackRequestEntity {
 	private String description;
 	
+	private int ratingPoint;
+	
 	private int productID;
 	
 	private int customerID;
