@@ -48,6 +48,8 @@ public class ProductService {
                 .productAvt(entity.getProductAvt())
                 .productCondition(entity.getProductCondition())
                 .description(entity.getDescription())
+                .term(entity.getTerm())
+                .serialNumber(entity.getSerialNumber())
                 .price(entity.getPrice())
                 .status(ProductDTO.ProductStatus.valueOf(entity.getStatus()))
                 .checkType(ProductDTO.checkTypeSaleorRentorSaleRent.valueOf(entity.getCheckType()))

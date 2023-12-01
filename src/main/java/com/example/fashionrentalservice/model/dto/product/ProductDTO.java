@@ -50,6 +50,11 @@ public class ProductDTO {
 	@Column(columnDefinition = "nvarchar(500)")
 	private String description;
 	
+	@Column(columnDefinition = "nvarchar(500)")
+	private String term;
+	
+	private String serialNumber;
+	
 	private double price;
 	
 	@Column(name = "product_condition",columnDefinition = "nvarchar(255)")

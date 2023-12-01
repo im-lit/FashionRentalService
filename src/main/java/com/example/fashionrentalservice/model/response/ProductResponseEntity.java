@@ -28,6 +28,10 @@ public class ProductResponseEntity {
 	private String productCondition;
 
 	private String description;
+	
+	private String term;
+	
+	private String serialNumber;
 
 	private double price;
 
@@ -54,6 +58,8 @@ public class ProductResponseEntity {
 				.productCondition(dto.getProductCondition())
 				.productAvt(dto.getProductAvt())
 				.productReceiptUrl(dto.getProductReceiptUrl())
+				.term(dto.getTerm())
+				.serialNumber(dto.getSerialNumber())
 				.description(dto.getDescription())
 				.price(dto.getPrice())
 				.status(dto.getStatus().toString())

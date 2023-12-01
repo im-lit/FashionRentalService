@@ -21,6 +21,10 @@ public class ProductRequestEntity {
 
 	private String description;
 	
+	private String term;
+	
+	private String serialNumber;
+	
 	private String checkType;
 
 	private double price;
