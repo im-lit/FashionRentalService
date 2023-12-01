@@ -9,7 +9,7 @@ import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
 
 public interface ProductRepository extends JpaRepository<ProductDTO, Integer>{
-	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'AVAILABLE' THEN 1 WHEN dto.status = 'WAITING' THEN 2 WHEN dto.status = 'BLOCKED' THEN 3 WHEN dto.status = 'RENTING' THEN 4 ELSE 5 END")
+	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 ORDER BY CASE WHEN dto.status = 'WAITING' THEN 1 WHEN dto.status = 'AVAILABLE' THEN 2 WHEN dto.status = 'BLOCKED' THEN 3 WHEN dto.status = 'RENTING' THEN 4 ELSE 5 END")
 	List<ProductDTO>findAllByProductOwnerID(int productownerID);
 	
 	@Query("select dto from ProductDTO dto where dto.productownerDTO.productownerID = ?1 AND  dto.checkType ='RENT'  AND dto.status NOT IN ('WAITING', 'BLOCKED')")

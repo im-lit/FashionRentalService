@@ -50,7 +50,7 @@ public class ProductDTO {
 	@Column(columnDefinition = "nvarchar(500)")
 	private String description;
 	
-	@Column(columnDefinition = "nvarchar(500)")
+	@Column(columnDefinition = "nvarchar(2000)")
 	private String term;
 	
 	private String serialNumber;
