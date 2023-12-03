@@ -28,8 +28,8 @@ public class FeedBackImgController {
 	
 //================================== Lay tat ca Customer ========================================
 	@GetMapping
-	private ResponseEntity getAllFeedBackImgbyProductID(@RequestParam int productID) throws CrudException {
-		return ResponseEntity.ok().body(imgService.getAllProductImgbyProductID(productID));
+	private ResponseEntity getAllFeedBackImgbyProductID(@RequestParam int feedBackImgID) throws CrudException {
+		return ResponseEntity.ok().body(imgService.getAllProductImgbyProductID(feedBackImgID));
 	}
 	
 	@PostMapping
