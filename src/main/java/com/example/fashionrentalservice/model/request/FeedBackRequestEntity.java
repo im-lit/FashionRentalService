@@ -18,4 +18,6 @@ public class FeedBackRequestEntity {
 	
 	private int customerID;
 	
+	private String imgUrl;
+	
 }

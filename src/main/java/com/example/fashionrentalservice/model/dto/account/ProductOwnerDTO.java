@@ -46,6 +46,8 @@ public class ProductOwnerDTO {
 	
 	private String avatarUrl;
 	
+	private int reputationPoint;
+	
 	
 	@Column(name = "address", columnDefinition = "nvarchar(255)", nullable = true)
 	private String address;

@@ -38,6 +38,8 @@ public class FeedBackDTO {
 	@Column(columnDefinition = "nvarchar(500)")
 	private String description;
 	
+	private String imgUrl;
+	
 	private LocalDate createdtDate;
 	private int ratingPoint;
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

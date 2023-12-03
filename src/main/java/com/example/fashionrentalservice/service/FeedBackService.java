@@ -67,6 +67,7 @@ public class FeedBackService {
 				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
 				.description(entity.getDescription())
 				.ratingPoint(checkRating)
+				.imgUrl(entity.getImgUrl())
 				.build();
 
 		

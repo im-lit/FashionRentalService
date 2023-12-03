@@ -27,6 +27,7 @@ public class POResponseEntity {
 	private AccountDTO accountDTO;
 	
     private String POToken;
+    private int reputationPoint;
 	
 	private int POShopID;
 	
@@ -40,6 +41,7 @@ public class POResponseEntity {
                 .POShopID(dto.getPOShopID())
                 .POToken(dto.getPOToken())
                 .accountDTO(dto.getAccountDTO())
+                .reputationPoint(dto.getReputationPoint())
                 .build();   
 	}
 }

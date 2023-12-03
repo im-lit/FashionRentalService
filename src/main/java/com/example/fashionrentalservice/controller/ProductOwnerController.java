@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO.AccountStatus;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateTokenAndShopIDResquestEntity;
@@ -48,6 +49,16 @@ public class ProductOwnerController {
 	@PutMapping("/updatetoken")
 	private ResponseEntity updatePOTokenAndShopID(@RequestParam int productownerID,@RequestBody POUpdateTokenAndShopIDResquestEntity entity) {
 		return ResponseEntity.ok().body(poService.updateProductOwnerTokenAndShopID(productownerID,entity));
+	}
+	
+	@PutMapping("/votereputation")
+	private ResponseEntity votePOReputation(@RequestParam int productownerID) throws CrudException {		
+		return ResponseEntity.ok().body(poService.votePOReputationPoint(productownerID));
+	}
+	
+	@PutMapping("/unvotereputation")
+	private ResponseEntity unVotePOReputation(@RequestParam int productownerID) throws CrudException {		
+		return ResponseEntity.ok().body(poService.unVotePOReputationPoint(productownerID));
 	}
 	
 	@GetMapping("/{productownerID}")

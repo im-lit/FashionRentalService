@@ -37,12 +37,14 @@ public class ProductOwnerService {
 	 //================================== Tạo PO========================================
     public POResponseEntity createProductOwner(PORequestEntity entity) throws CrudException{
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	int reputationPoint=0;
     	if(check.getCustomerDTO() == null && check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
                 .avatarUrl(entity.getAvatarUrl())
                 .address(entity.getAddress())
+                .reputationPoint(reputationPoint)
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
         return POResponseEntity.fromPODTO(poRepo.save(dto));
@@ -57,6 +59,17 @@ public class ProductOwnerService {
     	dto.setFullName(entity.getFullName());
     	dto.setAddress(entity.getAddress());
     	
+    	return POResponseEntity.fromPODTO(poRepo.save(dto));
+    }
+    
+    public POResponseEntity votePOReputationPoint(int productownerID) {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    	dto.setReputationPoint(dto.getReputationPoint()+1);
+    	return POResponseEntity.fromPODTO(poRepo.save(dto));
+    }
+    public POResponseEntity unVotePOReputationPoint(int productownerID) {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    	dto.setReputationPoint(dto.getReputationPoint()-1);
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
     
