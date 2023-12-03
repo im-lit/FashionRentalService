@@ -6,15 +6,20 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
+import com.example.fashionrentalservice.model.dto.product.FavoriteProductDTO.FavoriteStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -38,7 +43,6 @@ public class FeedBackDTO {
 	@Column(columnDefinition = "nvarchar(500)")
 	private String description;
 	
-	
 	private LocalDate createdtDate;
 	private int ratingPoint;
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -46,10 +50,15 @@ public class FeedBackDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private CustomerDTO customerDTO;
 	
+	
 	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductDTO productDTO;
 	
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "feedback_id")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+	private List<FeedBackImgDTO> feedBackImgDTOs;
 	
 }

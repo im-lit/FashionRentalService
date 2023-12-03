@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.model.dto.product;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -30,8 +32,9 @@ public class FeedBackImgDTO {
 	private int feedBackImgID;
 	
 	private String imgUrl;
-		
-	@ManyToOne(fetch = FetchType.EAGER)
+	
+	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "feedback_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private FeedBackDTO feedBackDTO;

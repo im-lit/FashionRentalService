@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.model.dto.order;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.fashionrentalservice.model.dto.product.FeedBackDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,5 +42,4 @@ public class OrderBuyDetailDTO {
 	@JoinColumn(name = "orderbuy_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private OrderBuyDTO orderBuyDTO;
-	
 }

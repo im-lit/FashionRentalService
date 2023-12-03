@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.product.FavoriteProductDTO;
 import com.example.fashionrentalservice.model.dto.product.FeedBackDTO;
+import com.example.fashionrentalservice.model.dto.product.FeedBackImgDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.request.FeedBackRequestEntity;
 
@@ -22,20 +23,22 @@ import lombok.NoArgsConstructor;
 public class FeedBackResponseEntity {
 	
 	private int feedBackID;
-	private ProductDTO productDTO;
+	private int productID;
 	private CustomerDTO customerDTO;
 	private int ratingPoint;
 	private String description;
 	private LocalDate createdtDate;
+	private List<FeedBackImgDTO> imgDTOs;
 	
 	public static FeedBackResponseEntity fromFeedBackDTO(FeedBackDTO dto) {
 		return  FeedBackResponseEntity.builder()
 				.feedBackID(dto.getFeedbackID())	
-				.productDTO(dto.getProductDTO())
+				.productID(dto.getProductDTO().getProductID())
 				.customerDTO(dto.getCustomerDTO())
 				.description(dto.getDescription())
 				.createdtDate(dto.getCreatedtDate())
 				.ratingPoint(dto.getRatingPoint())
+				.imgDTOs(dto.getFeedBackImgDTOs())
 				.build();
 	}
 	
@@ -43,11 +46,12 @@ public class FeedBackResponseEntity {
 		return dtos.stream()
 	            .map(dto -> FeedBackResponseEntity.builder()
 	            		.feedBackID(dto.getFeedbackID())
-	            		.productDTO(dto.getProductDTO())
-	    				.customerDTO(dto.getCustomerDTO())
+	            		.productID(dto.getProductDTO().getProductID())
+	            		.customerDTO(dto.getCustomerDTO())
 	    				.description(dto.getDescription())
 	    				.createdtDate(dto.getCreatedtDate())
 	    				.ratingPoint(dto.getRatingPoint())
+	    				.imgDTOs(dto.getFeedBackImgDTOs())
 						.build())
 	            .collect(Collectors.toList());
 	}
