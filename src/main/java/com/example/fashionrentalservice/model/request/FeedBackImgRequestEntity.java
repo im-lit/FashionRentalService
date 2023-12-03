@@ -1,23 +1,18 @@
 package com.example.fashionrentalservice.model.request;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeedBackRequestEntity {
-	private String description;
+public class FeedBackImgRequestEntity {
+private List<String> imgUrl;
 	
-	private int ratingPoint;
-	
-	private int productID;
-	
-	private int customerID;
-	
+	private int feedBackID;
 
-	
 }

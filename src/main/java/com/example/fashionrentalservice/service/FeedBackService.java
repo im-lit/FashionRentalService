@@ -33,6 +33,8 @@ public class FeedBackService {
 	@Autowired
 	private CustomerRepository cusRepo;
 	
+	@Autowired
+	private FeedBackImgService fbImgService;
 	
 	public List<FeedBackResponseEntity> getFeedBackByProductID(int productID) throws  CrudException {
 		List<FeedBackDTO> dto = fbRepo.findFeedBackByProductID(productID);
@@ -47,7 +49,6 @@ public class FeedBackService {
 	public FeedBackResponseEntity createFeedBackProduct(FeedBackRequestEntity entity) throws CrudException {
 		CustomerDTO cusCheck=cusRepo.findById(entity.getCustomerID()).orElse(null);
 		ProductDTO productCheck=productRepo.findById(entity.getProductID()).orElse(null);
-		String description;
 		if(cusCheck==null) {
 		throw new PendingMoneyNegative("Can't find CustomerID to create FeedBack");
 	}else if(productCheck==null) {
@@ -67,7 +68,6 @@ public class FeedBackService {
 				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
 				.description(entity.getDescription())
 				.ratingPoint(checkRating)
-				.imgUrl(entity.getImgUrl())
 				.build();
 
 		
