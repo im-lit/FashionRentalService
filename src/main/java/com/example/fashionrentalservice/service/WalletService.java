@@ -169,12 +169,12 @@ public class WalletService {
 	
 	
 	  //================================== Tru`(-) tien CustomerBalance returnDTO cho createOrderRent ========================================
-    public WalletDTO updateCusBalanceReturnDTO(int walletID, double balance, double cocMoney) throws  CrudException {
+    public WalletDTO updateCusBalanceReturnDTO(int walletID, double balance) throws  CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
         if(dto == null)
         	throw new StaffNotFoundByID();
         double oldBalance = dto.getBalance();
-        double newBalance = oldBalance - (balance + cocMoney);
+        double newBalance = oldBalance - balance;
         if (newBalance < 0) {
             throw new BalanceNegative();
         }
