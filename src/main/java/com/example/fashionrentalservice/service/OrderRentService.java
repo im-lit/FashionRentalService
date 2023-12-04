@@ -151,7 +151,7 @@ public class OrderRentService {
 		}
 		
         for (OrderRentDTO x : listRent) {
-        	WalletDTO checkCus = walletService.updateCusBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotal(), x.getCocMoneyTotal());
+        	WalletDTO checkCus = walletService.updateCusBalanceReturnDTO(x.getCustomerDTO().getAccountDTO().getWalletDTO().getWalletID(), x.getTotalRentPriceProduct(), x.getCocMoneyTotal());
         	if(checkCus == null) 
         		throw new WalletInOrderServiceFailed();
         	listWallet.add(checkCus);
