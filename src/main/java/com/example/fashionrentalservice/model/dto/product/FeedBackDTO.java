@@ -56,7 +56,7 @@ public class FeedBackDTO {
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private ProductDTO productDTO;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "feedback_id")
 	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private List<FeedBackImgDTO> feedBackImgDTOs;
