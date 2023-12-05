@@ -39,6 +39,8 @@ public class OrderRentDetailDTO {
 	
 	private double rentPrice;
 	
+	private long remainingDate;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "productid")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })

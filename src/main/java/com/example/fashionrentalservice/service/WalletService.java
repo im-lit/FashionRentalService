@@ -202,19 +202,22 @@ public class WalletService {
     }
     
     //================================== trừ tiền OrderRent pendingMoney và cộng tiền OrderRent vào PO Balance,  trả CocMoney từ PO vào  Cus Balance ========================================
-    public WalletDTO updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(WalletDTO cusWallet, WalletDTO poWallet, double rentProductTotal, double cocMoneyTotal) throws CrudException {
+    public WalletDTO updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(WalletDTO cusWallet, WalletDTO poWallet, double rentProductTotal, double cocMoneyTotal, double overdueFees) throws CrudException {
     	List<WalletDTO> list = new ArrayList<>();
     	double cocMoney;
     	double newPendingMoney;
     	double newBalancePO;
     	double newBalanceCus;
     	
+    	if(overdueFees > cocMoneyTotal)
+    		throw new PendingMoneyNegative("OverDue Fee is higher than CocMoneyTotal!");
+    	
     	newPendingMoney = poWallet.getPendingMoney() - rentProductTotal;
         if (newPendingMoney < 0) 
           throw new PendingMoneyNegative("PendingMoney can not be a negative number!");
     	poWallet.setPendingMoney(newPendingMoney);
     	
-    	newBalancePO = poWallet.getBalance() + rentProductTotal;
+    	newBalancePO = poWallet.getBalance() + rentProductTotal + overdueFees;
     	poWallet.setBalance(newBalancePO);
     	
     	cocMoney = poWallet.getCocMoney() - cocMoneyTotal;
@@ -223,7 +226,7 @@ public class WalletService {
     	poWallet.setCocMoney(cocMoney);
     	list.add(poWallet);
     	
-    	newBalanceCus = cusWallet.getBalance() + cocMoneyTotal;
+    	newBalanceCus = cusWallet.getBalance() + (cocMoneyTotal - overdueFees);
     	cusWallet.setBalance(newBalanceCus);  	
     	list.add(cusWallet);
     	

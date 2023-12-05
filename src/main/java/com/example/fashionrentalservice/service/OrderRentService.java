@@ -32,16 +32,18 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
-import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
+import com.example.fashionrentalservice.model.dto.product.VoucherDTO;
 import com.example.fashionrentalservice.model.request.OrderRentDetailRequestEntity;
 import com.example.fashionrentalservice.model.request.OrderRentRequestEntity;
+import com.example.fashionrentalservice.model.response.OrderRentDetailResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderRentResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
+import com.example.fashionrentalservice.repositories.ProductRentalPricesRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
 import com.example.fashionrentalservice.repositories.VoucherRepository;
@@ -85,6 +87,9 @@ public class OrderRentService {
 	
 	@Autowired
 	private VoucherRepository voRepo;
+	
+	@Autowired
+	private ProductRentalPricesRepository rentPriceRepo;
 
 //================================== Tạo mới OrderBuy - ========================================
 	public List<OrderRentResponseEntity> createOrderRent(List<OrderRentRequestEntity> entity) throws CrudException {
@@ -254,18 +259,28 @@ public class OrderRentService {
 		if (checkWalletCus == null) 
 			throw new WalletCusNotFound();
 		
-// Thành công thì ghi Log , PO Nhận tiền hóa đơn hoàn tất  và trả tiền cọc, CusTomer nhận lại tiền cọc. 
-		if (status == OrderRentStatus.COMPLETED) {	
-			walletService.updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());
+// Thành công thì ghi Log , PO Nhận tiền hóa đơn hoàn tất  và trả tiền cọc, CusTomer nhận lại tiền cọc. (Tinh Phi Overdue neu remaining day < 0) 
+		if (status == OrderRentStatus.COMPLETED) {
+			double overdueFees = 0;
+			List<OrderRentDetailDTO> listOrderRentDetail = renDetailService.getAllOrderDetailByOrderRentIDReturnDTO(orderRentID);
+			for (OrderRentDetailDTO x : listOrderRentDetail) {
+				if(x.getRemainingDate() < 0) {
+					long dayRemaining = x.getRemainingDate() * -1;
+					double rentPriceDayOne = rentPriceRepo.findRentPrice1(x.getProductDTO().getProductID());	
+					overdueFees += (rentPriceDayOne * dayRemaining + ( (rentPriceDayOne * dayRemaining) * 0.10 ));
+				}
+			}
+			walletService.updatePOPendingMoneyToBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal(), overdueFees);
 			
 			List<OrderRentDetailDTO> listOrderRent = new ArrayList<>();
 			List<ProductDTO> listProduct = new ArrayList<>();
-        	String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal());
+        	String cocMoneyFormarted = decimalFormat.format(check.getCocMoneyTotal() - overdueFees);
         	String totalRentPriceFormarted = decimalFormat.format(check.getTotalRentPriceProduct());
+        	String overdueFeeFormarted = decimalFormat.format(overdueFees);
         	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
         													.amount(check.getCocMoneyTotal())
         													.transactionType("Thuê")
-        													.description("Nhận lại tiền cọc từ hóa đơn : +" + cocMoneyFormarted + " VND.")
+        													.description("Nhận lại tiền cọc từ hóa đơn : +" + cocMoneyFormarted + " VND. Trừ phí trả đồ trễ hạn: -" + overdueFeeFormarted + " VND.")
         													.orderRentDTO(check)
         													.accountDTO(check.getCustomerDTO().getAccountDTO())
         													.build();      												
@@ -275,10 +290,10 @@ public class OrderRentService {
         	listTrans.add(checkCusTrans);
         	
         	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
-															.amount(check.getTotalRentPriceProduct())
+															.amount(check.getTotalRentPriceProduct() + overdueFees)
 															.transactionType("Thuê")
 															.description("Nhận tiền hoàn tất hóa đơn thuê:  +" + totalRentPriceFormarted + " VND vào số dư ví. "
-																	+ "Hoàn trả tiền cọc hóa đơn : -" + cocMoneyFormarted + " VND")
+																	+ "Hoàn trả tiền cọc hóa đơn : -" + cocMoneyFormarted + " VND. Nhận tiền thuê quá hạn: +" + overdueFeeFormarted + " VND.")
 															.orderRentDTO(check)
 															.accountDTO(check.getProductownerDTO().getAccountDTO())
 															.build();
@@ -298,6 +313,19 @@ public class OrderRentService {
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
 		}
+		
+		if(status == OrderRentStatus.RETURNING) {
+			List<OrderRentDetailDTO> listOrderRentDetail = renDetailService.getAllOrderDetailByOrderRentIDReturnDTO(orderRentID);
+			List<OrderRentDetailDTO> listSave = new ArrayList<>();
+			for (OrderRentDetailDTO x : listOrderRentDetail) {
+				long remainingDate = renDetailService.getRemainingDay(x.getEndDate());
+				x.setRemainingDate(remainingDate);
+				listSave.add(x);
+			}
+			rentDetailRepo.saveAll(listSave);
+			
+		}
+		
 // Canceled  thì ghi Log , PO trả tiền hóa đơn cho CUS và trả tiền cọc, CusTomer nhận lại tiền cọc + hoàn lại tiền hóa đơn, 
 		if (status == OrderRentStatus.CANCELED || status == OrderRentStatus.REJECTING_COMPLETED) {
 			walletService.updatePOPendingMoneyToCusBalanceAndRefundCocMoneyReturnDTO(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal());

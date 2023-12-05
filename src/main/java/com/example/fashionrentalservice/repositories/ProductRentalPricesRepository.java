@@ -11,4 +11,7 @@ public interface ProductRentalPricesRepository extends JpaRepository<ProductRent
 	
 	@Query("select dto from ProductRentalPricesDTO dto where dto.productDTO.productID = ?1 ORDER BY dto.rentPrice ASC")
 	List<ProductRentalPricesDTO> findAllByProductID(int productID);
+	
+	@Query("select dto.rentPrice from ProductRentalPricesDTO dto where dto.productDTO.productID = ?1 AND dto.mockDay = 1")
+	Double findRentPrice1(int productID);
 }
