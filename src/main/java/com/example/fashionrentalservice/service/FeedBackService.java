@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.product.FavoriteProductDTO;
 import com.example.fashionrentalservice.model.dto.product.FeedBackDTO;
@@ -14,6 +15,7 @@ import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.FavoriteProductDTO.FavoriteStatus;
 import com.example.fashionrentalservice.model.request.FavoriteProductRequestEntity;
 import com.example.fashionrentalservice.model.request.FeedBackRequestEntity;
+import com.example.fashionrentalservice.model.response.AccountResponseEntity;
 import com.example.fashionrentalservice.model.response.FavoriteProductResponseEntity;
 import com.example.fashionrentalservice.model.response.FeedBackResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
@@ -86,6 +88,11 @@ public class FeedBackService {
 //				.build();
 		 return FeedBackResponseEntity.fromFeedBackDTO(fbRepo.save(dto));
 	}
-	
+	 public FeedBackResponseEntity deleteExistedFeedBack(int id) {
+	        FeedBackDTO dto = fbRepo.findById(id).orElse(null);
+	        fbRepo.deleteById(id);
+
+	        return FeedBackResponseEntity.fromFeedBackDTO(dto);
+	    }
 	
 }
