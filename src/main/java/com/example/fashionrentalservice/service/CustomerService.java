@@ -1,6 +1,8 @@
 package com.example.fashionrentalservice.service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ public class CustomerService {
 	
 	@Autowired
 	private AccountRepository accRepo;
+	private static final String BLANK_PATTERN = "^\\S.*$";
 	
 	//================================== Lay tat ca Customer ========================================
 	public List<CustomerResponseEntity> getAllCustomer() {
@@ -36,7 +39,16 @@ public class CustomerService {
 	
 	//================================== Tao Customer========================================
     public CustomerResponseEntity createCustomer(CustomerRequestEntity entity) throws CrudException{
-    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElse(null);
+    	if(check==null) {
+    		throw new PendingMoneyNegative("Cannot found AccountID");
+    	}
+    	if(!isValidStringNotBlank(entity.getFullName())) {
+       		throw new PendingMoneyNegative("FullName Cannot blank");
+       	}
+    	if(!isValidStringNotBlank(entity.getPhone())) {
+       		throw new PendingMoneyNegative("Phone Cannot blank");
+       	}
     	if(check.getStaffDTO() == null && check.getProductOwnerDTO() == null && check.getCustomerDTO() == null) {
             CustomerDTO dto = CustomerDTO.builder()
                     .fullName(entity.getFullName())
@@ -52,6 +64,11 @@ public class CustomerService {
        // if(entity.getPhone()!=null)
      //	   throw new CreateCustomerFail();           
      }
+    private boolean isValidStringNotBlank(String string) {
+        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
+    }
     
     
     

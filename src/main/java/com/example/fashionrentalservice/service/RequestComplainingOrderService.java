@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,7 @@ public class RequestComplainingOrderService {
 	
 	@Autowired
 	private ProductRepository productRepo;
+	private static final String BLANK_PATTERN = "^\\S.*$";
 	
 //================================== Tạo mới RequestComplaining ========================================
     public RequestComplainingOrderResponseEntity createRequestComplaining(RequestComplainingOrderRequestEntity entity) throws CrudException{
@@ -69,7 +72,9 @@ public class RequestComplainingOrderService {
     		throw new PendingMoneyNegative("OrderRent Not Found!");
     	if(checkPo == null)
     		throw new PendingMoneyNegative("ProductOwner Not Found!");
-    	
+    	if(!isValidStringNotBlank(entity.getDescription())) {
+       		throw new PendingMoneyNegative("Description Cannot blank");
+    	}
         RequestComplainingOrderDTO dto = RequestComplainingOrderDTO.builder()
                 .description(entity.getDescription())
                 .expectedCost(entity.getExpectedCost())
@@ -82,6 +87,7 @@ public class RequestComplainingOrderService {
        
         return RequestComplainingOrderResponseEntity.fromRequestComplainingOrderDTO(requestComRepo.save(dto));
     }
+    
   //================================== Update Request Complaining Status  ========================================   
     public RequestComplainingOrderResponseEntity updateRequestStatus(int requestID,ComplainingOrderStatus status, int staffID, String staffResponse) throws CrudException {
     	DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###");
@@ -185,6 +191,12 @@ public class RequestComplainingOrderService {
     	requestComRepo.deleteById(requestID);
         return RequestComplainingOrderResponseEntity.fromRequestComplainingOrderDTO(dto);
     }
+    private boolean isValidStringNotBlank(String string) {
+        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
+    }
+    
 	
 }
 	

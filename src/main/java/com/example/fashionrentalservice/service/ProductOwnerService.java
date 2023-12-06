@@ -1,6 +1,8 @@
 package com.example.fashionrentalservice.service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class ProductOwnerService {
 	
 	@Autowired
 	private AccountRepository accRepo;
-	
+	private static final String BLANK_PATTERN = "^\\S.*$";
 //	------------------ Lay tat ca ProductOwner-----------
 	public List<POResponseEntity> getAllProductOwner() {
 		return  poRepo.findAll().stream()
@@ -42,6 +44,15 @@ public class ProductOwnerService {
 		if(check==null) {
 			throw new PendingMoneyNegative("Cannot find PO ID!");
 		}
+		if(!isValidStringNotBlank(entity.getFullName())) {
+       		throw new PendingMoneyNegative("FullName Cannot blank");
+       	}
+    	if(!isValidStringNotBlank(entity.getPhone())) {
+       		throw new PendingMoneyNegative("Phone Cannot blank");
+       	}
+    	if(!isValidStringNotBlank(entity.getAddress())) {
+       		throw new PendingMoneyNegative("FullName Cannot blank");
+       	}
     	int reputationPoint=0;
     	if(check.getCustomerDTO() == null && check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
@@ -116,6 +127,12 @@ public class ProductOwnerService {
         poRepo.deleteById(id);
 
         return POResponseEntity.fromPODTO(dto);
+    }
+    
+    private boolean isValidStringNotBlank(String string) {
+        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
     }
 	
 		

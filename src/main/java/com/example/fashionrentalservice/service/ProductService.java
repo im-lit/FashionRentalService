@@ -41,7 +41,8 @@ public class ProductService {
 	
 	@Autowired
 	private ProductOwnerRepository poRepo;
-	private static final String BLANK_PATTERN = "^\\S+$";
+	private static final String BLANK_PATTERN = "^\\S.*$";
+	//"^\\S+$";
 	
 	//================================== Tạo Product========================================
     public ProductResponseEntity createProduct(ProductRequestEntity entity) throws CrudException{
@@ -59,9 +60,6 @@ public class ProductService {
     	}
     	if(!isValidProductName(entity.getTerm())) {
     		throw new PendingMoneyNegative("Term Cannot blank");
-    	}
-    	if(!isValidProductName(entity.getSerialNumber())) {
-    		throw new PendingMoneyNegative("SerialNumber Cannot blank");
     	}
     	if(!isValidProductName(entity.getProductCondition())) {
     		throw new PendingMoneyNegative("Condition Cannot blank");

@@ -1,6 +1,8 @@
 package com.example.fashionrentalservice.service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,14 @@ public class AccountService {
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	private static final String BLANK_PATTERN = "^\\S.*$";
 
-
+    private boolean isValidEmailAndPassword(String string) {
+        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+        Matcher matcher = pattern.matcher(string);
+        return matcher.matches();
+    }
 //================================== CheckLogin========================================
 	public AccountResponseEntity login(String email, String password) throws CrudException {
 		AccountDTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
@@ -43,6 +51,7 @@ public class AccountService {
 	}
 //================================== Tạo mới Account ========================================
     public AccountResponseEntity createNewAccount(AccountRequestEntity entity) throws CrudException{
+    	
         AccountDTO dto = AccountDTO.builder()
                 .email(entity.getEmail())
                 .password(entity.getPassword())
@@ -51,6 +60,12 @@ public class AccountService {
                 .roleDTO(roleRepo.findById(entity.getRoleID()).orElseThrow())
                 .build();
        AccountDTO emailChecked = accRepo.findByEmail((entity.getEmail()));
+       if(!isValidEmailAndPassword(entity.getEmail())) {
+   		throw new PendingMoneyNegative("Email Cannot blank");
+   	}
+       if(!isValidEmailAndPassword(entity.getPassword())) {
+      		throw new PendingMoneyNegative("Password Cannot blank");
+      	}
        if(emailChecked!=null)
     	   throw new EmailExisted();
        
