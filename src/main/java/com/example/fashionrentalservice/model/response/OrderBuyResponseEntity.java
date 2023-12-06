@@ -1,6 +1,7 @@
 package com.example.fashionrentalservice.model.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class OrderBuyResponseEntity {
 	
 	private OrderBuyStatus status;
 	
-	private LocalDate dateOrder;
+	private LocalDateTime dateOrder;
 	
 	private int customerID;
 	

@@ -1,6 +1,7 @@
 package com.example.fashionrentalservice.model.dto.order;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,10 +51,12 @@ public class OrderRentDTO {
 	
 	private String customerAddress;
 	
-	private LocalDate dateOrder;
+	private LocalDateTime dateOrder;
 	
 	@Nullable
 	private String orderCode;
+	
+	private int returningDate;
 	
 	
 	@Enumerated(EnumType.STRING)

@@ -2,6 +2,7 @@ package com.example.fashionrentalservice.service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +123,7 @@ public class OrderRentService {
 									.totalRentPriceProduct(x.getTotalRentPriceProduct())
 									.shippingFee(x.getShippingFee())
 									.cocMoneyTotal(x.getCocMoneyTotal())
-									.dateOrder(LocalDate.now())
+									.dateOrder(LocalDateTime.now())
 									.status(OrderRentStatus.PENDING).customerAddress(x.getCustomerAddress()).customerDTO(cus)
 									.voucherDTO(voucher)
 									.productownerDTO(po).build();
@@ -322,8 +323,9 @@ public class OrderRentService {
 				x.setRemainingDate(remainingDate);
 				listSave.add(x);
 			}
+			check.setReturningDate(check.getReturningDate()+4);
 			rentDetailRepo.saveAll(listSave);
-			
+//			rentRepo.save(check);		
 		}
 		
 // Canceled  thì ghi Log , PO trả tiền hóa đơn cho CUS và trả tiền cọc, CusTomer nhận lại tiền cọc + hoàn lại tiền hóa đơn, 

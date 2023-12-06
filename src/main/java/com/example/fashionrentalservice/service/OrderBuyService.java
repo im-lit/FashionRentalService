@@ -2,6 +2,7 @@ package com.example.fashionrentalservice.service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public class OrderBuyService {
         							.total(x.getTotal())
         							.totalBuyPriceProduct(x.getTotalBuyPriceProduct())
         							.shippingfee(x.getShippingFee())
-        							.dateOrder(LocalDate.now())
+        							.dateOrder(LocalDateTime.now())
         							.status(OrderBuyStatus.PENDING)
         							.customerAddress(x.getCustomerAddress())
         							.customerDTO(cus)

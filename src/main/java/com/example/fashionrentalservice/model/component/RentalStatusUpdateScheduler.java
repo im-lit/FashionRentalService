@@ -31,4 +31,22 @@ public class RentalStatusUpdateScheduler {
             }
         }
     }
+    
+    @Scheduled(fixedRate = 86400000) // Cập nhật mỗi ngày (24 giờ)
+    public void updateRentStatusAfterCusReturning() {
+        List<OrderRentDetailDTO> rentals = rentService.getAllOrderRentDetail();
+        LocalDate currentDate = LocalDate.now();
+
+        for (OrderRentDetailDTO x : rentals) {
+            LocalDate endDate = x.getEndDate();
+            long daysRemaining = ChronoUnit.DAYS.between(currentDate, endDate);
+
+            if (daysRemaining < 0 && x.getOrderRentDTO().getStatus() == OrderRentStatus.RENTING) {
+            }
+        }
+    }
+    
+    
+    
+    
 }

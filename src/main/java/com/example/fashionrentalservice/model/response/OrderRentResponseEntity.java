@@ -1,6 +1,7 @@
 package com.example.fashionrentalservice.model.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class OrderRentResponseEntity {
 	
 	private OrderRentStatus status;
 	
-	private LocalDate dateOrder;
+	private LocalDateTime dateOrder;
 	
 	private String orderCode;
 	
@@ -42,6 +43,7 @@ public class OrderRentResponseEntity {
 	private int customerID;
 	
 	private int productownerID;
+	private int returningDate;
 	
 	private VoucherDTO voucherDTO;
 	
@@ -62,6 +64,7 @@ public class OrderRentResponseEntity {
 	                    .customerName(dto.getCustomerDTO().getFullName())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
+	                    .returningDate(dto.getReturningDate())
 	                    .build())
 	            .collect(Collectors.toList());
 	}
@@ -80,6 +83,7 @@ public class OrderRentResponseEntity {
                 .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
+                .returningDate(dto.getReturningDate())
 				.build();
 	}
 }
