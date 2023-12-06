@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
+import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.response.OrderRentDetailResponseEntity;
+import com.example.fashionrentalservice.model.response.OrderRentDetailStartDateEndDateResponseEntity;
 import com.example.fashionrentalservice.repositories.OrderRentDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
@@ -96,6 +98,16 @@ public class OrderRentDetailService {
 		if(dto == null)
 			throw new PendingMoneyNegative("Not found orderRentdetail");
 		return OrderRentDetailResponseEntity.fromOrderRentDetailDTO(dto);
+	}
+	
+	public OrderRentDetailStartDateEndDateResponseEntity getOrderRentDetailByProductIDAndOrderRentStatusRenting(int productID) throws CrudException {
+		ProductDTO check = productRepo.findById(productID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Not Found Product!");
+		OrderRentDetailDTO dto = rentDetailRepo.findOrderDetailByProductIDAndOrderRentStatusRenting(productID);
+		if(dto == null)
+			throw new PendingMoneyNegative("Not found orderRentdetail");
+		return OrderRentDetailStartDateEndDateResponseEntity.fromOrderRentDetailDTO(dto);
 	}
 	
 	
