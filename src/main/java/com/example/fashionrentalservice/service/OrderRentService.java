@@ -209,6 +209,10 @@ public class OrderRentService {
 			throw new CreateOrderFailed();
 		}
 	}
+	public List<OrderRentDTO> getAllOrderRent() {
+		List<OrderRentDTO> list = rentRepo.findAll();
+		return list;
+	}
 
 //================================== Lay tat ca OrderRent by CustomerID========================================
 	public List<OrderRentResponseEntity> getAllOrderRentByCustomerID(int customerID) {
