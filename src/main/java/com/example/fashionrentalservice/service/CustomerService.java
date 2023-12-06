@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.AccountIsRegisted;
 import com.example.fashionrentalservice.exception.CusNotFoundByID;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
@@ -57,8 +58,11 @@ public class CustomerService {
     
     
   //================================== Update Customer========================================
-    public CustomerResponseEntity updateCustomer(int customerID,CustomerUpdateRequestEntity entity) {
-        CustomerDTO dto = cusRepo.findById(customerID).orElseThrow();
+    public CustomerResponseEntity updateCustomer(int customerID,CustomerUpdateRequestEntity entity) throws CrudException {
+    	CustomerDTO dto = cusRepo.findById(customerID).orElse(null);
+		if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find Customer ID!");
+		}
         dto.setAvatarUrl(entity.getAvatarUrl());
         dto.setFullName(entity.getFullName());
         dto.setPhone(entity.getPhone());
@@ -76,8 +80,11 @@ public class CustomerService {
 		}
 	
 	//================================== Xóa ========================================	
-    public CustomerResponseEntity deleteExistedCustomer(int id) {
-        CustomerDTO dto = cusRepo.findById(id).orElseThrow();
+    public CustomerResponseEntity deleteExistedCustomer(int id) throws CrudException {
+    	CustomerDTO dto = cusRepo.findById(id).orElse(null);
+		if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find Customer ID!");
+		}
         cusRepo.deleteById(id);
 
         return CustomerResponseEntity.fromCustomerDTO(dto);

@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class VoucherService {
 	private VoucherTypeRepository voucherTypeRepo;
 	@Autowired
 	private ProductOwnerRepository poRepo;
-	
+	private static final String BLANK_PATTERN = "^\\S+$";
 	public List<VoucherResponseEntity> getAllVoucher() {
 		return  voucherRepo.findAll().stream()
                 .map(VoucherResponseEntity::fromVoucherDTO)
@@ -97,6 +99,9 @@ public class VoucherService {
 	//================================== Create Voucher ========================================
 	public VoucherResponseEntity createVoucher(VoucherRequestEntity entity) throws  CrudException {
 			
+		if(!isValidProductName(entity.getVoucherName())) {
+			throw new PendingMoneyNegative("Quantity must be greater or equal 0");
+		}
 		VoucherDTO dto = VoucherDTO.builder()
 				.voucherCode(entity.getVoucherCode())
 				.voucherName(entity.getVoucherName())
@@ -125,7 +130,11 @@ public class VoucherService {
 		}
 		return  VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));	
 	}
-	
+	 private boolean isValidProductName(String productName) {
+	        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+	        Matcher matcher = pattern.matcher(productName);
+	        return matcher.matches();
+	    }
 	public VoucherResponseEntity useVoucher(String voucherCode) throws  CrudException {
 		VoucherDTO dto = voucherRepo.findByVoucherCode(voucherCode);
 		

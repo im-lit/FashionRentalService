@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
 import com.example.fashionrentalservice.exception.EmailExisted;
 import com.example.fashionrentalservice.exception.LoginFail;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.StaffNotFoundByID;
 import com.example.fashionrentalservice.exception.UpdatePasswordFail;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
@@ -57,7 +58,10 @@ public class AccountService {
     }
   //================================== Update Password Account ========================================   
     public AccountResponseEntity updatePasswordAccount(int accountID,String password) throws CrudException {
-        AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElseThrow();
+    	  AccountDTO dto = accRepo.findById(accountID).orElse(null);
+          if(dto ==null) {
+          	 throw new PendingMoneyNegative("cannot find Account ID!");
+          }
         if(dto.getPassword().equals(password)) {
         	throw new UpdatePasswordFail();
         }
@@ -67,7 +71,10 @@ public class AccountService {
     
     //================================== Update Password Account ========================================   
     public AccountResponseEntity updateStatusAccount(int accountID,AccountStatus status) throws CrudException {
-        AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElseThrow();
+        AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElse(null);
+        if(dto ==null) {
+       	 throw new PendingMoneyNegative("cannot find Account ID to updateStatus!");
+       }
         dto.setStatus(status);    
         	return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
@@ -86,10 +93,13 @@ public class AccountService {
 		return AccountResponseEntity.fromAccountDto(dto);
 		}
 //================================== Xóa Account========================================
-    public AccountResponseEntity deleteExistedAccount(int id) {
-        AccountDTO dto = accRepo.findById(id).orElseThrow();
+    public AccountResponseEntity deleteExistedAccount(int id) throws CrudException{
+        AccountDTO dto = accRepo.findById(id).orElse(null);
+        if(dto ==null) {
+        	 throw new PendingMoneyNegative("cannot find Account ID to delete!");
+        }
         accRepo.deleteById(id);
-
+        
         return AccountResponseEntity.fromAccountDto(dto);
     }
 	public WalletDTO getWalletByAccountID(int accountID) throws CrudException{

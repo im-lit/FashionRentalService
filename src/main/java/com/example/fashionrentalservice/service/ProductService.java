@@ -3,10 +3,13 @@ package com.example.fashionrentalservice.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.ProductIsSoldOut;
@@ -24,6 +27,9 @@ import com.example.fashionrentalservice.model.response.ProductSlimResponseEntity
 import com.example.fashionrentalservice.repositories.CategoryRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
+
+
+
 @Service
 public class ProductService {
 
@@ -35,12 +41,31 @@ public class ProductService {
 	
 	@Autowired
 	private ProductOwnerRepository poRepo;
+	private static final String BLANK_PATTERN = "^\\S+$";
 	
 	//================================== Tạo Product========================================
     public ProductResponseEntity createProduct(ProductRequestEntity entity) throws CrudException{
     	ProductOwnerDTO po = poRepo.findById(entity.getProductownerID()).orElse(null);
+    	if(po==null) {
+    		throw new PendingMoneyNegative("Cannot find PO by ProductOwnerID");
+    	}
     	if(po.getAccountDTO().getStatus() == AccountStatus.NOT_VERIFIED) 
     		throw new PendingMoneyNegative("Your account is not verified");
+    	if(!isValidProductName(entity.getProductName())) {
+    		throw new PendingMoneyNegative("Product Name Cannot blank");
+    	}
+    	if(!isValidProductName(entity.getDescription())) {
+    		throw new PendingMoneyNegative("Description Cannot blank");
+    	}
+    	if(!isValidProductName(entity.getTerm())) {
+    		throw new PendingMoneyNegative("Term Cannot blank");
+    	}
+    	if(!isValidProductName(entity.getSerialNumber())) {
+    		throw new PendingMoneyNegative("SerialNumber Cannot blank");
+    	}
+    	if(!isValidProductName(entity.getProductCondition())) {
+    		throw new PendingMoneyNegative("Condition Cannot blank");
+    	}
     	
     	ProductDTO dto = ProductDTO.builder()
                 .productName(entity.getProductName())
@@ -60,6 +85,11 @@ public class ProductService {
         
         return ProductResponseEntity.fromProductDTO(productRepo.save(dto));
      }
+    private boolean isValidProductName(String productName) {
+        Pattern pattern = Pattern.compile(BLANK_PATTERN);
+        Matcher matcher = pattern.matcher(productName);
+        return matcher.matches();
+    }
     
     //================================== Tìm Product========================================   	
 	public ProductResponseEntity getProductbyID(int productID) throws CrudException{
@@ -73,7 +103,10 @@ public class ProductService {
 	
 	//================================== Update Product========================================
     public ProductResponseEntity updateStatusProductByID(int productID) throws CrudException {
-    	ProductDTO dto = productRepo.findById(productID).orElseThrow();
+    	ProductDTO dto = productRepo.findById(productID).orElse(null);
+    	if(dto==null) {
+    		throw new PendingMoneyNegative("Cannot find Product by ProductID");
+    	}
 
 
     	 if(dto.getRequestAddingProductDTO().getStatus().equals(AddProductStatus.APPROVED)){

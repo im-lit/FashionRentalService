@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.AccountIsRegisted;
 import com.example.fashionrentalservice.exception.PONotFoundByID;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
+import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
@@ -36,7 +38,10 @@ public class ProductOwnerService {
 	}
 	 //================================== Tạo PO========================================
     public POResponseEntity createProductOwner(PORequestEntity entity) throws CrudException{
-    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElseThrow();
+    	AccountDTO check = accRepo.findById(entity.getAccountID()).orElse(null);
+		if(check==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
     	int reputationPoint=0;
     	if(check.getCustomerDTO() == null && check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
@@ -52,8 +57,11 @@ public class ProductOwnerService {
     	throw new AccountIsRegisted();
     }
     //================================== Update PO bởi ID========================================
-    public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) {
-    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) throws CrudException {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
+    	if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
     	dto.setAvatarUrl(entity.getAvatarUrl());
     	dto.setPhone(entity.getPhone());
     	dto.setFullName(entity.getFullName());
@@ -62,19 +70,28 @@ public class ProductOwnerService {
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
     
-    public POResponseEntity votePOReputationPoint(int productownerID) {
-    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    public POResponseEntity votePOReputationPoint(int productownerID) throws CrudException {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
+    	if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
     	dto.setReputationPoint(dto.getReputationPoint()+1);
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
-    public POResponseEntity unVotePOReputationPoint(int productownerID) {
-    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    public POResponseEntity unVotePOReputationPoint(int productownerID) throws CrudException {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
+    	if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
     	dto.setReputationPoint(dto.getReputationPoint()-1);
     	return POResponseEntity.fromPODTO(poRepo.save(dto));
     }
     
-    public POResponseEntity updateProductOwnerTokenAndShopID(int productownerID,POUpdateTokenAndShopIDResquestEntity entity) {
-    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElseThrow();
+    public POResponseEntity updateProductOwnerTokenAndShopID(int productownerID,POUpdateTokenAndShopIDResquestEntity entity) throws CrudException {
+    	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
+    	if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
     	dto.setPOShopID(entity.getPOShopID());
     	dto.setPOToken(entity.getPOToken());
     	
@@ -91,8 +108,11 @@ public class ProductOwnerService {
 		}
 	
 	 //================================== Xóa ProductOwner ========================================
-    public POResponseEntity deleteExistedProductOwner(int id) {
-        ProductOwnerDTO dto = poRepo.findById(id).orElseThrow();
+    public POResponseEntity deleteExistedProductOwner(int id) throws CrudException {
+    	ProductOwnerDTO dto = poRepo.findById(id).orElse(null);
+    	if(dto==null) {
+			throw new PendingMoneyNegative("Cannot find PO ID!");
+		}
         poRepo.deleteById(id);
 
         return POResponseEntity.fromPODTO(dto);

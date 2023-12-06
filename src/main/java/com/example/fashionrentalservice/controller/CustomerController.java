@@ -42,7 +42,7 @@ public class CustomerController {
 	
 //================================== Update Customer========================================	
 	@PutMapping
-	private ResponseEntity updateCustomer(@RequestParam int customerID,@RequestBody CustomerUpdateRequestEntity entity) {
+	private ResponseEntity updateCustomer(@RequestParam int customerID,@RequestBody CustomerUpdateRequestEntity entity) throws CrudException {
 		return ResponseEntity.ok().body(cusService.updateCustomer(customerID,entity));
 	}
 
@@ -54,7 +54,7 @@ public class CustomerController {
 	
 //================================== Xóa ProductOwner ========================================	
     @DeleteMapping()
-    private ResponseEntity deleteExistedCustomer(@RequestParam int id) {
+    private ResponseEntity deleteExistedCustomer(@RequestParam int id) throws CrudException {
         return ResponseEntity.ok().body(cusService.deleteExistedCustomer(id));
     }
 }

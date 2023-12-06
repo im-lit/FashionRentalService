@@ -71,7 +71,7 @@ public class AccountController {
 	
 	//================================== Xóa ========================================	
     @DeleteMapping()
-    private ResponseEntity deleteExistedAccount(@RequestParam int id) {
+    private ResponseEntity deleteExistedAccount(@RequestParam int id) throws CrudException {
         return ResponseEntity.ok().body(accService.deleteExistedAccount(id));
     }
 }

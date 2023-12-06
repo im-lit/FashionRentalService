@@ -42,12 +42,12 @@ public class ProductOwnerController {
 	}
 	
 	@PutMapping
-	private ResponseEntity updateProductOwner(@RequestParam int productownerID,@RequestBody POUpdateRequestEntity entity) {
+	private ResponseEntity updateProductOwner(@RequestParam int productownerID,@RequestBody POUpdateRequestEntity entity) throws CrudException {
 		return ResponseEntity.ok().body(poService.updateProductOwner(productownerID,entity));
 	}
 	
 	@PutMapping("/updatetoken")
-	private ResponseEntity updatePOTokenAndShopID(@RequestParam int productownerID,@RequestBody POUpdateTokenAndShopIDResquestEntity entity) {
+	private ResponseEntity updatePOTokenAndShopID(@RequestParam int productownerID,@RequestBody POUpdateTokenAndShopIDResquestEntity entity) throws CrudException {
 		return ResponseEntity.ok().body(poService.updateProductOwnerTokenAndShopID(productownerID,entity));
 	}
 	
@@ -67,7 +67,7 @@ public class ProductOwnerController {
 	}
 	
     @DeleteMapping()
-    private ResponseEntity deleteExistedProductOwner(@RequestParam int id) {
+    private ResponseEntity deleteExistedProductOwner(@RequestParam int id) throws CrudException {
         return ResponseEntity.ok().body(poService.deleteExistedProductOwner(id));
     }
 }
