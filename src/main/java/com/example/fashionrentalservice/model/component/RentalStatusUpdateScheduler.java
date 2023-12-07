@@ -1,6 +1,7 @@
 package com.example.fashionrentalservice.model.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -29,21 +30,10 @@ public class RentalStatusUpdateScheduler {
     @Autowired
 	private OrderRentRepository rentRepo;
 
-    @Scheduled(fixedRate = 86400000) // Cập nhật mỗi ngày (24 giờ)
-    public void updateRentStatus() {
-        List<OrderRentDetailDTO> rentals = rentService.getAllOrderRentDetail();
-        LocalDate currentDate = LocalDate.now();
-
-        for (OrderRentDetailDTO x : rentals) {
-            LocalDate endDate = x.getEndDate();
-            long daysRemaining = ChronoUnit.DAYS.between(currentDate, endDate);
-
-            if (daysRemaining < 0 && x.getOrderRentDTO().getStatus() == OrderRentStatus.RENTING) {
-            }
-        }
-    }
+ 
     
-    @Scheduled(fixedRate = 86400000) // Cập nhật mỗi ngày (24 giờ)
+
+    @Scheduled(fixedRate = 86400000, initialDelay = 86400000) // Cập nhật mỗi ngày (24 giờ)
     public void updateRentStatusAfterCusReturning() throws CrudException {
         List<OrderRentDTO> orRent = orRentService.getAllOrderRent();
         List<OrderRentDTO> after1DaysRent = new ArrayList<>();
@@ -56,9 +46,11 @@ public class RentalStatusUpdateScheduler {
         	}   	
         if(x.getReturningDate()	==	0 && x.getStatus()	==	OrderRentStatus.RETURNING) {
     		orRentService.updateOrderRentByOrderRentID(x.getOrderRentID(), OrderRentStatus.COMPLETED);
+    		x.setStatus(OrderRentStatus.COMPLETED);
     	}
     	if(x.getReturningDate()	==	0 && x.getStatus()	==	OrderRentStatus.REJECTING) {
     		orRentService.updateOrderRentByOrderRentID(x.getOrderRentID(), OrderRentStatus.REJECTING_COMPLETED);
+    		x.setStatus(OrderRentStatus.REJECTING_COMPLETED);
     	}
     	after1DaysRent.add(x);
         }

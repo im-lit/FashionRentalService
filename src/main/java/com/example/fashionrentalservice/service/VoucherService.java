@@ -51,7 +51,7 @@ public class VoucherService {
 	private VoucherTypeRepository voucherTypeRepo;
 	@Autowired
 	private ProductOwnerRepository poRepo;
-	private static final String BLANK_PATTERN = "^\\S+$";
+	private static final String BLANK_PATTERN = "^\\S.*$";
 	public List<VoucherResponseEntity> getAllVoucher() {
 		return  voucherRepo.findAll().stream()
                 .map(VoucherResponseEntity::fromVoucherDTO)
