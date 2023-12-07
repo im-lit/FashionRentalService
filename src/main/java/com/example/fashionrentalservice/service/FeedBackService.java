@@ -71,21 +71,6 @@ public class FeedBackService {
 				.description(entity.getDescription())
 				.ratingPoint(checkRating)
 				.build();
-
-		
-//		
-//		FavoriteProductDTO checked = fpRepo.findByCustomerAndProduct(entity.getCustomerID(),entity.getProductID());
-//		if(checked!=null) {
-//			int favoriteFound = fpRepo.findFavoriteProductIDByCustomerAndProduct(entity.getCustomerID(),entity.getProductID());
-//			
-//			return markFavoriteByFavoriteID(favoriteFound);
-////			throw new PendingMoneyNegative("Can't find CustomerID to add Favorite");
-//		}
-//		FavoriteProductDTO dto = FavoriteProductDTO.builder()
-//				.customerDTO(cusRepo.findById(entity.getCustomerID()).orElse(null))
-//				.productDTO(productRepo.findById(entity.getProductID()).orElse(null))
-//				.status(FavoriteStatus.ACTIVE)
-//				.build();
 		 return FeedBackResponseEntity.fromFeedBackDTO(fbRepo.save(dto));
 	}
 	 public FeedBackResponseEntity deleteExistedFeedBack(int id) {

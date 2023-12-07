@@ -48,24 +48,20 @@ public class RentalStatusUpdateScheduler {
         List<OrderRentDTO> orRent = orRentService.getAllOrderRent();
         List<OrderRentDTO> after1DaysRent = new ArrayList<>();
        // LocalDate currentDate = LocalDate.now();
-        
+        //tru nhung don co returning va rejecting
         for (OrderRentDTO x : orRent) {
-            int returningDays = x.getReturningDate()-1;
-            
-         if(returningDays==0 && x.getStatus()==OrderRentStatus.RETURNING) {
+        	if(x.getStatus() ==	OrderRentStatus.RETURNING || x.getStatus() == OrderRentStatus.REJECTING) {
+        		int returningDays = x.getReturningDate() - 1;
+        		x.setReturningDate(returningDays);
+        	}   	
+        if(x.getReturningDate()	==	0 && x.getStatus()	==	OrderRentStatus.RETURNING) {
     		orRentService.updateOrderRentByOrderRentID(x.getOrderRentID(), OrderRentStatus.COMPLETED);
     	}
-    	if(returningDays==0 && x.getStatus()==OrderRentStatus.REJECTING) {
+    	if(x.getReturningDate()	==	0 && x.getStatus()	==	OrderRentStatus.REJECTING) {
     		orRentService.updateOrderRentByOrderRentID(x.getOrderRentID(), OrderRentStatus.REJECTING_COMPLETED);
     	}
-    	x.setReturningDate(returningDays);
     	after1DaysRent.add(x);
         }
-        rentRepo.saveAll(after1DaysRent);
-        
+        rentRepo.saveAll(after1DaysRent);   
     }
-    
-    
-    
-    
 }

@@ -58,9 +58,9 @@ public class ProductService {
     	if(!isValidProductName(entity.getDescription())) {
     		throw new PendingMoneyNegative("Description Cannot blank");
     	}
-    	if(!isValidProductName(entity.getTerm())) {
-    		throw new PendingMoneyNegative("Term Cannot blank");
-    	}
+//    	if(!isValidProductName(entity.getTerm())) {
+//    		throw new PendingMoneyNegative("Term Cannot blank");
+//    	}
     	if(!isValidProductName(entity.getProductCondition())) {
     		throw new PendingMoneyNegative("Condition Cannot blank");
     	}

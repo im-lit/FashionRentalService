@@ -60,6 +60,10 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	List<OrderRentDTO>findAll3StatusOrderRentByProductOwnerID(int productownerID);
 	
 	
+	//get all reject and rejecting completeed dit byproduct
+	@Query("SELECT dto FROM OrderRentDTO dto WHERE dto.productownerDTO.productownerID = ?1 AND dto.status IN ('REJECTING','REJECTING_COMPLETED') ORDER BY CASE WHEN dto.status = 'REJECTING' THEN 1 ELSE 2 END")
+	List<OrderRentDTO>findRejectingAndRejectingCompletedOrderRentByProductOwnerID(int productownerID);
+	
 	@Query("select dto from OrderRentDTO dto where dto.status = 'CANCELED' ORDER BY dto.orderRentID DESC")
 	List<OrderRentDTO> findAllCancelOrderRent();
 	

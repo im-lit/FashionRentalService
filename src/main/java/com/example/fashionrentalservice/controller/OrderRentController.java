@@ -135,6 +135,10 @@ public class OrderRentController {
 	private ResponseEntity getAllConfirmingOrderRentByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
 		return ResponseEntity.ok().body(rentService.getAllConfirmingOrderRentByProductOwnerID(productownerID));
 	}
+	@GetMapping("/po/rejecting&rejectingcompleted/{productownerID}")
+	private ResponseEntity getAllRejectingAndRJCompletedByProductOwnerID(@PathVariable int productownerID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllRejectAndRJComByProductOwnerID(productownerID));
+	}
 	
 	//pending Pending, delivery Delivery,confirming Confirming renting Renting, returning Returning, rejecting Rejecting, rejectcompleted RejetingCompleted, cancel Cancled
 	

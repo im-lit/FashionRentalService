@@ -43,6 +43,7 @@ public class OrderBuyResponseEntity {
 	private String productOwnerName;
 	
 	private VoucherDTO voucherDTO;
+	private int customerReceiveDays;
 	
 	public static List<OrderBuyResponseEntity> fromListOrderBuyDTO(List<OrderBuyDTO> dtos) {
 		return dtos.stream()

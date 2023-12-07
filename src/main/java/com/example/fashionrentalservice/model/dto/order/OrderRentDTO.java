@@ -58,7 +58,7 @@ public class OrderRentDTO {
 	
 	private int returningDate;
 	
-	
+	private boolean isFeedBack;
 	@Enumerated(EnumType.STRING)
 	private OrderRentStatus status;
 	

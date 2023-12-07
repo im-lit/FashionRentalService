@@ -45,6 +45,7 @@ public class OrderRentResponseEntity {
 	private int productownerID;
 	private int returningDate;
 	
+	private boolean isFeedBack;
 	private VoucherDTO voucherDTO;
 	
 	public static List<OrderRentResponseEntity> fromListOrderRentDTO(List<OrderRentDTO> dtos) {
@@ -63,6 +64,7 @@ public class OrderRentResponseEntity {
 	                    .productownerName(dto.getProductownerDTO().getFullName())
 	                    .customerName(dto.getCustomerDTO().getFullName())
 	                    .customerID(dto.getCustomerDTO().getCustomerID())
+	                    .isFeedBack(dto.isFeedBack())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .returningDate(dto.getReturningDate())
 	                    .build())
@@ -83,6 +85,7 @@ public class OrderRentResponseEntity {
                 .orderCode(dto.getOrderCode())
                 .customerID(dto.getCustomerDTO().getCustomerID())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
+                .isFeedBack(dto.isFeedBack())
                 .returningDate(dto.getReturningDate())
 				.build();
 	}

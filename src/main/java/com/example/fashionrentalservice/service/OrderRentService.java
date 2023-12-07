@@ -126,6 +126,7 @@ public class OrderRentService {
 									.dateOrder(LocalDateTime.now())
 									.status(OrderRentStatus.PENDING).customerAddress(x.getCustomerAddress()).customerDTO(cus)
 									.voucherDTO(voucher)
+									.isFeedBack(false)
 									.productownerDTO(po).build();
 			
 			for (OrderRentDetailRequestEntity detail : x.getOrderRentDetail()) {				
@@ -469,6 +470,13 @@ public class OrderRentService {
 		if(check == null)
 			throw new PendingMoneyNegative("ProductOwner not found");
 		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllRejectingCompletedOrderRentByProductOwnerID(productOwnerID));
+	}
+	// ================================== REJECTING_COMPLETED and rejecting =========================================================================
+	public List<OrderRentResponseEntity> getAllRejectAndRJComByProductOwnerID(int productOwnerID) throws CrudException {
+		ProductOwnerDTO check = poRepo.findById(productOwnerID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("ProductOwner not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findRejectingAndRejectingCompletedOrderRentByProductOwnerID(productOwnerID));
 	}
 	// ================================== CANCELED =========================================================================
 	public List<OrderRentResponseEntity> getAllCanceledOrderRentByProductOwnerID(int productOwnerID) throws CrudException {
