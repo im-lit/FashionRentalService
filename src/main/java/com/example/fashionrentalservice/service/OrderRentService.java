@@ -236,14 +236,14 @@ public class OrderRentService {
 
 	// ================================== Lay tat ca OrderRent trong 1 thang by ProductOwnerID ========================================
 	public List<OrderRentResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
-		LocalDate startDate = LocalDate.now().minusMonths(1);
+		LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
 		List<OrderRentDTO> list = rentRepo.findTotalOrderRent1MonthByProductOwnerID(productOwnerID, startDate);
 		return OrderRentResponseEntity.fromListOrderRentDTO(list);
 	}
 
 	// ================================== Lay tat ca OrderRent trong 1 thang by ProductOwnerID ========================================
 	public List<OrderRentResponseEntity> getTotalOrderRent1WeekOrderByProductOwnerID(int productOwnerID) {
-		LocalDate startDate = LocalDate.now().minusWeeks(1);
+		LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
 		List<OrderRentDTO> list = rentRepo.findTotalOrderRent1WeekByProductOwnerID(productOwnerID, startDate);
 		return OrderRentResponseEntity.fromListOrderRentDTO(list);
 	}
