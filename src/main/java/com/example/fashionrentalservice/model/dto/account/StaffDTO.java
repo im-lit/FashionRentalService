@@ -21,7 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Data
 @Entity
 @Builder
 @NoArgsConstructor

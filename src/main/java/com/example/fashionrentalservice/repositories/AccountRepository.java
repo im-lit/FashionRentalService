@@ -19,4 +19,6 @@ public interface AccountRepository extends JpaRepository<AccountDTO, Integer>{
 	
 	@Query("select dto from WalletDTO dto where dto.accountDTO.accountID = ?1")
 	WalletDTO findWalletByAccountId(int accountID);
+
+	AccountDTO findAccountDtoByAccountID(int id);
 }
