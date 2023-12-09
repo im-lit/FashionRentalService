@@ -1,6 +1,6 @@
 package com.example.fashionrentalservice.repositories;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
-import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 
 public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	
@@ -79,9 +78,9 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")
-	List<OrderBuyDTO> getTotal1MonthByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDate startDate);
+	List<OrderBuyDTO> getTotal1MonthByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDateTime startDate);
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")
-	List<OrderBuyDTO> getTotal1WeekByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDate startDate);
+	List<OrderBuyDTO> getTotal1WeekByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDateTime startDate);
 
 }

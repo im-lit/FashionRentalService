@@ -305,14 +305,14 @@ public class OrderBuyService {
 	
 	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID =============================================
 	public List<OrderBuyResponseEntity> getTotal1MonthOrderByProductOwnerID(int productOwnerID) {
-		LocalDate startDate = LocalDate.now().minusMonths(1);
+		LocalDateTime startDate = LocalDateTime.now().minusMonths(1);
 		List<OrderBuyDTO> list = buyRepo.getTotal1MonthByProductOwnerID(productOwnerID, startDate);
 		return  OrderBuyResponseEntity.fromListOrderBuyDTO(list);
 	}
 	
 	//================================== Lay tat ca Order trong 1 thang by ProductOwnerID ========================================
 	public List<OrderBuyResponseEntity> getTotal1WeekOrderByProductOwnerID(int productOwnerID) {
-		LocalDate startDate = LocalDate.now().minusWeeks(1);
+		LocalDateTime startDate = LocalDateTime.now().minusWeeks(1);
 		List<OrderBuyDTO> list = buyRepo.getTotal1WeekByProductOwnerID(productOwnerID, startDate);
 		return  OrderBuyResponseEntity.fromListOrderBuyDTO(list);
 	}
