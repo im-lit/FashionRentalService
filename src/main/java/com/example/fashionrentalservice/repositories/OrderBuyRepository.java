@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 
 public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	
@@ -70,6 +71,8 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 
 	@Query("select dto from OrderBuyDTO dto where dto.productownerDTO.productownerID = ?1 AND dto.status IN ('DELIVERY', 'CONFIRMING', 'COMPLETED') ORDER BY CASE WHEN dto.status = 'DELIVERY' THEN 1 WHEN dto.status = 'CONFIRMING' THEN 2 WHEN dto.status = 'COMPLETED' THEN 3 END")
 	List<OrderBuyDTO> findAll3StatusOrderBuyByProductOwnerID(int productownerID);
+	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = ?1 AND dto.status IN ('REJECTING','REJECTING_COMPLETED') ORDER BY CASE WHEN dto.status = 'REJECTING' THEN 1 ELSE 2 END")
+	List<OrderBuyDTO>findRejectingAndRejectingCompletedOrderByProductOwnerID(int productownerID);
 	
 	
 	

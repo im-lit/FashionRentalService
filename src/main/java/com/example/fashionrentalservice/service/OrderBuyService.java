@@ -253,6 +253,11 @@ public class OrderBuyService {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll3StatusOrderBuyByProductOwnerID(productownerID));
 	}
 	
+	public List<OrderBuyResponseEntity> getAllRejectingAndRejectingCompletedOrderByProductOwnerID(int productownerID) {
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findRejectingAndRejectingCompletedOrderByProductOwnerID(productownerID));
+	}
+	
+	
 	//================================== Lay tat ca PENDING OrderBUY by ProductOwnerID=================================================
 	public List<OrderBuyResponseEntity> getAllPendingOrderByProductOwnerID(int productownerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllPendingOrderBuyByProductOwnerID(productownerID));
