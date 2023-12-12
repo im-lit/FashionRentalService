@@ -73,7 +73,7 @@ public class VNPayController {
         
         String formattedPaymentTime = dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         int paymentStatus =vnPayService.orderReturn(request);
-        if(paymentStatus == 1) {
+        if(paymentStatus == 1 && orderInfo.equalsIgnoreCase("nap tien")) {
         	WalletDTO dto = accService.getWalletByAccountID(accountIDLocal);
         	walletService.updateBalance(dto.getWalletID(),amount);
         	
@@ -85,6 +85,19 @@ public class VNPayController {
         	entity.setTransactionType("Nạp tiền");       	
         	transService.createTransactionHistory(entity);      	
         }
+        if(paymentStatus == 1 && orderInfo.equalsIgnoreCase("rut tien")) {
+        	WalletDTO dto = accService.getWalletByAccountID(accountIDLocal);
+        	walletService.updateBalanceAfterStuff(dto.getWalletID(),amount);
+        	
+        	TransactionHistoryRequestEntity entity = new TransactionHistoryRequestEntity();
+        	entity.setAccountID(accountIDLocal);
+        	entity.setAmount(amount);
+        	String amountFormated = decimalFormat.format(amount);
+        	entity.setDescription("Rút tiền từ tài khoản về ngân hàng NCB: -" + amountFormated + " VND.");
+        	entity.setTransactionType("Rút tiền");       	
+        	transService.createTransactionHistory(entity);      	
+        }
+        
 
         model.addAttribute("orderId", orderInfo);
         model.addAttribute("totalPrice", totalPrice);

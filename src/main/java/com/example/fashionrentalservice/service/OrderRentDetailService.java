@@ -100,11 +100,11 @@ public class OrderRentDetailService {
 		return OrderRentDetailResponseEntity.fromOrderRentDetailDTO(dto);
 	}
 	
-	public OrderRentDetailStartDateEndDateResponseEntity getOrderRentDetailByProductIDAndOrderRentStatusRenting(int productID) throws CrudException {
+	public OrderRentDetailStartDateEndDateResponseEntity getOrderRentDetailByProductIDAndProductStatusRenting(int productID) throws CrudException {
 		ProductDTO check = productRepo.findById(productID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("Not Found Product!");
-		OrderRentDetailDTO dto = rentDetailRepo.findOrderDetailByProductIDAndOrderRentStatusRenting(productID);
+		OrderRentDetailDTO dto = rentDetailRepo.findOrderDetailByProductIDAndProductStatusRenting(productID);
 		if(dto == null)
 			throw new PendingMoneyNegative("Not found orderRentdetail");
 		return OrderRentDetailStartDateEndDateResponseEntity.fromOrderRentDetailDTO(dto);
