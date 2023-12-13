@@ -46,6 +46,7 @@ public class ProductOwnerService {
 	 //================================== Tạo PO========================================
     public POResponseEntity createProductOwner(PORequestEntity entity) throws CrudException{
     	AccountDTO check = accRepo.findById(entity.getAccountID()).orElse(null);
+    	
 		if(check==null) {
 			throw new PendingMoneyNegative("Cannot find PO ID!");
 		}
@@ -58,8 +59,14 @@ public class ProductOwnerService {
     	if(!isValidStringNotBlank(entity.getAddress())) {
        		throw new PendingMoneyNegative("FullName Cannot blank");
        	}
+    	
     	int reputationPoint=0;
     	if(check.getCustomerDTO() == null && check.getStaffDTO() == null && check.getProductOwnerDTO() == null) {
+    	List<ProductOwnerDTO> list = poRepo.findAll();
+        	for (ProductOwnerDTO x : list) {
+        		if(x.getPhone().equalsIgnoreCase(entity.getPhone()))
+    				throw new PendingMoneyNegative("This phone number is used by someone else");
+    	}
         ProductOwnerDTO dto = ProductOwnerDTO.builder()
                 .fullName(entity.getFullName())
                 .phone(entity.getPhone())
@@ -83,9 +90,15 @@ public class ProductOwnerService {
     //================================== Update PO bởi ID========================================
     public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) throws CrudException {
     	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
-    	if(dto==null) {
+    	List<ProductOwnerDTO> list = poRepo.findAll();
+
+    	if(dto==null) 
 			throw new PendingMoneyNegative("Cannot find PO ID!");
-		}
+		
+    	for (ProductOwnerDTO x : list) {
+    		if(x.getPhone().equalsIgnoreCase(entity.getPhone()))
+				throw new PendingMoneyNegative("This phone number is used by someone else");
+    	}
     	dto.setAvatarUrl(entity.getAvatarUrl());
     	dto.setPhone(entity.getPhone());
     	dto.setFullName(entity.getFullName());
