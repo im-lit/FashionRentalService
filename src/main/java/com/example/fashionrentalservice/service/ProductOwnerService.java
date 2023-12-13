@@ -13,12 +13,13 @@ import com.example.fashionrentalservice.exception.PONotFoundByID;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
-import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
 import com.example.fashionrentalservice.model.dto.account.ProductOwnerDTO;
 import com.example.fashionrentalservice.model.request.PORequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateRequestEntity;
 import com.example.fashionrentalservice.model.request.POUpdateTokenAndShopIDResquestEntity;
+import com.example.fashionrentalservice.model.request.WalletRequestEntity;
 import com.example.fashionrentalservice.model.response.POResponseEntity;
+import com.example.fashionrentalservice.model.response.WalletResponseEntity;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 
@@ -30,6 +31,10 @@ public class ProductOwnerService {
 	
 	@Autowired
 	private AccountRepository accRepo;
+	
+	@Autowired
+	private WalletService wallService;
+	
 	private static final String BLANK_PATTERN = "^\\S.*$";
 //	------------------ Lay tat ca ProductOwner-----------
 	public List<POResponseEntity> getAllProductOwner() {
@@ -63,6 +68,14 @@ public class ProductOwnerService {
                 .reputationPoint(reputationPoint)
                 .accountDTO(accRepo.findById(entity.getAccountID()).orElseThrow())
                 .build();
+        
+        WalletRequestEntity request = WalletRequestEntity.builder()
+        								.accountID(entity.getAccountID())
+        								.balance(0)
+        								.build();
+        WalletResponseEntity checkWallet = wallService.createWallet(request);
+        if(checkWallet == null)
+        	throw new PendingMoneyNegative("Create Wallet for PO failed!");
         return POResponseEntity.fromPODTO(poRepo.save(dto));
     	} 
     	throw new AccountIsRegisted();
