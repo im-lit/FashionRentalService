@@ -5,6 +5,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,32 +29,47 @@ import com.example.fashionrentalservice.repositories.RoleRepository;
 @Service
 public class AccountService {
 
-	@Autowired
-	private AccountRepository accRepo;
-	
-	@Autowired
-	private RoleRepository roleRepo;
-	
-	private static final String BLANK_PATTERN = "^\\S.*$";
+    @Autowired
+    private AccountRepository accRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
+
+    private static final String BLANK_PATTERN = "^\\S.*$";
 
     private boolean isValidEmailAndPassword(String string) {
         Pattern pattern = Pattern.compile(BLANK_PATTERN);
         Matcher matcher = pattern.matcher(string);
         return matcher.matches();
     }
-//================================== CheckLogin========================================
-	public AccountResponseEntity login(String email, String password) throws CrudException {
-		AccountDTO accountDTO= accRepo.checkLoginAccountByEmailAndPassword(email, password);
-		if(accountDTO!=null) {
-			
-			return AccountResponseEntity.fromAccountDto(accountDTO);
-		}
-		
-		throw new LoginFail();
-	}
-//================================== Tạo mới Account ========================================
-    public AccountResponseEntity createNewAccount(AccountRequestEntity entity) throws CrudException{
-    	
+
+    //================================== CheckLogin========================================
+    public AccountResponseEntity login(String email, String password) throws CrudException {
+        AccountDTO accountDTO = accRepo.checkLoginAccountByEmailAndPassword(email, password);
+        if (accountDTO != null) {
+
+            return AccountResponseEntity.fromAccountDto(accountDTO);
+        }
+
+        throw new LoginFail();
+    }
+
+    public AccountResponseEntity loginGoogle(String token) {
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String email = decodedToken.getEmail();
+            AccountDTO accountDTO = accRepo.findByEmail(email);
+            return AccountResponseEntity.fromAccountDto(accountDTO);
+        }catch (FirebaseAuthException e){
+            e.printStackTrace();
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    //================================== Tạo mới Account ========================================
+    public AccountResponseEntity createNewAccount(AccountRequestEntity entity) throws CrudException {
+
         AccountDTO dto = AccountDTO.builder()
                 .email(entity.getEmail())
                 .password(entity.getPassword())
@@ -59,70 +77,74 @@ public class AccountService {
                 .reportedCount(0)
                 .roleDTO(roleRepo.findById(entity.getRoleID()).orElseThrow())
                 .build();
-       AccountDTO emailChecked = accRepo.findByEmail((entity.getEmail()));
-       if(!isValidEmailAndPassword(entity.getEmail())) {
-   		throw new PendingMoneyNegative("Email Cannot blank");
-   	}
-       if(!isValidEmailAndPassword(entity.getPassword())) {
-      		throw new PendingMoneyNegative("Password Cannot blank");
-      	}
-       if(emailChecked!=null)
-    	   throw new EmailExisted();
-       
+        AccountDTO emailChecked = accRepo.findByEmail((entity.getEmail()));
+        if (!isValidEmailAndPassword(entity.getEmail())) {
+            throw new PendingMoneyNegative("Email Cannot blank");
+        }
+        if (!isValidEmailAndPassword(entity.getPassword())) {
+            throw new PendingMoneyNegative("Password Cannot blank");
+        }
+        if (emailChecked != null)
+            throw new EmailExisted();
+
         return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
-  //================================== Update Password Account ========================================   
-    public AccountResponseEntity updatePasswordAccount(int accountID,String password) throws CrudException {
-    	  AccountDTO dto = accRepo.findById(accountID).orElse(null);
-          if(dto ==null) {
-          	 throw new PendingMoneyNegative("cannot find Account ID!");
-          }
-        if(dto.getPassword().equals(password)) {
-        	throw new UpdatePasswordFail();
+
+    //================================== Update Password Account ========================================
+    public AccountResponseEntity updatePasswordAccount(int accountID, String password) throws CrudException {
+        AccountDTO dto = accRepo.findById(accountID).orElse(null);
+        if (dto == null) {
+            throw new PendingMoneyNegative("cannot find Account ID!");
         }
-        dto.setPassword(password);    
-        	return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
+        if (dto.getPassword().equals(password)) {
+            throw new UpdatePasswordFail();
+        }
+        dto.setPassword(password);
+        return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
     }
-    
+
     //================================== Update Password Account ========================================   
-    public AccountResponseEntity updateStatusAccount(int accountID,AccountStatus status) throws CrudException {
-        AccountDTO dto = (AccountDTO)accRepo.findById(accountID).orElse(null);
-        if(dto ==null) {
-       	 throw new PendingMoneyNegative("cannot find Account ID to updateStatus!");
-       }
-        dto.setStatus(status);    
-        	return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
-    }
-    
-
-//================================== Lay tat ca account========================================
-	public List<AccountResponseEntity> getAllAccount() {
-		return accRepo.findAll().stream().map(AccountResponseEntity::fromAccountDto).collect(Collectors.toList());
-
-	}
-//================================== Lay account bởi ID========================================	
-	public AccountResponseEntity getAccountByID(int accountID) throws CrudException{
-		AccountDTO dto = accRepo.findById(accountID).orElse(null);
-		if(dto==null) 
-			throw new AccNotFoundByID();
-		return AccountResponseEntity.fromAccountDto(dto);
-		}
-//================================== Xóa Account========================================
-    public AccountResponseEntity deleteExistedAccount(int id) throws CrudException{
-        AccountDTO dto = accRepo.findById(id).orElse(null);
-        if(dto ==null) {
-        	 throw new PendingMoneyNegative("cannot find Account ID to delete!");
+    public AccountResponseEntity updateStatusAccount(int accountID, AccountStatus status) throws CrudException {
+        AccountDTO dto = (AccountDTO) accRepo.findById(accountID).orElse(null);
+        if (dto == null) {
+            throw new PendingMoneyNegative("cannot find Account ID to updateStatus!");
         }
-        accRepo.deleteById(id);
-        
+        dto.setStatus(status);
+        return AccountResponseEntity.fromAccountDto(accRepo.save(dto));
+    }
+
+
+    //================================== Lay tat ca account========================================
+    public List<AccountResponseEntity> getAllAccount() {
+        return accRepo.findAll().stream().map(AccountResponseEntity::fromAccountDto).collect(Collectors.toList());
+
+    }
+
+    //================================== Lay account bởi ID========================================
+    public AccountResponseEntity getAccountByID(int accountID) throws CrudException {
+        AccountDTO dto = accRepo.findById(accountID).orElse(null);
+        if (dto == null)
+            throw new AccNotFoundByID();
         return AccountResponseEntity.fromAccountDto(dto);
     }
-	public WalletDTO getWalletByAccountID(int accountID) throws CrudException{
-		WalletDTO dto = accRepo.findWalletByAccountId(accountID);
-		if(dto==null) 
-			throw new StaffNotFoundByID();
-		return dto;
-		}
+
+    //================================== Xóa Account========================================
+    public AccountResponseEntity deleteExistedAccount(int id) throws CrudException {
+        AccountDTO dto = accRepo.findById(id).orElse(null);
+        if (dto == null) {
+            throw new PendingMoneyNegative("cannot find Account ID to delete!");
+        }
+        accRepo.deleteById(id);
+
+        return AccountResponseEntity.fromAccountDto(dto);
+    }
+
+    public WalletDTO getWalletByAccountID(int accountID) throws CrudException {
+        WalletDTO dto = accRepo.findWalletByAccountId(accountID);
+        if (dto == null)
+            throw new StaffNotFoundByID();
+        return dto;
+    }
 }
-	
-	
+
+

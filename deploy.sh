@@ -1,10 +1,10 @@
-echo "Building app..."
-./mvnw clean package
+ echo "Building app..."
+ ./mvnw clean package
 
 echo "Deploy files to server..."
-scp -r -i ~/Onedrive/Desktop/SWP490/FashionRentalService target/fashionrental.jar root@134.209.111.144:/SWP490/FashionRental_BE/
+scp -r -i ./fashion target/fashionrental.jar root@167.71.221.112:/root/
 
-ssh -i ~/Onedrive/Desktop/long root@134.209.111.144 <<EOF
+ssh -i ./fashion root@167.71.221.112 <<EOF
 pid=\$(sudo lsof -t -i :8080)
 
 if [ -z "\$pid" ]; then
@@ -13,8 +13,7 @@ else
     echo "Restart server..."
     sudo kill -9 "\$pid"
 fi
-cd /var/www/demo-swp-be
-java -jar demo-swp.jar
+java -jar fashionrental.jar
 EOF
 exit
 

@@ -4,6 +4,7 @@ package com.example.fashionrentalservice.controller;
 
 import java.util.List;
 
+import com.example.fashionrentalservice.model.request.LoginGoogleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,6 +38,11 @@ public class AccountController {
 	@PostMapping("/login")
 	private ResponseEntity checkLogin(@RequestParam String email, @RequestParam String password) throws CrudException {	
 		return ResponseEntity.ok().body(accService.login(email, password));
+	}
+
+	@PostMapping("/login-gg")
+	private ResponseEntity checkLoginGoogle(@RequestBody LoginGoogleRequest loginGoogleRequest) throws CrudException {
+		return ResponseEntity.ok().body(accService.loginGoogle(loginGoogleRequest.getToken()));
 	}
 	
 	//================================== Tạo mới Account ========================================	
