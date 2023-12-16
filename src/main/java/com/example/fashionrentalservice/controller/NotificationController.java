@@ -1,5 +1,6 @@
 package com.example.fashionrentalservice.controller;
 
+import com.example.fashionrentalservice.model.request.NotificationRegisterRequest;
 import com.example.fashionrentalservice.model.request.NotificationRequest;
 import com.example.fashionrentalservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,10 @@ public class NotificationController {
     @PostMapping("{accountID}")
     public void readNotification(@PathVariable int accountID){
         notificationService.readNotification(accountID);
+    }
+
+    @PostMapping("register")
+    public ResponseEntity registerNotification(@RequestBody NotificationRegisterRequest notificationRequest){
+        return ResponseEntity.ok(notificationService.createFCM(notificationRequest));
     }
 }

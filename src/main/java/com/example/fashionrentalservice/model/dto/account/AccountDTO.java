@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.example.fashionrentalservice.model.dto.chat.MessageDTO;
 import com.example.fashionrentalservice.model.dto.chat.RoomDTO;
+import com.example.fashionrentalservice.model.dto.notification.FCM;
 import com.example.fashionrentalservice.model.dto.notification.Notification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -81,6 +82,10 @@ public class AccountDTO {
 	@JsonIgnore
 	@OneToMany(mappedBy = "account")
 	private Set<Notification> notifications;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	private Set<FCM> fcms;
 	
 	public enum AccountStatus {
 		BLOCKED, VERIFIED, NOT_VERIFIED
