@@ -66,7 +66,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler{
 		ProductIsRented.class,
 		ProductStatusOnSale.class,
 		ProductStatusNotApproved.class,
-		ProductIsSoldOut.class,	
+		ProductIsSoldOut.class
 	})
 	protected ResponseEntity<Response> handleAuthExceptions(CrudException exception) {
 		return ResponseEntity

@@ -52,6 +52,11 @@ public class CustomerController {
 		return ResponseEntity.ok().body(cusService.getCustomerByID(customerID));
 	}
 	
+	@GetMapping("/phone")
+	private ResponseEntity checkPhoneIsUsed(@RequestParam String phone) throws CrudException{
+		return ResponseEntity.ok().body(cusService.checkPhoneIsUsed(phone));
+	}
+	
 //================================== Xóa ProductOwner ========================================	
     @DeleteMapping()
     private ResponseEntity deleteExistedCustomer(@RequestParam int id) throws CrudException {

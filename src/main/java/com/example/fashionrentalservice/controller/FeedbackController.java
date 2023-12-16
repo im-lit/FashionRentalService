@@ -1,7 +1,6 @@
 package com.example.fashionrentalservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.fashionrentalservice.exception.handlers.CrudException;
-import com.example.fashionrentalservice.model.dto.product.FeedBackDTO;
-import com.example.fashionrentalservice.model.request.FavoriteProductRequestEntity;
 import com.example.fashionrentalservice.model.request.FeedBackRequestEntity;
-import com.example.fashionrentalservice.service.FavoriteProductService;
 import com.example.fashionrentalservice.service.FeedBackService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +29,11 @@ public class FeedbackController {
 	@GetMapping("/{productID}")
 	private ResponseEntity getFeedBackByProductID(@PathVariable int productID) throws CrudException {
 		return ResponseEntity.ok().body(fbService.getFeedBackByProductID(productID));
+	}
+	
+	@GetMapping("/check/{orderRentID}")
+	private ResponseEntity checkIsFeedback(@PathVariable int orderRentID) throws CrudException {
+		return ResponseEntity.ok().body(fbService.checkIsFeedback(orderRentID));
 	}
 	
 	@PostMapping

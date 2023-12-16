@@ -76,6 +76,15 @@ public class CustomerService {
         return matcher.matches();
     }
     
+    public String checkPhoneIsUsed (String phone) throws CrudException {
+    	List<CustomerDTO> list = cusRepo.findAll();
+		for (CustomerDTO x : list) {
+			if (x.getPhone().equalsIgnoreCase(phone))
+				throw new PendingMoneyNegative("This phone number is used by someone else");	
+		}
+    	
+    	return "You can use this phone number";
+    }
     
     
     

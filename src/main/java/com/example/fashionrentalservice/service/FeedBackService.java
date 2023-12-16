@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.account.CustomerDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.product.FavoriteProductDTO;
 import com.example.fashionrentalservice.model.dto.product.FeedBackDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
@@ -21,6 +22,7 @@ import com.example.fashionrentalservice.model.response.FeedBackResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 
 import com.example.fashionrentalservice.repositories.FeedBackRepository;
+import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 
@@ -34,6 +36,8 @@ public class FeedBackService {
 	private ProductRepository productRepo;
 	@Autowired
 	private CustomerRepository cusRepo;
+	@Autowired
+	private OrderRentRepository rentRepo;
 	
 	@Autowired
 	private FeedBackImgService fbImgService;
@@ -47,6 +51,14 @@ public class FeedBackService {
 		return FeedBackResponseEntity.fromListFeedBackDTO(dto);
 	}
 	
+	public String checkIsFeedback(int orderRentID) throws  CrudException {
+		OrderRentDTO dto = rentRepo.findById(orderRentID).orElse(null);
+		if(dto==null) throw new PendingMoneyNegative("Can't find CustomerID to add Favorite");
+		
+		if(dto.isFeedBack() == true) throw new PendingMoneyNegative("You've already feedbacked this order!");
+	
+		return "You can feedback this order";
+	}
 
 	public FeedBackResponseEntity createFeedBackProduct(FeedBackRequestEntity entity) throws CrudException {
 		CustomerDTO cusCheck=cusRepo.findById(entity.getCustomerID()).orElse(null);
@@ -56,10 +68,10 @@ public class FeedBackService {
 	}else if(productCheck==null) {
 			throw new PendingMoneyNegative("Can't find CustomerID to add Favorite");
 		}
-		FeedBackDTO checked= fbRepo.findFeedBackByCustomerAndProductID(entity.getCustomerID(), entity.getProductID());
-		if(checked!=null) {
-			throw new PendingMoneyNegative("This customer already feedback this product");
-		}
+//		FeedBackDTO checked= fbRepo.findFeedBackByCustomerAndProductID(entity.getCustomerID(), entity.getProductID());
+//		if(checked!=null) {
+//			throw new PendingMoneyNegative("This customer already feedback this product");
+//		}
 		int checkRating =entity.getRatingPoint();
 		if(checkRating>5 ||checkRating<0) {
 			throw new PendingMoneyNegative("This rating must be smaller than 5 and greater than 0");
@@ -71,6 +83,9 @@ public class FeedBackService {
 				.description(entity.getDescription())
 				.ratingPoint(checkRating)
 				.build();
+		OrderRentDTO orderRent = rentRepo.findById(entity.getOrderRentID()).orElse(null);
+		orderRent.setFeedBack(true);
+		rentRepo.save(orderRent);
 		 return FeedBackResponseEntity.fromFeedBackDTO(fbRepo.save(dto));
 	}
 	 public FeedBackResponseEntity deleteExistedFeedBack(int id) {

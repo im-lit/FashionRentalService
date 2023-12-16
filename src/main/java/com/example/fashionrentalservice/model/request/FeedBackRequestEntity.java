@@ -18,6 +18,8 @@ public class FeedBackRequestEntity {
 	
 	private int customerID;
 	
+	private int orderRentID;
+	
 
 	
 }
