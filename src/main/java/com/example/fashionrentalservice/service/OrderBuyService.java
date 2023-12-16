@@ -31,6 +31,7 @@ import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.checkTypeSaleorRentorSaleRent;
@@ -71,6 +72,9 @@ public class OrderBuyService {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private NotificationService notiService;
 	
 	@Autowired
 	private TransactionHistoryService transService;
@@ -188,6 +192,10 @@ public class OrderBuyService {
 		productService.updateListProductStatus(listProduct);
         walletRepo.saveAll(listWallet);
         transRepo.saveAll(listTrans);
+        
+        for (OrderBuyDTO x : listOrder) {
+			notiService.pushNotification(x.getProductownerDTO().getAccountDTO().getAccountID(), "BÁN", "Bạn có đơn hàng BÁN mới từ : " + x.getCustomerDTO().getFullName());
+		}
    
         try {
             return OrderBuyResponseEntity.fromListOrderBuyDTO(listOrder);

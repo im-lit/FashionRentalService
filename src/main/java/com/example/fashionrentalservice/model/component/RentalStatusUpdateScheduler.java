@@ -6,10 +6,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
+import com.example.fashionrentalservice.model.response.OrderRentDetailResponseEntity;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.repositories.OrderRentRepository;
+import com.example.fashionrentalservice.service.NotificationService;
 import com.example.fashionrentalservice.service.OrderRentDetailService;
 import com.example.fashionrentalservice.service.OrderRentService;
 
@@ -29,7 +31,9 @@ public class RentalStatusUpdateScheduler {
     
     @Autowired
 	private OrderRentRepository rentRepo;
-
+    
+    @Autowired
+    private NotificationService notiService;
  
     
 
@@ -56,4 +60,17 @@ public class RentalStatusUpdateScheduler {
         }
         rentRepo.saveAll(after1DaysRent);   
     }
+    
+    @Scheduled(fixedRate = 86400000, initialDelay = 86400000) // Cập nhật mỗi ngày (24 giờ)
+    public void notiForCustomerRemaining1Day() throws CrudException {
+       List<OrderRentDetailResponseEntity> list = rentService.getAllOrderRentDetailInRentingOrderRent();
+       
+       for (OrderRentDetailResponseEntity x : list) {
+    	   OrderRentDTO rentDTO = rentRepo.findById(x.getOrderRentID()).orElse(null);
+		if(x.getDayRemaining() == 1) 
+			notiService.pushNotification(rentDTO.getCustomerDTO().getAccountDTO().getAccountID(), "Ngày mai là hạn trả đồ", "Sản phẩm thuê tên: " + x.getProductDTO().getProductName() + " sắp đến hạn. "
+																															+ "Khách hàng vui lòng trả đồ đúng hạn để không bị tính phí thêm.");
+	}
+        
+ }
 }

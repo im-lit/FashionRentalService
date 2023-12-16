@@ -25,6 +25,9 @@ public class RequestAddingProductService {
 	@Autowired
 	private ProductRepository productRepo;
 	
+	@Autowired
+	private NotificationService notiService;
+	
 //================================== Tạo mới Request ========================================
     public AddingProductResponseEntity createRequest(AddingProductRequestEntity entity) throws CrudException{
         RequestAddingProductDTO dto = RequestAddingProductDTO.builder()
@@ -40,7 +43,8 @@ public class RequestAddingProductService {
     public AddingProductResponseEntity updateRequestStatusAndDes(int requestID,AddProductStatus status, String description) throws CrudException {
     	RequestAddingProductDTO dto = requestAddRepo.findById(requestID).orElseThrow();
     	dto.setDescription(description);
-        dto.setStatus(status);    
+        dto.setStatus(status);
+        notiService.pushNotification(dto.getProductDTO().getProductownerDTO().getAccountDTO().getAccountID(), "Duyệt sản phẩm", "Sản phẩm: " + dto.getProductDTO().getProductName() + " đã được duyệt.");
         	return AddingProductResponseEntity.fromRequestAddingProductDTO(requestAddRepo.save(dto));
     }
         

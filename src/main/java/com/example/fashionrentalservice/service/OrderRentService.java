@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,9 @@ public class OrderRentService {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private NotificationService notiService;
 
 	@Autowired
 	private TransactionHistoryService transService;
@@ -202,6 +206,10 @@ public class OrderRentService {
 		productService.updateListProductStatusExceptRentingStatus(listProduct);  
         walletRepo.saveAll(listWallet);
         transRepo.saveAll(listTrans);
+        
+        for (OrderRentDTO x : listRent) {
+			notiService.pushNotification(x.getProductownerDTO().getAccountDTO().getAccountID(), "THUÊ", "Bạn có đơn hàng Thuê mới từ : " + x.getCustomerDTO().getFullName());
+		}
 
 		try {
 			return OrderRentResponseEntity.fromListOrderRentDTO(listRent);

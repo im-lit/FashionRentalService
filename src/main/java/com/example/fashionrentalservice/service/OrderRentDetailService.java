@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.response.OrderRentDetailResponseEntity;
@@ -81,6 +82,30 @@ public class OrderRentDetailService {
 		return listReturn;
 	}
 	
+	public List<OrderRentDetailResponseEntity> getAllOrderRentDetailInRentingOrderRent() {
+		List<OrderRentDetailDTO> list = new ArrayList<>();
+		List<OrderRentDetailResponseEntity> listReturn = new ArrayList<>();	
+		list = rentDetailRepo.findAll();
+		
+		for (OrderRentDetailDTO x : list) {
+			if(x.getOrderRentDTO().getStatus() == OrderRentStatus.RENTING) {
+			long daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), x.getEndDate());
+			OrderRentDetailResponseEntity dto = OrderRentDetailResponseEntity.builder()
+												.cocMoney(x.getCocMoney())
+												.startDate(x.getStartDate())
+												.endDate(x.getEndDate())
+												.orderRentDetailID(x.getOrderRentDetailID())
+												.productDTO(x.getProductDTO())
+												.rentPrice(x.getRentPrice())
+												.orderRentID(x.getOrderRentDTO().getOrderRentID())
+												.dayRemaining(daysRemaining)
+												.build();
+			listReturn.add(dto);	
+		 }
+		}
+		return listReturn;
+	}
+	
 	
 	public List<OrderRentDetailDTO> getAllOrderDetailByOrderRentIDReturnDTO(int orderRentID) {
 		List<OrderRentDetailDTO> list = new ArrayList<>();	
@@ -125,10 +150,6 @@ public class OrderRentDetailService {
 	}
 	
 	
-	public List<OrderRentDetailDTO> getAllOrderRentDetail() {
-		List<OrderRentDetailDTO> list = rentDetailRepo.findAll();
-		return list;
-	}
 	
 }
 	

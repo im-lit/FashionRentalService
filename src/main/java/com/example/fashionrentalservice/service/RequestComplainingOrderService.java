@@ -48,6 +48,9 @@ public class RequestComplainingOrderService {
 	private StaffRequestedService staffRequestedService;
 	
 	@Autowired
+	private NotificationService notiService;
+	
+	@Autowired
 	private WalletService walletService;
 	
 	@Autowired
@@ -164,7 +167,8 @@ public class RequestComplainingOrderService {
     		dto.setStaffResponse(staffResponse);
     	}
     	
-        dto.setStatus(status);    
+        dto.setStatus(status);
+        notiService.pushNotification(dto.getProductownerDTO().getAccountDTO().getAccountID(), "Đơn hỗ trợ", "Đơn hàng thuê số: " + dto.getOrderRentDTO().getOrderRentID() + " đã được duyệt.");
         
         	return RequestComplainingOrderResponseEntity.fromRequestComplainingOrderDTO(requestComRepo.save(dto));
     }
