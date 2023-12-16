@@ -262,6 +262,31 @@ public class WalletService {
 	return cusWallet;
     }
     
+    public WalletDTO updateMoneyWhenOrderRentCanceled(WalletDTO cusWallet, WalletDTO poWallet, double rentProductTotal, double cocMoneyTotal, double shippingFee) throws CrudException {
+    List<WalletDTO> list = new ArrayList<>();
+	double newCocMoney;
+	double newPendingMoney;
+	double newBalanceCus;
+	
+	newPendingMoney = poWallet.getPendingMoney() - rentProductTotal;
+	if (newPendingMoney < 0) 
+        throw new PendingMoneyNegative("Pending Money can not be a neagtive number!");
+	poWallet.setPendingMoney(newPendingMoney);
+	
+	newCocMoney = poWallet.getCocMoney() - cocMoneyTotal;
+	if (newCocMoney < 0) 
+        throw new PendingMoneyNegative("Coc Money can not be a neagtive number!");
+	poWallet.setCocMoney(newCocMoney);
+	list.add(poWallet);
+	
+	newBalanceCus = cusWallet.getBalance() + rentProductTotal + cocMoneyTotal + shippingFee + 10000;
+	cusWallet.setBalance(newBalanceCus);
+	list.add(cusWallet);
+	
+	walletRepo.saveAll(list);
+	
+	return cusWallet;
+    }
     //= lấy tiền Cọc trong PO trừ ExpectedCost và chuyển tiền cọc về CusBalance, Cộng tiền ExpectedCost vào PO Balance và tiền OrderRent từ pending Money chuyển sang PO Balance. ========================================
     public WalletDTO StaffUpdate(WalletDTO cusWallet, WalletDTO poWallet, double expectedCost, OrderRentDTO orderRent) throws CrudException {
     	List<WalletDTO> list = new ArrayList<>();

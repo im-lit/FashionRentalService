@@ -364,8 +364,46 @@ public class OrderBuyService {
 			transRepo.save(checkPOTrans);
 			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Bán", "Đơn hàng mã : " + check.getOrderBuyID()+" đã thành công");
 		}
-		
-		if(status == OrderBuyStatus.CANCELED || status == OrderBuyStatus.REJECTING_COMPLETED) { 
+		if(status == OrderBuyStatus.CANCELED) { 
+			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotal());
+			
+        	String totalformatted = decimalFormat.format(check.getTotal());
+        	String totalBuyPriceformatted = decimalFormat.format(check.getTotalBuyPriceProduct());
+        	TransactionHistoryDTO cusBuyTrans = TransactionHistoryDTO.builder()
+        													.amount(check.getTotal())
+        													.transactionType("Mua")
+        													.description("Hoàn tiền hóa đơn: +" + totalformatted + " VND")
+        													.orderBuyDTO(check)
+        													.accountDTO(check.getCustomerDTO().getAccountDTO())
+        													.build();      												
+        	TransactionHistoryDTO checkCusTrans = transService.createBuyTransactionHistoryReturnDTO(cusBuyTrans);
+        	if(checkCusTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkCusTrans);
+        	
+        	TransactionHistoryDTO poBuyTrans = TransactionHistoryDTO.builder()
+															.amount(check.getTotalBuyPriceProduct())
+															.transactionType("Mua")
+															.description("Hoàn trả tiền đơn hàng : -" + totalBuyPriceformatted + " VND ")
+															.orderBuyDTO(check)
+															.accountDTO(check.getProductownerDTO().getAccountDTO())
+															.build();
+        	TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
+        	if(checkPOTrans == null) 
+        		throw new TransactionHistoryCreatedFailed();
+        	listTrans.add(checkPOTrans);
+    
+			List<OrderBuyDetailDTO> list = buyDetailService.getAllOrderDetailByOrderBuyIDReturnDTO(orderBuyID);
+				for (OrderBuyDetailDTO x : list) {
+					ProductDTO productt = x.getProductDTO();
+					productt.setStatus(ProductStatus.AVAILABLE);
+					listProduct.add(productt);
+					}	
+			transRepo.saveAll(listTrans);
+			productRepo.saveAll(listProduct);		
+			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Bán", "Đơn hàng mã : " + check.getOrderBuyID()+" đã hủy");			
+		}
+		if(status == OrderBuyStatus.REJECTING_COMPLETED) { 
 			walletService.updatePendingMoneyToCustomerBalanceReturnDTO(checkWalletCus , checkWalletPO, check.getTotalBuyPriceProduct());
 		
         	String TotalBuyPriceformatted = decimalFormat.format(check.getTotalBuyPriceProduct());
@@ -401,9 +439,8 @@ public class OrderBuyService {
 					}	
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
-			if(status == OrderBuyStatus.CANCELED) {
-				notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Bán", "Đơn hàng mã : " + check.getOrderBuyID()+"đã hủy");
-			}
+			notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderBuyID()+" đã được chủ sản phẩm đồng ý hoàn trả!");
+
 		}	
 		
 		check.setStatus(status);
