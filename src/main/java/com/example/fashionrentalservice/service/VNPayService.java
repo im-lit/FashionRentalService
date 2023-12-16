@@ -1,5 +1,7 @@
 package com.example.fashionrentalservice.service;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.config.VNPayConfig;
@@ -13,6 +15,8 @@ import java.util.*;
 @Service
 public class VNPayService {
 
+	
+	
     public String createOrder(int total, String orderInfor, String urlReturn){
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -109,6 +113,8 @@ public class VNPayService {
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                 return 1; //GD thành công
+                
+                
             } else {
                 return 0; // GD không thành công
             }

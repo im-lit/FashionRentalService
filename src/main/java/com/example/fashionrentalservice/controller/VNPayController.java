@@ -23,6 +23,7 @@ import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.request.TransactionHistoryRequestEntity;
 import com.example.fashionrentalservice.service.AccountService;
+import com.example.fashionrentalservice.service.NotificationService;
 import com.example.fashionrentalservice.service.TransactionHistoryService;
 import com.example.fashionrentalservice.service.VNPayService;
 import com.example.fashionrentalservice.service.WalletService;
@@ -48,6 +49,10 @@ public class VNPayController {
 	private int accountIDLocal;
 	
 	private double amount;
+	
+	@Autowired
+	private NotificationService notiService;
+	
 
 	@PostMapping("/submitOrder")
 	public String submitOrder(@RequestParam("amount") int orderTotal, @RequestParam("accountID") int accountID,
@@ -83,7 +88,7 @@ public class VNPayController {
         	String amountFormated = decimalFormat.format(amount);
         	entity.setDescription("Nạp " + amountFormated + " từ ngân hàng NCB");
         	entity.setTransactionType("Nạp tiền");       	
-        	transService.createTransactionHistory(entity);      	
+        	transService.createTransactionHistory(entity);      
         }
         if(paymentStatus == 1 && orderInfo.equalsIgnoreCase("rut tien")) {
         	WalletDTO dto = accService.getWalletByAccountID(accountIDLocal);

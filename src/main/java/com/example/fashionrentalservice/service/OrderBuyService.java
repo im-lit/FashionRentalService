@@ -360,9 +360,9 @@ public class OrderBuyService {
 														.build();
 			TransactionHistoryDTO checkPOTrans = transService.createBuyTransactionHistoryReturnDTO(poBuyTrans);
 			if(checkPOTrans == null) 
-				throw new TransactionHistoryCreatedFailed();
-			
+				throw new TransactionHistoryCreatedFailed();	
 			transRepo.save(checkPOTrans);
+			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Bán", "Đơn hàng mã : " + check.getOrderBuyID()+" đã thành công");
 		}
 		
 		if(status == OrderBuyStatus.CANCELED || status == OrderBuyStatus.REJECTING_COMPLETED) { 
@@ -401,6 +401,9 @@ public class OrderBuyService {
 					}	
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
+			if(status == OrderBuyStatus.CANCELED) {
+				notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Bán", "Đơn hàng mã : " + check.getOrderBuyID()+"đã hủy");
+			}
 		}	
 		
 		check.setStatus(status);

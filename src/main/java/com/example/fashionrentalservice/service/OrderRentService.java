@@ -93,6 +93,7 @@ public class OrderRentService {
 	@Autowired
 	private VoucherRepository voRepo;
 	
+	
 	@Autowired
 	private ProductRentalPricesRepository rentPriceRepo;
 
@@ -323,9 +324,11 @@ public class OrderRentService {
         		prod.setStatus(ProductStatus.AVAILABLE);
         		listProduct.add(prod);
 			}
-        	
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
+			
+			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đã thành công");
+			
 		}
 		
 		if(status == OrderRentStatus.RETURNING) {
@@ -384,6 +387,8 @@ public class OrderRentService {
 			
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
+			if(status==OrderRentStatus.CANCELED)
+			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID()+" đã hủy");
 		}
 		
 		check.setStatus(status);
