@@ -54,11 +54,14 @@ public class AccountService {
         throw new LoginFail();
     }
 
-    public AccountResponseEntity loginGoogle(String token) {
+    public AccountResponseEntity loginGoogle(String token) throws CrudException {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String email = decodedToken.getEmail();
             AccountDTO accountDTO = accRepo.findByEmail(email);
+            if(accountDTO==null) {
+            	throw new PendingMoneyNegative("Cannot find by email");
+            }
             return AccountResponseEntity.fromAccountDto(accountDTO);
         }catch (FirebaseAuthException e){
             e.printStackTrace();
