@@ -40,6 +40,7 @@ import com.example.fashionrentalservice.model.request.OrderBuyDetailRequestEntit
 import com.example.fashionrentalservice.model.request.OrderBuyRequestEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyDetailResponseEntity;
 import com.example.fashionrentalservice.model.response.OrderBuyResponseEntity;
+import com.example.fashionrentalservice.model.response.OrderRentResponseEntity;
 import com.example.fashionrentalservice.repositories.CustomerRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyDetailRepository;
 import com.example.fashionrentalservice.repositories.OrderBuyRepository;
@@ -294,6 +295,19 @@ public class OrderBuyService {
 	//================================== Lay tat ca COMPLETED OrderBUY by ProductOwnerID=====================================
 	public List<OrderBuyResponseEntity> getAllCompletedOrderByProductOwnerID(int productownerID) {
 		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllCompletedOrderBuyByProductOwnerID(productownerID));
+	}
+	
+//	public List<OrderBuyResponseEntity> getAllByOrderBuyID(int orderbuyID) throws CrudException {
+//		OrderBuyDTO check = buyRepo.findById(orderbuyID).orElse(null);
+//		if(check == null)
+//			throw new PendingMoneyNegative("Rent ID not found");
+//		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllByOrderbuyID(orderbuyID));
+//	}
+	public List<OrderBuyResponseEntity> getAllByOrderBuyID(int orderbuyID) throws CrudException {
+		OrderBuyDTO check = buyRepo.findById(orderbuyID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Rent ID not found");
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllByOrderbuyID(orderbuyID));
 	}
 	
 	//================================== Lay tat ca CONFIRMING OrderBUY by ProductOwnerID==============================================

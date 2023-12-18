@@ -636,7 +636,12 @@ public class OrderRentService {
 	}
 	
 	
-	
+	public List<OrderRentResponseEntity> getAllByOrderRentID(int orderRentID) throws CrudException {
+		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
+		if(check == null)
+			throw new PendingMoneyNegative("Rent ID not found");
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllOrderRentByOrderID(orderRentID));
+	}
 	
 	
 	

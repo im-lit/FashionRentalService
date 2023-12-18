@@ -100,6 +100,9 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	@Query("select dto from OrderRentDTO dto where dto.customerDTO.customerID = ?1 AND dto.status = 'PENDING' ORDER BY dto.orderRentID DESC")
 	List<OrderRentDTO> findAllPendingOrderRentByCustomerID(int customerID);
 	
+	@Query("select dto from OrderRentDTO dto where dto.orderRentID = ?1")
+	List<OrderRentDTO> findAllOrderRentByOrderID(int orderRentID);
+	
 	
 	
 }

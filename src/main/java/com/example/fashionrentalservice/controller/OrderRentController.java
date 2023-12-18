@@ -192,4 +192,8 @@ public class OrderRentController {
 		return ResponseEntity.ok().body(rentService.getAllCanceledOrderRentByCustomerID(customerID));
 	}
 	
+	@GetMapping("/{orderRentID}")
+	private ResponseEntity getAllByOrderRentID(@PathVariable int orderRentID ) throws CrudException {
+		return ResponseEntity.ok().body(rentService.getAllByOrderRentID(orderRentID));
+	}
 }
