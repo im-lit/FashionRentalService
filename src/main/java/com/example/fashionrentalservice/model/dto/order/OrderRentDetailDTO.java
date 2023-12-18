@@ -46,7 +46,7 @@ public class OrderRentDetailDTO {
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private ProductDTO productDTO;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "orderrent_id")
 	@JsonIgnoreProperties(value = { "applications", "hibernateLazyInitializer" })
 	private OrderRentDTO orderRentDTO;

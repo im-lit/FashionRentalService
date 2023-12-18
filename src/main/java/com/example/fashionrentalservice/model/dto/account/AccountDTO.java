@@ -84,7 +84,7 @@ public class AccountDTO {
 	private Set<Notification> notifications;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
 	private Set<FCM> fcms;
 	
 	public enum AccountStatus {
