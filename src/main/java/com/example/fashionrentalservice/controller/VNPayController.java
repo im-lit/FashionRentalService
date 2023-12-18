@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +53,9 @@ public class VNPayController {
 	
 	@Autowired
 	private NotificationService notiService;
+
+	@Autowired
+	SimpMessagingTemplate messagingTemplate;
 	
 
 	@PostMapping("/submitOrder")
@@ -108,7 +112,7 @@ public class VNPayController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("paymentTime", formattedPaymentTime);
         model.addAttribute("transactionId", transactionId);
-
+		messagingTemplate.convertAndSend("/topic/notification/" + accountIDLocal, "payment success");
         String viewName = paymentStatus == 1 ? "ordersuccess.html" : "orderfail.html";
 
         return new ModelAndView(viewName);
