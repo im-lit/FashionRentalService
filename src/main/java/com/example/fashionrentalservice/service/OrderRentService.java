@@ -236,7 +236,7 @@ public class OrderRentService {
 
 	// ================================== Lay tat ca Order// ========================================
 	public List<OrderRentResponseEntity> getAllOrder() {
-		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAll());
+		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllExceptCancel());
 	}
 	
 	public List<OrderRentResponseEntity> getAllCanceledOrderRent() {

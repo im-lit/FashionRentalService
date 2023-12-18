@@ -323,7 +323,7 @@ public class OrderBuyService {
 	
 	//================================== Lay tat ca OrderBuy ==========================================================================
 	public List<OrderBuyResponseEntity> getAllOrder() {
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAll());
+		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllExceptCancel());
 	}
 	
 	//================================== Lay tat ca OrderBuy ==========================================================================

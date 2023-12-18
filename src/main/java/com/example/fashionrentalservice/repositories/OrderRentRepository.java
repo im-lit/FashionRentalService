@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 
 public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer>{
@@ -102,6 +103,9 @@ public interface OrderRentRepository extends JpaRepository<OrderRentDTO, Integer
 	
 	@Query("select dto from OrderRentDTO dto where dto.orderRentID = ?1")
 	OrderRentDTO findAllOrderRentByOrderID(int orderRentID);
+	
+	@Query("SELECT dto FROM OrderRentDTO dto WHERE dto.status <> 'CANCELED' ORDER BY dto.orderRentID DESC")
+	List<OrderRentDTO> findAllExceptCancel();
 	
 	
 	

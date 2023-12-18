@@ -82,6 +82,10 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	@Query("select dto from OrderBuyDTO dto where dto.orderBuyID = ?1")
 	OrderBuyDTO findAllByOrderbuyID(int orderBuyID);
 	
+	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.status <> 'CANCELED' ORDER BY dto.orderBuyID DESC")
+	List<OrderBuyDTO> findAllExceptCancel();
+	
+	
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")
 	List<OrderBuyDTO> getTotal1MonthByProductOwnerID(@Param("productownerID") int productownerID, @Param("startDate") LocalDateTime startDate);
