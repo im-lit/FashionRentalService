@@ -3,11 +3,15 @@ package com.example.fashionrentalservice.service;
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.chat.MessageDTO;
 import com.example.fashionrentalservice.model.dto.chat.RoomDTO;
+import com.example.fashionrentalservice.model.dto.notification.FCM;
+import com.example.fashionrentalservice.model.request.FcmNotification;
 import com.example.fashionrentalservice.model.request.MessageRequest;
 import com.example.fashionrentalservice.model.request.RoomRequest;
 import com.example.fashionrentalservice.repositories.AccountRepository;
 import com.example.fashionrentalservice.repositories.MessageRepository;
 import com.example.fashionrentalservice.repositories.RoomRepository;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,9 @@ public class ChatService {
 
     @Autowired
     SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    FcmService fcmService;
 
     public RoomDTO createNewRoom(RoomRequest roomRequest) {
         Set<AccountDTO> accounts = new HashSet<>();
@@ -76,6 +83,17 @@ public class ChatService {
         for (AccountDTO account : roomDTO.getAccounts()) {
             if (account.getAccountID() != messageRequest.getAccountID()) {
                 messagingTemplate.convertAndSend("/topic/chat/" + account.getAccountID(), "New message");
+                for (FCM fcm: account.getFcms()){
+                    FcmNotification fcmNotification = new FcmNotification();
+                    fcmNotification.setBody(messageRequest.getMessage());
+                    fcmNotification.setTitle(accountDTO.getEmail());
+                    fcmNotification.setToken(fcm.getToken());
+                    try{
+                        fcmService.sendPushNotification(fcmNotification);
+                    }catch (FirebaseMessagingException | FirebaseAuthException e){
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         return messageRepository.save(messageDTO);
