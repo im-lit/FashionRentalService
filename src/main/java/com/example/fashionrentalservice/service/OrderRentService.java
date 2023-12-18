@@ -274,6 +274,13 @@ public class OrderRentService {
 		if (checkWalletCus == null) 
 			throw new WalletCusNotFound();
 		
+		
+		
+		//Confirm status
+		if(status== OrderRentStatus.CONFIRMING) {
+			notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đang chờ bạn xác nhận");
+		}
+		
 // Thành công thì ghi Log , PO Nhận tiền hóa đơn hoàn tất  và trả tiền cọc, CusTomer nhận lại tiền cọc. (Tinh Phi Overdue neu remaining day < 0) 
 		if (status == OrderRentStatus.COMPLETED) {
 			double overdueFees = 0;
@@ -636,11 +643,11 @@ public class OrderRentService {
 	}
 	
 	
-	public List<OrderRentResponseEntity> getAllByOrderRentID(int orderRentID) throws CrudException {
+	public OrderRentResponseEntity getAllByOrderRentID(int orderRentID) throws CrudException {
 		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("Rent ID not found");
-		return OrderRentResponseEntity.fromListOrderRentDTO(rentRepo.findAllOrderRentByOrderID(orderRentID));
+		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.findAllOrderRentByOrderID(orderRentID));
 	}
 	
 	

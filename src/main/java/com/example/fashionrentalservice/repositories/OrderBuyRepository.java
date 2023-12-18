@@ -80,7 +80,7 @@ public interface OrderBuyRepository extends JpaRepository<OrderBuyDTO, Integer>{
 	List<OrderBuyDTO> findAllCanceledOrderBuy();
 	
 	@Query("select dto from OrderBuyDTO dto where dto.orderBuyID = ?1")
-	List<OrderBuyDTO> findAllByOrderbuyID(int orderBuyID);
+	OrderBuyDTO findAllByOrderbuyID(int orderBuyID);
 	
 	
 	@Query("SELECT dto FROM OrderBuyDTO dto WHERE dto.productownerDTO.productownerID = :productownerID AND dto.dateOrder >= :startDate")

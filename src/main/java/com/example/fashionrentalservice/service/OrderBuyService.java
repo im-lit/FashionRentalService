@@ -30,6 +30,7 @@ import com.example.fashionrentalservice.model.dto.account.TransactionHistoryDTO;
 import com.example.fashionrentalservice.model.dto.account.WalletDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDTO.OrderBuyStatus;
+import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentStatus;
 import com.example.fashionrentalservice.model.dto.order.OrderBuyDetailDTO;
 import com.example.fashionrentalservice.model.dto.order.OrderRentDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
@@ -303,11 +304,11 @@ public class OrderBuyService {
 //			throw new PendingMoneyNegative("Rent ID not found");
 //		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllByOrderbuyID(orderbuyID));
 //	}
-	public List<OrderBuyResponseEntity> getAllByOrderBuyID(int orderbuyID) throws CrudException {
+	public OrderBuyResponseEntity getAllByOrderBuyID(int orderbuyID) throws CrudException {
 		OrderBuyDTO check = buyRepo.findById(orderbuyID).orElse(null);
 		if(check == null)
 			throw new PendingMoneyNegative("Rent ID not found");
-		return OrderBuyResponseEntity.fromListOrderBuyDTO(buyRepo.findAllByOrderbuyID(orderbuyID));
+		return OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.findAllByOrderbuyID(orderbuyID));
 	}
 	
 	//================================== Lay tat ca CONFIRMING OrderBUY by ProductOwnerID==============================================
@@ -361,6 +362,12 @@ public class OrderBuyService {
 			throw new WalletPoNotFound();
 		if(checkWalletCus == null) 
 			throw new WalletCusNotFound();
+		
+		
+		//Confirm status
+				if(status== OrderBuyStatus.CONFIRMING) {
+					notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Mua", "Đơn hàng mã : " + check.getOrderBuyID() +" đang chờ bạn xác nhận");
+				}
 		
 		if(status == OrderBuyStatus.COMPLETED) { 
 			walletService.updatePendingMoneyToBalanceReturnDTO(checkWalletPO.getWalletID(), check.getTotalBuyPriceProduct());
