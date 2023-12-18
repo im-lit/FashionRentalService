@@ -161,7 +161,7 @@ public class OrderBuyController {
 	}
 	
 	@GetMapping("/{orderBuyID}")
-	private ResponseEntity getAllOrderByOrderBuyID(@PathVariable int orderBuyID ) throws CrudException {
+	private ResponseEntity getOrderBuyByOrderBuyID(@PathVariable int orderBuyID ) throws CrudException {
 		return ResponseEntity.ok().body(buyService.getAllByOrderBuyID(orderBuyID));
 	}
 }
