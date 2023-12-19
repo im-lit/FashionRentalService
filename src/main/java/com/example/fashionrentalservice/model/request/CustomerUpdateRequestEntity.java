@@ -14,8 +14,6 @@ public class CustomerUpdateRequestEntity {
 
 	private String fullName;
 	
-	private String phone;
-	
 	private boolean sex;
 	
 	private String avatarUrl;

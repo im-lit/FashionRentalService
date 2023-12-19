@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class POUpdateRequestEntity {
 	private String fullName;
 	
-	private String phone;
-	
 	private String avatarUrl;
 	
 	private String address;

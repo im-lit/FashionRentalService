@@ -92,20 +92,11 @@ public class CustomerService {
   //================================== Update Customer========================================
     public CustomerResponseEntity updateCustomer(int customerID,CustomerUpdateRequestEntity entity) throws CrudException {
     	CustomerDTO dto = cusRepo.findById(customerID).orElse(null);
-		List<CustomerDTO> list = cusRepo.findAll();
-		
 		if(dto==null) {
 			throw new PendingMoneyNegative("Cannot find Customer ID!");
-		}
-		
-		for (CustomerDTO x : list) {
-			if (x.getPhone().equalsIgnoreCase(entity.getPhone()))
-				throw new PendingMoneyNegative("This phone number is used by someone else");	
-		}
-		
+		}	
         dto.setAvatarUrl(entity.getAvatarUrl());
         dto.setFullName(entity.getFullName());
-        dto.setPhone(entity.getPhone());
         dto.setSex(entity.isSex());
         ;
         return CustomerResponseEntity.fromCustomerDTO(cusRepo.save(dto));

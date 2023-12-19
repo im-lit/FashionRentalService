@@ -90,17 +90,9 @@ public class ProductOwnerService {
     //================================== Update PO bởi ID========================================
     public POResponseEntity updateProductOwner(int productownerID,POUpdateRequestEntity entity) throws CrudException {
     	ProductOwnerDTO dto = poRepo.findById(productownerID).orElse(null);
-    	List<ProductOwnerDTO> list = poRepo.findAll();
-
     	if(dto==null) 
 			throw new PendingMoneyNegative("Cannot find PO ID!");
-		
-    	for (ProductOwnerDTO x : list) {
-    		if(x.getPhone().equalsIgnoreCase(entity.getPhone()))
-				throw new PendingMoneyNegative("This phone number is used by someone else");
-    	}
     	dto.setAvatarUrl(entity.getAvatarUrl());
-    	dto.setPhone(entity.getPhone());
     	dto.setFullName(entity.getFullName());
     	dto.setAddress(entity.getAddress());
     	
