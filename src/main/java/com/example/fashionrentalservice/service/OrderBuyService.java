@@ -479,6 +479,16 @@ public class OrderBuyService {
 	}
 	
 	
+	//Update OrderRent When Cus rejecting
+	public OrderBuyResponseEntity updateOrderBuyCusRejecting(int orderBuyID,String reason) throws CrudException {
+		OrderBuyDTO check =  buyRepo.findById(orderBuyID).orElse(null);
+		if(check == null) {
+			throw new PendingMoneyNegative("Cannot Find orderBuyID");
+	}
+		check.setDescription(reason);
+		return OrderBuyResponseEntity.fromOrderBuyDTO(buyRepo.save(check));
+	}
+	
 }
 	
 	

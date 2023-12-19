@@ -132,6 +132,7 @@ public class OrderRentService {
 									.status(OrderRentStatus.PENDING).customerAddress(x.getCustomerAddress()).customerDTO(cus)
 									.voucherDTO(voucher)
 									.isFeedBack(false)
+									.description(null)
 									.productownerDTO(po).build();
 			
 			for (OrderRentDetailRequestEntity detail : x.getOrderRentDetail()) {				
@@ -346,10 +347,26 @@ public class OrderRentService {
 				x.setRemainingDate(remainingDate);
 				listSave.add(x);
 			}
+			
 			check.setReturningDate(check.getReturningDate()+4);
 			rentDetailRepo.saveAll(listSave);
 //			rentRepo.save(check);		
 		}
+		if(status == OrderRentStatus.REJECTING) {
+			List<OrderRentDetailDTO> listOrderRentDetail = renDetailService.getAllOrderDetailByOrderRentIDReturnDTO(orderRentID);
+			List<OrderRentDetailDTO> listSave = new ArrayList<>();
+			for (OrderRentDetailDTO x : listOrderRentDetail) {
+				long remainingDate = renDetailService.getRemainingDay(x.getEndDate());
+				x.setRemainingDate(remainingDate);
+				listSave.add(x);
+			}
+			check.setReturningDate(check.getReturningDate()+4);
+			rentDetailRepo.saveAll(listSave);
+		}
+		
+		
+		
+		
 		if(status == OrderRentStatus.CANCELED) {
 			walletService.updateMoneyWhenOrderRentCanceled(checkWalletCus, checkWalletPO, check.getTotalRentPriceProduct(), check.getCocMoneyTotal(), check.getShippingFee());
 			
@@ -447,7 +464,15 @@ public class OrderRentService {
 		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
 
 		}
-	
+	//Update OrderRent When Cus rejecting
+	public OrderRentResponseEntity updateCusRejecting(int orderRentID,String reason) throws CrudException {
+		OrderRentDTO check =  rentRepo.findById(orderRentID).orElse(null);
+		if(check == null) {
+			throw new PendingMoneyNegative("Cannot Find orderentID");
+	}
+		check.setDescription(reason);
+		return OrderRentResponseEntity.fromOrderRentDTO(rentRepo.save(check));
+	}	
 	public OrderRentResponseEntity updateOrderCode(int orderRentID, String orderCode) throws CrudException {
 		OrderRentDTO check = rentRepo.findById(orderRentID).orElse(null);
 

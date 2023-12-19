@@ -52,6 +52,7 @@ public class OrderBuyDTO {
 	
 	private LocalDateTime dateOrder;
 	
+	private String description;
 	
 	@Nullable
 	private String orderCode;

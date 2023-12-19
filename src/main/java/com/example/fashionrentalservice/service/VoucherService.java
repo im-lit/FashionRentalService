@@ -190,9 +190,14 @@ public class VoucherService {
         	return VoucherResponseEntity.fromVoucherDTO(voucherRepo.save(dto));
     }
     
-    
-    
-   
+    public VoucherResponseEntity deleteVoucherByID(int voucherID) throws CrudException{
+    	VoucherDTO dto = voucherRepo.findById(voucherID).orElse(null);
+    	if(dto==null) {
+    		throw new PendingMoneyNegative("Can not find voucher by ID");
+    	}
+    	voucherRepo.deleteById(voucherID);    
+    return VoucherResponseEntity.fromVoucherDTO(dto);
+}
 }
 
 

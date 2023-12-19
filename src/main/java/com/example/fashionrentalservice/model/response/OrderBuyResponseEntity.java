@@ -41,6 +41,7 @@ public class OrderBuyResponseEntity {
 	private String orderCode;
 	
 	private String productOwnerName;
+	private String reason;
 	
 	private VoucherDTO voucherDTO;
 	private int customerReceiveDays;
@@ -61,6 +62,7 @@ public class OrderBuyResponseEntity {
 	                    .voucherDTO(dto.getVoucherDTO())
 	                    .productownerID(dto.getProductownerDTO().getProductownerID())
 	                    .productOwnerName(dto.getProductownerDTO().getFullName())
+	                    .reason(dto.getDescription())
 	                    .build())
 	            .collect(Collectors.toList());
 	}
@@ -80,6 +82,7 @@ public class OrderBuyResponseEntity {
                 .voucherDTO(dto.getVoucherDTO())
                 .productownerID(dto.getProductownerDTO().getProductownerID())
                 .productOwnerName(dto.getProductownerDTO().getFullName())
+                .reason(dto.getDescription())
 				.build();
 	}
 }

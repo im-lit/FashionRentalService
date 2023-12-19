@@ -113,6 +113,7 @@ public class OrderRentDetailService {
 		return list;
 	}
 	
+	
 	public long getRemainingDay(LocalDate endDate) {
 		long daysRemaining = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
 		return daysRemaining;

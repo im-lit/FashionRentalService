@@ -53,6 +53,8 @@ public class OrderRentDTO {
 	
 	private LocalDateTime dateOrder;
 	
+	private String description;
+	
 	@Nullable
 	private String orderCode;
 	

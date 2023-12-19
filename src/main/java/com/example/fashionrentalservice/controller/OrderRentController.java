@@ -49,6 +49,11 @@ public class OrderRentController {
 		return ResponseEntity.ok().body(rentService.createOrderRent(entity));
 	}
 	
+	@PutMapping("/cus/rejecting")
+	private ResponseEntity updateStatusOrderRejectingForCus(@RequestParam int orderRentID, @RequestParam String reason) throws CrudException{
+		return ResponseEntity.ok().body(rentService.updateCusRejecting(orderRentID, reason));
+	}
+	
 	@PutMapping
 	private ResponseEntity updateStatusOrder(@RequestParam int orderRentID, @RequestParam OrderRentStatus status) throws CrudException{
 		return ResponseEntity.ok().body(rentService.updateOrderRentByOrderRentID(orderRentID, status));
