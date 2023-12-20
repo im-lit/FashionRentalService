@@ -101,7 +101,6 @@ public class OrderRentService {
 	public List<OrderRentResponseEntity> createOrderRent(List<OrderRentRequestEntity> entity) throws CrudException {
 		List<OrderRentDTO> listRent = new ArrayList<>();
 		List<OrderRentDetailDTO> listOrderRentDetail = new ArrayList<>();
-		List<ProductDTO> listProduct = new ArrayList<>();
 		List<WalletDTO> listWallet = new ArrayList<>();
 		List<TransactionHistoryDTO> listTrans = new ArrayList<>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -158,7 +157,6 @@ public class OrderRentService {
 												.orderRentDTO(orderRent)
 												.rentPrice(detail.getRentPrice()).build();
 				listOrderRentDetail.add(detailRent);
-				listProduct.add(detailRent.getProductDTO());
 			}
 			listRent.add(orderRent);
 		}
@@ -205,7 +203,6 @@ public class OrderRentService {
 		}
         rentRepo.saveAll(listRent);
         rentDetailRepo.saveAll(listOrderRentDetail);
-		productService.updateListProductStatusExceptRentingStatus(listProduct);  
         walletRepo.saveAll(listWallet);
         transRepo.saveAll(listTrans);
         
@@ -276,6 +273,15 @@ public class OrderRentService {
 			throw new WalletCusNotFound();
 		
 		
+		if(status== OrderRentStatus.PREPARE) {
+			List<ProductDTO> listProduct = new ArrayList<>();
+			List<OrderRentDetailDTO> listRentt = rentDetailRepo.findAllOrderDetailByOrderRentID(orderRentID);
+			for (OrderRentDetailDTO x : listRentt) {
+				listProduct.add(x.getProductDTO());
+			}
+			productService.updateListProductStatusExceptRentingStatus(listProduct);
+			notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đã được chủ sản phẩm: " + check.getProductownerDTO().getFullName() + " chấp nhận.");
+		}
 		
 		//Confirm status
 		if(status== OrderRentStatus.CONFIRMING) {
