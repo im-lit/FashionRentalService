@@ -10,6 +10,7 @@ import java.util.Set;
 public interface RoomRepository extends JpaRepository<RoomDTO, Integer> {
 
     List<RoomDTO> findRoomsByAccountsIsContaining(AccountDTO accountDTO);
+    RoomDTO findRoomByAccountsIsContainingAndAccountsIsContaining(AccountDTO accountDTO1, AccountDTO accountDTO2);
 
     RoomDTO findRoomByRoomID(int roomID);
 }

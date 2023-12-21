@@ -2,6 +2,7 @@ package com.example.fashionrentalservice.controller;
 
 import com.example.fashionrentalservice.model.dto.account.AccountDTO;
 import com.example.fashionrentalservice.model.dto.chat.RoomDTO;
+import com.example.fashionrentalservice.model.request.GetRoomRequest;
 import com.example.fashionrentalservice.model.request.MessageRequest;
 import com.example.fashionrentalservice.model.request.RoomRequest;
 import com.example.fashionrentalservice.service.ChatService;
@@ -29,24 +30,28 @@ public class ChatController {
     }
 
     @GetMapping("{accountID}")
-    public ResponseEntity getChatByAccountID(@PathVariable int accountID){
+    public ResponseEntity getChatByAccountID(@PathVariable int accountID) {
         List<RoomDTO> rooms = chatService.getRoomsByAccountID(accountID);
         return ResponseEntity.ok(rooms);
     }
 
     @GetMapping("/detail/{roomID}")
-    public ResponseEntity getChatDetail(@PathVariable int roomID){
+    public ResponseEntity getChatDetail(@PathVariable int roomID) {
         return ResponseEntity.ok(chatService.getRoomDetail(roomID));
     }
 
     @PostMapping("/send/{roomID}")
-    public ResponseEntity sendMessage(@PathVariable int roomID, @RequestBody MessageRequest messageRequest){
+    public ResponseEntity sendMessage(@PathVariable int roomID, @RequestBody MessageRequest messageRequest) {
         return ResponseEntity.ok(chatService.sendMessage(messageRequest));
     }
 
     @PostMapping("/typing/{roomID}/{name}")
-    public void typingMessage(@PathVariable int roomID, @PathVariable String name){
+    public void typingMessage(@PathVariable int roomID, @PathVariable String name) {
         chatService.setTyping(roomID, name);
     }
 
+    @PostMapping("/room")
+    public ResponseEntity<RoomDTO> getRoom(@RequestBody GetRoomRequest getRoomRequest) {
+        return ResponseEntity.ok(chatService.getRoom(getRoomRequest));
+    }
 }
