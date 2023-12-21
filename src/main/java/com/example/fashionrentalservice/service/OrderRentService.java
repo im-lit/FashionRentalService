@@ -340,7 +340,7 @@ public class OrderRentService {
 			transRepo.saveAll(listTrans);
 			productRepo.saveAll(listProduct);
 			
-			notiService.pushNotification(check.getProductownerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đã thành công");
+			notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đã hoàn thành.");
 			
 		}
 		
