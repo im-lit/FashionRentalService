@@ -5,6 +5,7 @@ import com.example.fashionrentalservice.model.dto.chat.MessageDTO;
 import com.example.fashionrentalservice.model.dto.chat.RoomDTO;
 import com.example.fashionrentalservice.model.dto.notification.FCM;
 import com.example.fashionrentalservice.model.request.FcmNotification;
+import com.example.fashionrentalservice.model.request.GetRoomRequest;
 import com.example.fashionrentalservice.model.request.MessageRequest;
 import com.example.fashionrentalservice.model.request.RoomRequest;
 import com.example.fashionrentalservice.repositories.AccountRepository;
@@ -66,7 +67,8 @@ public class ChatService {
 
     public RoomDTO getRoomDetail(int roomID) {
         RoomDTO roomDTO = roomRepository.findRoomByRoomID(roomID);
-        if(roomDTO != null) roomDTO.setMessages(roomDTO.getMessages().stream().sorted(Comparator.comparing(MessageDTO::getCreateAt)).collect(Collectors.toList()));
+        if (roomDTO != null)
+            roomDTO.setMessages(roomDTO.getMessages().stream().sorted(Comparator.comparing(MessageDTO::getCreateAt)).collect(Collectors.toList()));
         return roomDTO;
     }
 
@@ -83,14 +85,14 @@ public class ChatService {
         for (AccountDTO account : roomDTO.getAccounts()) {
             if (account.getAccountID() != messageRequest.getAccountID()) {
                 messagingTemplate.convertAndSend("/topic/chat/" + account.getAccountID(), "New message");
-                for (FCM fcm: account.getFcms()){
+                for (FCM fcm : account.getFcms()) {
                     FcmNotification fcmNotification = new FcmNotification();
                     fcmNotification.setBody(messageRequest.getMessage());
                     fcmNotification.setTitle(accountDTO.getEmail());
                     fcmNotification.setToken(fcm.getToken());
-                    try{
+                    try {
                         fcmService.sendPushNotification(fcmNotification);
-                    }catch (FirebaseMessagingException | FirebaseAuthException e){
+                    } catch (FirebaseMessagingException | FirebaseAuthException e) {
                         e.printStackTrace();
                     }
                 }
@@ -104,5 +106,40 @@ public class ChatService {
         for (AccountDTO account : roomDTO.getAccounts()) {
             messagingTemplate.convertAndSend("/topic/chat/" + account.getAccountID(), "Typing: " + name);
         }
+    }
+
+    public RoomDTO getRoom(GetRoomRequest getRoomRequest) {
+        AccountDTO accountDTO1 = accountRepository.findAccountDtoByAccountID(getRoomRequest.getAccountID1());
+        AccountDTO accountDTO2 = accountRepository.findAccountDtoByAccountID(getRoomRequest.getAccountID2());
+
+        Set<AccountDTO> accountDTOS = new HashSet<>();
+        accountDTOS.add(accountDTO1);
+        accountDTOS.add(accountDTO2);
+
+        RoomDTO roomDTO = roomRepository.findRoomByAccountsIsContainingAndAccountsIsContaining(accountDTO1, accountDTO2);
+        if (roomDTO == null) {
+            roomDTO = new RoomDTO();
+            roomDTO.setAccounts(accountDTOS);
+            roomDTO.setName("[" + getFullName(accountDTO1) + " and "+ getFullName(accountDTO2) + "]");
+            roomDTO = roomRepository.save(roomDTO);
+        }
+
+        return roomDTO;
+    }
+
+    public String getFullName(AccountDTO accountDTO) {
+        if (accountDTO.getRoleDTO().getRoleName().equals("Customer")) {
+            return accountDTO.getCustomerDTO().getFullName();
+        }
+        if (accountDTO.getRoleDTO().getRoleName().equals("ProductOwner")) {
+            return accountDTO.getProductOwnerDTO().getFullName();
+        }
+        if (accountDTO.getRoleDTO().getRoleName().equals("Staff")) {
+            return accountDTO.getStaffDTO().getFullName();
+        }
+        if (accountDTO.getRoleDTO().getRoleName().equals("Admin")) {
+            return "Admin";
+        }
+        return "";
     }
 }
