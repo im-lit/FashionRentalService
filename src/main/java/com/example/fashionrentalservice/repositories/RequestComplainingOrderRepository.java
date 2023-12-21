@@ -11,5 +11,8 @@ public interface RequestComplainingOrderRepository extends JpaRepository<Request
 	@Query("select dto from RequestComplainingOrderDTO dto where dto.status = 'APPROVING' ORDER BY dto.requestComplainingOrderID DESC")
 	List<RequestComplainingOrderDTO> findApprovingRequest();
 	
+	@Query("select dto from RequestComplainingOrderDTO dto where dto.orderRentDTO.orderRentID =?1 AND dto.status = 'NOT_APPROVED' ORDER BY dto.requestComplainingOrderID DESC")
+	List<RequestComplainingOrderDTO> findRequestComplainingNotByOrderRentID(int orderRentID);
+	
 
 }

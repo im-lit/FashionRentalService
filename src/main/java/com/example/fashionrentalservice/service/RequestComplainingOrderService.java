@@ -163,6 +163,9 @@ public class RequestComplainingOrderService {
     	}
     	
     	if(status == ComplainingOrderStatus.NOT_APPROVED) {
+    		OrderRentDTO rentDTO = dto.getOrderRentDTO();
+    		rentDTO.setStatus(OrderRentStatus.PROGRESSING_FAILED);
+    		rentRepo.save(rentDTO);
     		staffRequestedService.createComplaining(requestID, staffID);
     		dto.setStaffResponse(staffResponse);
     	}
@@ -177,6 +180,13 @@ public class RequestComplainingOrderService {
 //================================== Lay tat ca Request========================================
 	public List<RequestComplainingOrderResponseEntity> getApprovingRequest() {
 		return requestComRepo.findApprovingRequest().stream().map(RequestComplainingOrderResponseEntity::fromRequestComplainingOrderDTO).collect(Collectors.toList());
+
+	}
+	
+	//------------------------------------------------------------------
+	public List<RequestComplainingOrderResponseEntity> getRequestComplainingNotByOrderRentID(int orderRentID) {
+		return requestComRepo.findRequestComplainingNotByOrderRentID(orderRentID).stream().map(RequestComplainingOrderResponseEntity::fromRequestComplainingOrderDTO).collect(Collectors.toList());
+
 
 	}
 //================================== Lay Request bởi ID========================================	

@@ -48,6 +48,11 @@ public class RequestComplainingOrderController {
 		return ResponseEntity.ok().body(requestComService.getApprovingRequest());
 	}
 	
+	@GetMapping("/{orderRentID}/notapproved")
+	private ResponseEntity getRequestComplainingNotByOrderRentID(@PathVariable int orderRentID) {
+		return ResponseEntity.ok().body(requestComService.getRequestComplainingNotByOrderRentID(orderRentID));
+	}
+	
 	//================================== Lấy 1 account ========================================	
 	@GetMapping("/{requestID}")
 	private ResponseEntity getRequestByID(@PathVariable int requestID) throws CrudException{
