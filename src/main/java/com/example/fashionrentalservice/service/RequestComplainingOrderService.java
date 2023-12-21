@@ -22,6 +22,7 @@ import com.example.fashionrentalservice.model.dto.order.OrderRentDTO.OrderRentSt
 import com.example.fashionrentalservice.model.dto.order.OrderRentDetailDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO;
 import com.example.fashionrentalservice.model.dto.product.RequestComplainingOrderDTO;
+import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
 import com.example.fashionrentalservice.model.dto.product.ProductDTO.ProductStatus;
 import com.example.fashionrentalservice.model.dto.product.RequestComplainingOrderDTO.ComplainingOrderStatus;
 import com.example.fashionrentalservice.model.request.RequestComplainingOrderRequestEntity;
@@ -30,6 +31,7 @@ import com.example.fashionrentalservice.repositories.OrderRentRepository;
 import com.example.fashionrentalservice.repositories.ProductOwnerRepository;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.RequestComplainingOrderRepository;
+import com.example.fashionrentalservice.repositories.StaffRequestedRepository;
 import com.example.fashionrentalservice.repositories.TransactionHistoryRepository;
 
 @Service
@@ -43,6 +45,9 @@ public class RequestComplainingOrderService {
 	
 	@Autowired
 	private ProductOwnerRepository poRepo;
+	
+	@Autowired
+	private StaffRequestedRepository staffRequestedRepo;
 	
 	@Autowired
 	private StaffRequestedService staffRequestedService;
@@ -100,7 +105,10 @@ public class RequestComplainingOrderService {
     	RequestComplainingOrderDTO dto = requestComRepo.findById(requestID).orElse(null);
     	if(dto == null)
     		throw new PendingMoneyNegative("Request Complaining Not Found!");
-    	
+    	StaffRequestedDTO checkAprrovedOrNah = staffRequestedRepo.findRequestAddProduct(requestID);
+    	if(checkAprrovedOrNah != null) {
+    		throw new PendingMoneyNegative("Đơn yêu cầu hỗ trợ này đã duyệt rồi!");
+    	}
     	
     	if(status == ComplainingOrderStatus.APPROVED) {
         	OrderRentDTO rentOrder = dto.getOrderRentDTO();

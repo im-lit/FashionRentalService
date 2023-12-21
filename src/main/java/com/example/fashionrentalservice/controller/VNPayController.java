@@ -76,7 +76,9 @@ public class VNPayController {
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
-       
+        double totalPriceInCents = Double.parseDouble(totalPrice);
+        double totalPriceInDollars = totalPriceInCents / 100;
+        String totalRentPriceFormarted = decimalFormat.format(totalPriceInDollars);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime dateTime = LocalDateTime.parse(paymentTime, formatter);
         
@@ -107,9 +109,9 @@ public class VNPayController {
         	transService.createTransactionHistory(entity);      	
         }
         
-
+        
         model.addAttribute("orderId", orderInfo);
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalPrice", totalRentPriceFormarted);
         model.addAttribute("paymentTime", formattedPaymentTime);
         model.addAttribute("transactionId", transactionId);
 		messagingTemplate.convertAndSend("/topic/notification/" + accountIDLocal, "payment success");

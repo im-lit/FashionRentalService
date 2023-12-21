@@ -13,5 +13,11 @@ public interface StaffRequestedRepository extends JpaRepository<StaffRequestedDT
 	
 	@Query("select dto from StaffRequestedDTO dto where dto.staffDTO.staffID = ?1 AND dto.requestAddingProductDTO.status = 'NOT_APPROVED'ORDER BY dto.staffRequestedID DESC")
 	List<StaffRequestedDTO> findAllNotApprovedRequestedByStaffID(int staffID);
+	
+	@Query("select dto from StaffRequestedDTO dto where dto.requestAddingProductDTO.requestAddingProductID = ?1 ")
+	StaffRequestedDTO findRequestAddProduct(int requestAddID);
+	
+	@Query("select dto from StaffRequestedDTO dto where dto.requestComplainingOrderDTO.requestComplainingOrderID = ?1 ")
+	StaffRequestedDTO findRequestComplaining(int requestComplainID);
 
 }

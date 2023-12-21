@@ -8,19 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.AccNotFoundByID;
+import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
 import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO.AddProductStatus;
+import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
 import com.example.fashionrentalservice.model.request.AddingProductRequestEntity;
 import com.example.fashionrentalservice.model.response.AddingProductResponseEntity;
 import com.example.fashionrentalservice.repositories.ProductRepository;
 import com.example.fashionrentalservice.repositories.RequestAddingProductRepository;
+import com.example.fashionrentalservice.repositories.StaffRequestedRepository;
 
 @Service
 public class RequestAddingProductService {
 
 	@Autowired
 	private RequestAddingProductRepository requestAddRepo;
+	
+	@Autowired
+	private StaffRequestedRepository staffRequestedRepo;
 	
 	@Autowired
 	private ProductRepository productRepo;
@@ -42,6 +48,10 @@ public class RequestAddingProductService {
   //================================== Update Request Status Description ========================================   
     public AddingProductResponseEntity updateRequestStatusAndDes(int requestID,AddProductStatus status, String description) throws CrudException {
     	RequestAddingProductDTO dto = requestAddRepo.findById(requestID).orElseThrow();
+    	StaffRequestedDTO check = staffRequestedRepo.findRequestAddProduct(requestID);
+    	if(check != null) {
+    		throw new PendingMoneyNegative("Đơn này đã được duyệt !");
+    	}
     	dto.setDescription(description);
         dto.setStatus(status);
         notiService.pushNotification(dto.getProductDTO().getProductownerDTO().getAccountDTO().getAccountID(), "Duyệt sản phẩm", "Sản phẩm: " + dto.getProductDTO().getProductName() + " đã được duyệt.");

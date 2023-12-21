@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.fashionrentalservice.exception.PendingMoneyNegative;
 import com.example.fashionrentalservice.exception.handlers.CrudException;
+import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO;
+import com.example.fashionrentalservice.model.dto.product.RequestAddingProductDTO.AddProductStatus;
 import com.example.fashionrentalservice.model.dto.product.RequestComplainingOrderDTO;
+import com.example.fashionrentalservice.model.dto.product.RequestComplainingOrderDTO.ComplainingOrderStatus;
 import com.example.fashionrentalservice.model.dto.product.StaffRequestedDTO;
 import com.example.fashionrentalservice.model.response.StaffRequestedResponseEntity;
 import com.example.fashionrentalservice.repositories.RequestAddingProductRepository;
@@ -38,7 +41,11 @@ public class StaffRequestedService {
 		
 	}
 	//================================== Tao Request========================================
-    public StaffRequestedDTO create(int requestAddingProductID, int staffID) {
+    public StaffRequestedDTO create(int requestAddingProductID, int staffID) throws CrudException {
+    	RequestAddingProductDTO check = addRequestedRepo.findById(requestAddingProductID).orElse(null);
+    	if(check.getStatus() != AddProductStatus.APPROVING) {
+    		throw new PendingMoneyNegative("Đơn này đã được duyệt rồi!");
+    	}
     	StaffRequestedDTO dto = StaffRequestedDTO.builder()
     			.createdDate(LocalDate.now())
     			.requestAddingProductDTO(addRequestedRepo.findById(requestAddingProductID).orElseThrow())
@@ -52,6 +59,10 @@ public class StaffRequestedService {
     	RequestComplainingOrderDTO check = requestComRepo.findById(requestComplainingOrderID).orElse(null);
     	if(check == null)
     		throw new PendingMoneyNegative("Request Complaining Not Found!");
+    	if(check.getStatus() != ComplainingOrderStatus.APPROVING) {
+    		throw new PendingMoneyNegative("Đơn này đã được duyệt rồi!");
+    	}
+    	
     	StaffRequestedDTO dto = StaffRequestedDTO.builder()
     			.createdDate(LocalDate.now())
     			.requestComplainingOrderDTO(check)
