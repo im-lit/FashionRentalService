@@ -366,6 +366,7 @@ public class OrderBuyService {
 		
 		//Confirm status
 				if(status== OrderBuyStatus.CONFIRMING) {
+					walletService.update10ktoAdminWallet();
 					notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Mua", "Đơn hàng mã : " + check.getOrderBuyID() +" đang chờ bạn xác nhận");
 				}
 		

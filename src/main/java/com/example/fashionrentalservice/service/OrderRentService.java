@@ -143,10 +143,7 @@ public class OrderRentService {
 				} else if (product.getCheckType() == checkTypeSaleorRentorSaleRent.SALE) {
 					throw new ProductNotForSale();
 				} else if (product.getStatus() == ProductDTO.ProductStatus.RENTING) {
-					LocalDate newDate = LocalDate.parse(detail.getStartDate(), formatter);
-					OrderRentDetailDTO checkOrder = renDetailService.getOrderRentDetailByProductIDAndCheckDate(product.getProductID(), newDate);
-					if (checkOrder != null) 
-						throw new ProductIsRented(product.getProductName(), checkOrder.getEndDate());
+					throw new PendingMoneyNegative("Product Name: " + product.getProductName() + " has been rented by someone else! ");
 				}
 
 				OrderRentDetailDTO detailRent = OrderRentDetailDTO.builder()
@@ -172,6 +169,7 @@ public class OrderRentService {
         		throw new WalletInOrderServiceFailed();
         	listWallet.add(checkPo);
         	
+
         	String totalFormarted = decimalFormat.format(x.getTotal());
         	String cocMoneyFormarted = decimalFormat.format(x.getCocMoneyTotal());
         	String totalRentPriceFormarted = decimalFormat.format(x.getTotalRentPriceProduct());
@@ -285,6 +283,7 @@ public class OrderRentService {
 		
 		//Confirm status
 		if(status== OrderRentStatus.CONFIRMING) {
+			walletService.update10ktoAdminWallet();
 			notiService.pushNotification(check.getCustomerDTO().getAccountDTO().getAccountID(), "Thuê", "Đơn hàng mã : " + check.getOrderRentID() +" đang chờ bạn xác nhận");
 		}
 		

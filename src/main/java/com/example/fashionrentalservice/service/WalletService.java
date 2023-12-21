@@ -97,6 +97,19 @@ public class WalletService {
     }
     
     
+    public WalletDTO update10ktoAdminWallet() throws  CrudException {
+        WalletDTO dto = walletRepo.findById(20).orElse(null);
+        double oldBalance;
+        double newBalance;
+        if(dto == null)
+        	throw new StaffNotFoundByID();
+        oldBalance = dto.getBalance();
+        newBalance = (oldBalance + 10000);
+        dto.setBalance(newBalance);
+        walletRepo.save(dto);
+        return dto;
+    }
+    
   //================================== Cong(+) tien PendingMoney returnDTO cho createOrder ========================================
     public WalletDTO updatePendingMoneyReturnDTO(int walletID, double pendingMoney) throws  CrudException {
         WalletDTO dto = walletRepo.findById(walletID).orElse(null);
