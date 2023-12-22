@@ -43,9 +43,6 @@ public class StaffRequestedService {
 	//================================== Tao Request========================================
     public StaffRequestedDTO create(int requestAddingProductID, int staffID) throws CrudException {
     	RequestAddingProductDTO check = addRequestedRepo.findById(requestAddingProductID).orElse(null);
-    	if(check.getStatus() != AddProductStatus.APPROVING) {
-    		throw new PendingMoneyNegative("Đơn này đã được duyệt rồi!");
-    	}
     	StaffRequestedDTO dto = StaffRequestedDTO.builder()
     			.createdDate(LocalDate.now())
     			.requestAddingProductDTO(addRequestedRepo.findById(requestAddingProductID).orElseThrow())
